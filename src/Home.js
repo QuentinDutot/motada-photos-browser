@@ -10,6 +10,10 @@ import ImageBank from 'splashbase-api-interface';
 // const imageBank = require('../../splashbase-api-interface/index.js');
 
 const styles = {
+  root: {
+    paddingBottom: 50,
+    backgroundColor: 'rgb(30, 46, 79)',
+  },
   background: {
     top: 0,
     width: '100%',
@@ -118,18 +122,11 @@ class Home extends Component {
     const { classes } = this.props;
     const { loading, images } = this.state;
 
-    /*
-      TODO fix background
-      https://css-tricks.com/almanac/properties/o/overflow/
-      https://stackoverflow.com/questions/718891/how-to-make-a-div-not-wrap
-    */
-
     return (
-      <div>
+      <div className={classes.root}>
 
         {// Background
           <ParticleAnimation
-            //numParticles={10}
             numParticles={70}
             interactive={false}
             color={{ r: 130, g: 247, b: 249, a: 255 }}
@@ -148,7 +145,6 @@ class Home extends Component {
             <Search search={(keyword) => keyword ? this.loadSearch(keyword) : this.loadDefault()} />
           </div>
         }
-
 
         {// No data message
           !loading && images.length === 0 && <Typography variant="display3">No data found..</Typography>
