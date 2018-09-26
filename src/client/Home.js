@@ -3,11 +3,10 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import ParticleAnimation from 'react-particle-animation';
-import Image from './Components/Image';
-import Search from './Components/Search';
-import ImageBank from 'splashbase-api-interface';
+import Image from './Image';
+import Search from './Search';
 
-// const imageBank = require('../../splashbase-api-interface/index.js');
+const ImageBank = require('../../../splashbase-api-interface/index.js');
 
 const styles = {
   root: {

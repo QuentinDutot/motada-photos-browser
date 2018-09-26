@@ -1,14 +1,16 @@
-const webpack = require('webpack');
+const webpack = require("webpack");
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/client/index.js',
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'main.js'
+    path: path.join(__dirname, 'dist'),
+    filename: 'bundle.js'
   },
   module: {
-    rules: [{
+    rules: [
+      {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: ['babel-loader'/*, 'eslint-loader'*/]
@@ -18,18 +20,19 @@ module.exports = {
         use: ['style-loader', 'css-loader']
       },
       {
-        test: /\.(gif|eot|woff|woff2|ttf|svg)$/,
-        loaders: ['url-loader']
+        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        loader: ['url-loader']
       }
     ]
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin()
-  ],
-  resolve: { extensions: ['.js', '.jsx'] },
-  devtool: 'inline-source-map',
   devServer: {
-    contentBase: './dist',
-    hot: true
-  }
+    port: 3000,
+    open: true,
+    proxy: {
+      '/api': 'http://localhost:8080'
+    }
+  },
+  plugins: [
+    new HtmlWebpackPlugin({ template: './dist/index.html' })
+  ]
 };
