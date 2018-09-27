@@ -4,17 +4,44 @@ const dbLow = require('lowdb');
 const dbFileSync = require('lowdb/adapters/FileSync');
 const shortid = require('shortid');
 const bodyParser = require('body-parser');
+const cron = require("node-cron");
+const scrapeUnsplash = require('./unsplash.js');
 
 const dbAdapter = new dbFileSync('database.json');
 const database = dbLow(dbAdapter);
 const app = express();
 
+database.defaults({ images: [] }).write();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-database.defaults({ images: [] }).write();
-
 // TODO pagination : https://evdokimovm.github.io/javascript/nodejs/mongodb/pagination/expressjs/ejs/bootstrap/2017/08/20/create-pagination-with-nodejs-mongodb-express-and-ejs-step-by-step-from-scratch.html
+
+cron.schedule("* */2 * * *", function() {
+  scrapeUnsplash((items) => {
+    console.log(items);
+    items.forEach((item) => createImage(item));
+  });
+});
+
+function createImage(img) {
+  // TODO Tester si l'url est déjà connue
+
+  const newImg = {
+    id: shortid.generate(),
+    url: img.url,
+    title: img.title || '',
+    source: img.source || '',
+    date: Date.now(),
+    tags: img.tags || [],
+  };
+
+  const result = database.get('images').push(newImg).write();
+
+  // TODO Tester si l'enregistrement est réussi
+
+  return result;
+}
 
 app.get('/api/images/:id?', (req, res) => {
   const query = req.query;
@@ -44,23 +71,7 @@ app.get('/api/images/:id?', (req, res) => {
 });
 
 app.post('/api/images', (req, res) => {
-  const body = req.body;
-
-  // TODO Tester si l'url est déjà connue
-
-  const newImg = {
-    id: shortid.generate(),
-    url: body.url,
-    source: body.source || '',
-    date: Date.now(),
-    tags: body.tags || [],
-  };
-
-  database.get('images').push(newImg).write();
-
-  // TODO Tester si l'enregistrement
-
-  res.send({});
+  res.send(createImage(req.body));
 });
 
 app.listen(8080, () => console.log('Listening on port 8080!'));
