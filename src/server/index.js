@@ -1,5 +1,4 @@
 const express = require('express');
-const os = require('os');
 const dbLow = require('lowdb');
 const dbFileSync = require('lowdb/adapters/FileSync');
 const shortid = require('shortid');
@@ -21,11 +20,11 @@ app.use((req, res, next) => {
 
 // TODO pagination : https://evdokimovm.github.io/javascript/nodejs/mongodb/pagination/expressjs/ejs/bootstrap/2017/08/20/create-pagination-with-nodejs-mongodb-express-and-ejs-step-by-step-from-scratch.html
 
-cron.schedule("* */2 * * *", () => {
-  console.log("unsplash scraper - cron");
+cron.schedule('* */2 * * *', () => {
+  console.log('unsplash scraper - cron');
   scrapeUnsplash((items) => {
-    //console.log(items);
-    items.forEach((item) => createImage(item));
+    // console.log(items);
+    items.forEach(item => createImage(item));
   });
 });
 
@@ -40,37 +39,39 @@ function getAllImages() {
 function isTagsInData(tags, data) {
   let included = false;
   tags.forEach((singleTag) => {
-   var searchIn = Object.keys(data).reduce(function(res, val) { return (val !== 'id')?res+data[val]:res }, '');
-   if(searchIn.toLowerCase().includes(singleTag.toLowerCase())) {
-     included = true;
-   }
+    const searchIn = Object.keys(data).reduce((res, val) => (val !== 'id') ? res + data[val] : res, '');
+    if (searchIn.toLowerCase().includes(singleTag.toLowerCase())) {
+      included = true;
+    }
   });
   return included;
 }
 
 function getFilteredImages(query) {
-  if(query.hasOwnProperty('random')) {// api/images?random=3
+  // api/images?random=3
+  if (Object.prototype.hasOwnProperty.call(query, 'random')) {
     return database.get('images').sampleSize(query.random || 1).value();
-
-  } else if(query.hasOwnProperty('last')) {// api/images?last=3
+  }
+  // api/images?last=3
+  if (Object.prototype.hasOwnProperty.call(query, 'last')) {
     return database.get('images').sortBy('date').reverse().take(query.last || 1).value();
-
-  } else if(query.hasOwnProperty('tags')) {// api/images?tags=sky,car
+  }
+  // api/images?tags=sky,car
+  if (Object.prototype.hasOwnProperty.call(query, 'tags')) {
     let tags = query.tags.split(',');
-    tags = tags.map(tag => tag.split(' ').map(word => word.charAt(0).toUpperCase()+word.slice(1).toLowerCase()).join(' '));
+    tags = tags.map(tag => tag.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' '));
     delete query.tags;
     return database.get('images').filter(data => isTagsInData(tags, data)).filter(query).value();
-
-  } else {// api/images?...
-    return database.get('images').filter(query).value();
   }
+  // api/images?...
+  return database.get('images').filter(query).value();
 }
 
 function createImage(img) {
-  if(!database.get('images').find({ url: img.url }).value()) {
+  if (!database.get('images').find({ url: img.url }).value()) {
     const id = shortid.generate();
     const result = database.get('images').push({
-      id: id,
+      id,
       url: img.url,
       title: img.title || '',
       source: img.source || '',
@@ -83,11 +84,14 @@ function createImage(img) {
 }
 
 app.get('/api/images/:id?', (req, res) => {
-  if(req.params.id !== undefined) {// api/images/z_ae77ml
+  if (req.params.id !== undefined) {
+    // api/images/z_ae77ml
     res.send(getImage(req.params.id));
-  } else if(Object.keys(req.query).length === 0) {// api/images
+  } else if (Object.keys(req.query).length === 0) {
+    // api/images
     res.send(getAllImages());
-  } else {// api/images?...
+  } else {
+    // api/images?...
     res.send(getFilteredImages(req.query));
   }
 });

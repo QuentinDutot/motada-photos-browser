@@ -63,12 +63,12 @@ class Home extends Component {
   }
 
   saveImages(newImages) {
-    for (let i=0;i<newImages.length;i++) {
+    for (let i = 0; i < newImages.length; i++) {
       setTimeout(() => {
-        const images = this.state.images;
+        const { images } = this.state;
         images.push(newImages[i]);
         this.setState({ images });
-      } , i*500);
+      }, i * 500);
     }
   }
 
@@ -103,12 +103,15 @@ class Home extends Component {
   }
 
   checkScrolling() {
-    const windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
-    const body = document.body;
-    const html = document.documentElement;
-    const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight,  html.scrollHeight, html.offsetHeight);
+    const { loading } = this.state;
+    const { body, documentElement } = document;
+    const windowHeight = 'innerHeight' in window ? window.innerHeight : documentElement.offsetHeight;
     const windowBottom = windowHeight + window.pageYOffset;
-    if (windowBottom >= docHeight && !this.state.loading) {
+    const docHeight = Math.max(
+      body.scrollHeight, body.offsetHeight,
+      documentElement.clientHeight, documentElement.scrollHeight, documentElement.offsetHeight,
+    );
+    if (windowBottom >= docHeight && !loading) {
       this.loadRandom(5);
     }
   }
@@ -117,6 +120,13 @@ class Home extends Component {
     const { classes } = this.props;
     const { loading, images } = this.state;
 
+    const paBackgroundColor = {
+      r: 30, g: 46, b: 79, a: 255,
+    };
+    const paColor = {
+      r: 130, g: 247, b: 249, a: 255,
+    };
+
     return (
       <div className={classes.root}>
 
@@ -124,20 +134,21 @@ class Home extends Component {
           <ParticleAnimation
             numParticles={80}
             interactive={false}
-            color={{ r: 130, g: 247, b: 249, a: 255 }}
-            background={{ r: 30, g: 46, b: 79, a: 255 }}
-            //background={{ r: 240, g: 240, b: 240, a: 255 }}
-            className={classes.background} />
+            color={paColor}
+            background={paBackgroundColor}
+            // background={{ r: 240, g: 240, b: 240, a: 255 }}
+            className={classes.background}
+          />
         }
 
         {// Loading animation
-          loading && <LinearProgress className={classes.loadingBar}/>
+          loading && <LinearProgress className={classes.loadingBar} />
         }
 
         {// Header with a search bar and suggestions
           <div className={classes.header}>
             <p className={classes.title}>Thousands of free images</p>
-            <Search search={(keyword) => keyword ? this.loadSearch(keyword) : this.loadDefault()} />
+            <Search search={keyword => keyword ? this.loadSearch(keyword) : this.loadDefault()} />
           </div>
         }
 
@@ -147,7 +158,7 @@ class Home extends Component {
 
         {// Show the gallery
           <div className={classes.gallery}>
-            { images.map((image) => <Image key={image.id} source={image.url} />) }
+            { images.map(image => <Image key={image.id} source={image.url} />) }
           </div>
         }
 

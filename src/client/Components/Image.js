@@ -5,7 +5,6 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import Download from '@material-ui/icons/AssignmentReturned';
 import Zoom from '@material-ui/core/Zoom';
-import axios from 'axios';
 
 const styles = {
   card: {
@@ -40,8 +39,8 @@ class Image extends Component {
   // TODO propTypes
 
   mouseClick() {
-    // TODO
-    /*const { source } = this.props;
+    /* TODO
+    const { source } = this.props;
     axios({ url: source, method: 'GET', responseType: 'blob' })
       .then((response) => {
          const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -50,7 +49,8 @@ class Image extends Component {
          link.setAttribute('download', source.split('/').pop());
          document.body.appendChild(link);
          link.click();
-      });*/
+      });
+    */
   }
 
   render() {

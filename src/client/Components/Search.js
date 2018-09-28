@@ -6,9 +6,6 @@ import SearchIcon from '@material-ui/icons/Search';
 import Clear from '@material-ui/icons/Clear';
 import Chip from '@material-ui/core/Chip';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import ParticleAnimation from 'react-particle-animation';
 
 const styles = {
   searchBar: {
@@ -26,19 +23,21 @@ const styles = {
 class Search extends Component {
   state = {
     search: '',
-    suggestions: ['sky', 'laptop', 'car']
+    suggestions: ['sky', 'laptop', 'car'],
   }
 
   // TODO propTypes
 
-  makeSearch(search) {
-    this.setState({ search });
-    this.props.search(search);
+  makeSearch(key) {
+    this.setState({ search: key });
+    const { search } = this.props;
+    search(search);
   }
 
   clearSearch() {
     this.setState({ search: '' });
-    this.props.search('');
+    const { search } = this.props;
+    search('');
   }
 
   render() {
@@ -55,18 +54,16 @@ class Search extends Component {
           variant="outlined"
           placeholder="Search here..."
           value={search}
-          onChange={(event) => this.makeSearch(event.target.value)}
+          onChange={event => this.makeSearch(event.target.value)}
           InputProps={{ startAdornment: searchAdornment, endAdornment: search.length > 0 && clearAdornment }} />
         <div className={classes.trendingSearchBar}>
           {
-            suggestions.map((suggestedSearch) => {
-              return <Chip
-                       color="primary"
-                       key={suggestedSearch}
-                       className={classes.trendingSearch}
-                       onClick={() => this.makeSearch(suggestedSearch)}
-                       label={suggestedSearch} />;
-            })
+            suggestions.map((suggestedSearch) => <Chip
+              color="primary"
+              key={suggestedSearch}
+              className={classes.trendingSearch}
+              onClick={() => this.makeSearch(suggestedSearch)}
+              label={suggestedSearch} />)
           }
         </div>
       </div>
