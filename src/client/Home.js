@@ -3,10 +3,9 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import ParticleAnimation from 'react-particle-animation';
+import axios from 'axios';
 import Image from './Image';
 import Search from './Search';
-
-const ImageBank = require('../../../splashbase-api-interface/index.js');
 
 const styles = {
   root: {
@@ -50,7 +49,6 @@ class Home extends Component {
 
   componentDidMount() {
     window.addEventListener('scroll', () => this.checkScrolling());
-    // TODO checkApi
     this.loadDefault();
   }
 
@@ -60,8 +58,8 @@ class Home extends Component {
 
   loadDefault() {
     this.setState({ images: [] });
-    this.loadLast();
-    this.loadRandom(5);
+    this.loadLast(10);
+    this.loadRandom(15);
   }
 
   saveImages(newImages) {
@@ -74,36 +72,34 @@ class Home extends Component {
     }
   }
 
-  saveApiResult(error, results) {
-    console.log(error, results);
-    this.setState({ loading: false });
-    if (error) {
-      // TODO
-    } else {
-      //const results = ['a', 'b', 'c', 'd', 'e', 'f'];// test only
-      this.saveImages(results);
-    }
-  }
-
-  checkApi() {
-    ImageBank.check((err, res) => {
-      // TODO
-    });
+  request(url) {
+    axios(url)
+      .then((res) => {
+        console.log(res.data);
+        this.saveImages(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        // TODO
+      })
+      .then(() => {
+        this.setState({ loading: false });
+      });
   }
 
   loadSearch(search) {
     this.setState({ loading: true, images: [] });
-    ImageBank.search(search, (err, res) => this.saveApiResult(err, res));
+    // ImageBank.search(search, (err, res) => this.saveApiResult(err, res));
   }
 
-  loadLast() {
+  loadLast(limit) {
     this.setState({ loading: true });
-    ImageBank.last((err, res) => this.saveApiResult(err, res));
+    this.request(`/api/images?last=${limit}`);
   }
 
   loadRandom(limit) {
     this.setState({ loading: true });
-    ImageBank.random(limit, (err, res) => this.saveApiResult(err, res));
+    this.request(`/api/images?random=${limit}`);
   }
 
   checkScrolling() {
@@ -151,7 +147,7 @@ class Home extends Component {
 
         {// Show the gallery
           <div className={classes.gallery}>
-            { images.map((image) => <Image key={image} source={image} />) }
+            { images.map((image) => <Image key={image.id} source={image.url} />) }
           </div>
         }
 

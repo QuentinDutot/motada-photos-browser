@@ -40,7 +40,8 @@ class Image extends Component {
   // TODO propTypes
 
   mouseClick() {
-    const { source } = this.props;
+    // TODO
+    /*const { source } = this.props;
     axios({ url: source, method: 'GET', responseType: 'blob' })
       .then((response) => {
          const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -49,7 +50,7 @@ class Image extends Component {
          link.setAttribute('download', source.split('/').pop());
          document.body.appendChild(link);
          link.click();
-      });
+      });*/
   }
 
   render() {

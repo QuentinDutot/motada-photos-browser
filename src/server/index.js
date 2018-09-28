@@ -4,7 +4,7 @@ const dbLow = require('lowdb');
 const dbFileSync = require('lowdb/adapters/FileSync');
 const shortid = require('shortid');
 const bodyParser = require('body-parser');
-const cron = require("node-cron");
+const cron = require('node-cron');
 const scrapeUnsplash = require('./unsplash.js');
 
 const dbAdapter = new dbFileSync('database.json');
@@ -14,10 +14,14 @@ const app = express();
 database.defaults({ images: [] }).write();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  next();
+});
 
 // TODO pagination : https://evdokimovm.github.io/javascript/nodejs/mongodb/pagination/expressjs/ejs/bootstrap/2017/08/20/create-pagination-with-nodejs-mongodb-express-and-ejs-step-by-step-from-scratch.html
 
-cron.schedule("* */2 * * *", function() {
+cron.schedule("* */2 * * *", () => {
   scrapeUnsplash((items) => {
     console.log(items);
     items.forEach((item) => createImage(item));
