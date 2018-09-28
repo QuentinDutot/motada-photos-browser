@@ -22,56 +22,74 @@ app.use((req, res, next) => {
 // TODO pagination : https://evdokimovm.github.io/javascript/nodejs/mongodb/pagination/expressjs/ejs/bootstrap/2017/08/20/create-pagination-with-nodejs-mongodb-express-and-ejs-step-by-step-from-scratch.html
 
 cron.schedule("* */2 * * *", () => {
+  console.log("unsplash scraper - cron");
   scrapeUnsplash((items) => {
-    console.log(items);
+    //console.log(items);
     items.forEach((item) => createImage(item));
   });
 });
 
+function getImage(id) {
+  return database.get('images').find({ id }).value();
+}
+
+function getAllImages() {
+  return database.get('images').value();
+}
+
+function isTagsInData(tags, data) {
+  let included = false;
+  tags.forEach((singleTag) => {
+   var searchIn = Object.keys(data).reduce(function(res, val) { return (val !== 'id')?res+data[val]:res }, '');
+   if(searchIn.toLowerCase().includes(singleTag.toLowerCase())) {
+     included = true;
+   }
+  });
+  return included;
+}
+
+function getFilteredImages(query) {
+  if(query.hasOwnProperty('random')) {// api/images?random=3
+    return database.get('images').sampleSize(query.random || 1).value();
+
+  } else if(query.hasOwnProperty('last')) {// api/images?last=3
+    return database.get('images').sortBy('date').reverse().take(query.last || 1).value();
+
+  } else if(query.hasOwnProperty('tags')) {// api/images?tags=sky,car
+    let tags = query.tags.split(',');
+    tags = tags.map(tag => tag.split(' ').map(word => word.charAt(0).toUpperCase()+word.slice(1).toLowerCase()).join(' '));
+    delete query.tags;
+    return database.get('images').filter(data => isTagsInData(tags, data)).filter(query).value();
+
+  } else {// api/images?...
+    return database.get('images').filter(query).value();
+  }
+}
+
 function createImage(img) {
-  // TODO Tester si l'url est déjà connue
-
-  const newImg = {
-    id: shortid.generate(),
-    url: img.url,
-    title: img.title || '',
-    source: img.source || '',
-    date: Date.now(),
-    tags: img.tags || [],
-  };
-
-  const result = database.get('images').push(newImg).write();
-
-  // TODO Tester si l'enregistrement est réussi
-
-  return result;
+  if(!database.get('images').find({ url: img.url }).value()) {
+    const id = shortid.generate();
+    const result = database.get('images').push({
+      id: id,
+      url: img.url,
+      title: img.title || '',
+      source: img.source || '',
+      date: Date.now(),
+      tags: img.tags || [],
+    }).write();
+    return result && getImage(id).url.length > 0;
+  }
+  return false;
 }
 
 app.get('/api/images/:id?', (req, res) => {
-  const query = req.query;
-  const params = req.params;
-  let results;
-
-  if(params.id !== undefined) {// api/images/z_ae77ml
-    results = database.get('images').find({ id: params.id }).value();
-
-  } else if(Object.keys(query).length === 0) {// api/images
-    results = database.get('images').value();
-
-  } else if(query.hasOwnProperty('random')) {// api/images?random=3
-    results = database.get('images').sampleSize(query.random || 1).value();
-
-  } else if(query.hasOwnProperty('last')) {// api/images?last=3
-    results = database.get('images').sortBy('date').reverse().take(query.last || 1).value();
-
-  } /*else if(query.hasOwnProperty('tags')) {// api/images?tags=sky,car
-    results = database.get('images').some(query.tags.split('/')).value();// TODO
-
-  }*/ else {// api/images?...
-    results = database.get('images').filter(query).value();
+  if(req.params.id !== undefined) {// api/images/z_ae77ml
+    res.send(getImage(req.params.id));
+  } else if(Object.keys(req.query).length === 0) {// api/images
+    res.send(getAllImages());
+  } else {// api/images?...
+    res.send(getFilteredImages(req.query));
   }
-
-  res.send(results);
 });
 
 app.post('/api/images', (req, res) => {

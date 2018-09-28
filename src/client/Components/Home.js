@@ -89,7 +89,7 @@ class Home extends Component {
 
   loadSearch(search) {
     this.setState({ loading: true, images: [] });
-    // ImageBank.search(search, (err, res) => this.saveApiResult(err, res));
+    this.request(`/api/images?tags=${search.split(' ').join(',')}`);
   }
 
   loadLast(limit) {
@@ -122,7 +122,7 @@ class Home extends Component {
 
         {// Background
           <ParticleAnimation
-            numParticles={70}
+            numParticles={80}
             interactive={false}
             color={{ r: 130, g: 247, b: 249, a: 255 }}
             background={{ r: 30, g: 46, b: 79, a: 255 }}
