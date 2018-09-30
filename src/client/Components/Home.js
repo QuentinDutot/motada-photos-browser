@@ -58,16 +58,18 @@ class Home extends Component {
 
   loadDefault() {
     this.setState({ images: [] });
-    this.loadLast(10);
-    this.loadRandom(15);
+    this.loadLast(15);
+    this.loadRandom(30);
   }
 
   saveImages(newImages) {
     for (let i = 0; i < newImages.length; i++) {
       setTimeout(() => {
         const { images } = this.state;
-        images.push(newImages[i]);
-        this.setState({ images });
+        if (!images.find(e => e.id === newImages[i].id)) {
+          images.push(newImages[i]);
+          this.setState({ images });
+        }
       }, i * 500);
     }
   }
@@ -112,7 +114,7 @@ class Home extends Component {
       documentElement.clientHeight, documentElement.scrollHeight, documentElement.offsetHeight,
     );
     if (windowBottom >= docHeight && !loading) {
-      this.loadRandom(5);
+      this.loadRandom(30);
     }
   }
 
@@ -132,7 +134,7 @@ class Home extends Component {
 
         {// Background
           <ParticleAnimation
-            numParticles={80}
+            numParticles={70}
             interactive={false}
             color={paColor}
             background={paBackgroundColor}

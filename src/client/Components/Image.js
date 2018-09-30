@@ -15,8 +15,8 @@ const styles = {
     textAlign: 'center',
   },
   media: {
-    height: 280,
-    width: 280,
+    height: 360,
+    width: 360,
   },
   large: {
     transform: 'scale(2)',
@@ -65,7 +65,7 @@ class Image extends Component {
           onMouseEnter={() => this.setState({ mouseOver: true })}
           onMouseLeave={() => this.setState({ mouseOver: false })} >
           <CardActionArea>
-            <CardMedia className={classes.media} image={source} />
+            <CardMedia className={classes.media} image={source+'?w=700'} />
             <Zoom in={mouseOver}>
               <Download className={classes.download} />
             </Zoom>
