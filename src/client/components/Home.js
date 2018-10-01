@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import ParticleAnimation from 'react-particle-animation';
+import FlagIcon from 'react-flag-kit/lib/FlagIcon';
 import axios from 'axios';
 import Image from './Image';
 import Search from './Search';
@@ -42,13 +44,19 @@ const styles = {
 };
 
 class Home extends Component {
+  static propTypes = {
+    classes: PropTypes.object.isRequired,
+  };
+
   state = {
     loading: false,
+    count: 0,
     images: [],
   }
 
   componentDidMount() {
     window.addEventListener('scroll', () => this.checkScrolling());
+    this.loadCount();
     this.loadDefault();
   }
 
@@ -89,6 +97,10 @@ class Home extends Component {
       });
   }
 
+  loadCount() {
+    axios('/api/images?count').then((res) => this.setState({ count: res.data.images }));
+  }
+
   loadSearch(search) {
     this.setState({ loading: true, images: [] });
     this.request(`/api/images?tags=${search.split(' ').join(',')}`);
@@ -120,7 +132,8 @@ class Home extends Component {
 
   render() {
     const { classes } = this.props;
-    const { loading, images } = this.state;
+    const { loading, images, count } = this.state;
+    const formattedCount = count !== 0 ? count : 'thousands';
 
     const paBackgroundColor = {
       r: 30, g: 46, b: 79, a: 255,
@@ -147,9 +160,11 @@ class Home extends Component {
           loading && <LinearProgress className={classes.loadingBar} />
         }
 
+
         {// Header with a search bar and suggestions
           <div className={classes.header}>
-            <p className={classes.title}>Thousands of free images</p>
+            <p className={classes.title}>{`Search over ${formattedCount} of free and hig-res images`}</p>
+            <FlagIcon code="GB" size={32} style={{ cursor: 'pointer' }} onClick={() => console.log('translation !')}/>
             <Search search={keyword => keyword ? this.loadSearch(keyword) : this.loadDefault()} />
           </div>
         }

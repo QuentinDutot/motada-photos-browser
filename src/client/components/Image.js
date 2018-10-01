@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -32,11 +33,14 @@ const styles = {
 };
 
 class Image extends Component {
+  static propTypes = {
+    classes: PropTypes.object.isRequired,
+    source: PropTypes.string.isRequired,
+  };
+
   state = {
     mouseOver: false,
   }
-
-  // TODO propTypes
 
   mouseClick() {
     /* TODO
@@ -65,7 +69,7 @@ class Image extends Component {
           onMouseEnter={() => this.setState({ mouseOver: true })}
           onMouseLeave={() => this.setState({ mouseOver: false })} >
           <CardActionArea>
-            <CardMedia className={classes.media} image={source+'?w=700'} />
+            <CardMedia className={classes.media} image={`${source}?w=700`} />
             <Zoom in={mouseOver}>
               <Download className={classes.download} />
             </Zoom>

@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 
 // TODO pagination : https://evdokimovm.github.io/javascript/nodejs/mongodb/pagination/expressjs/ejs/bootstrap/2017/08/20/create-pagination-with-nodejs-mongodb-express-and-ejs-step-by-step-from-scratch.html
 
-cron.schedule('* */2 * * *', () => {
+cron.schedule('0 */2 * * *', () => {
   console.log('unsplash scraper - cron');
   scrapeUnsplash((items) => {
     // console.log(items);
@@ -48,6 +48,10 @@ function isTagsInData(tags, data) {
 }
 
 function getFilteredImages(query) {
+  // api/images?count
+  if (Object.prototype.hasOwnProperty.call(query, 'count')) {
+    return { images: database.get('images').size().value() };
+  }
   // api/images?random=3
   if (Object.prototype.hasOwnProperty.call(query, 'random')) {
     return database.get('images').sampleSize(query.random || 1).value();

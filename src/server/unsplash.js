@@ -6,7 +6,7 @@ const rootPath = '//*[@id="gridSingle"]/div';
 const infosPath = '/div/figure/a/div/img';
 const tagsPath = '/div/figure/div[3]/div/div/div';
 
-const search = `https://unsplash.com/search/photos/${randomWord()}`;
+const search = 'https://unsplash.com/search/photos';
 let driver;
 
 function scrapeItems(callback) {
@@ -66,8 +66,9 @@ function loadAllItems(callback) {
 
 module.exports = (callback) => {
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(new chrome.Options().headless().windowSize({ width: 400, height: 650 })).build();
-  console.log(search);
-  driver.get(search).then(() => {
+  const url = `${search}/${randomWord()}`;
+  console.log(url);
+  driver.get(url).then(() => {
     loadAllItems(() => {
       scrapeItems((items) => {
         console.log(items);

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -17,21 +18,25 @@ const styles = {
   },
   trendingSearch: {
     marginLeft: 12,
+    backgroundColor: 'white',
   },
 };
 
 class Search extends Component {
+  static propTypes = {
+    classes: PropTypes.object.isRequired,
+    search: PropTypes.func.isRequired,
+  };
+
   state = {
     search: '',
-    suggestions: ['sky', 'laptop', 'car'],
+    suggestions: ['building', 'business', 'car', 'flower', 'sky', 'tatoo', 'wall'],
   }
-
-  // TODO propTypes
 
   makeSearch(key) {
     this.setState({ search: key });
     const { search } = this.props;
-    search(search);
+    search(key);
   }
 
   clearSearch() {
@@ -60,6 +65,7 @@ class Search extends Component {
           {
             suggestions.map((suggestedSearch) => <Chip
               color="primary"
+              variant="outlined"
               key={suggestedSearch}
               className={classes.trendingSearch}
               onClick={() => this.makeSearch(suggestedSearch)}

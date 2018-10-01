@@ -22,9 +22,11 @@
     "express": "^4.16.3",
     "lowdb": "^1.0.0",
     "node-cron": "^2.0.1",
+    "prop-types": "^15.6.2",
     "random-words": "^1.1.0",
     "react": "^16.5.2",
     "react-dom": "^16.3.1",
+    "react-flag-kit": "^0.2.3",
     "react-particle-animation": "^1.0.1",
     "selenium-webdriver": "^4.0.0-alpha.1",
     "shortid": "^2.2.13"
