@@ -70,5 +70,4 @@ class Image extends Component {
   }
 }
 
-
 export default withStyles(styles)(Image);
