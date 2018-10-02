@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
-import Download from '@material-ui/icons/AssignmentReturned';
+import Download from '@material-ui/icons/OpenWith';
 import Zoom from '@material-ui/core/Zoom';
 
 const styles = {
@@ -26,8 +26,8 @@ const styles = {
     position: 'absolute',
     width: 80,
     height: 80,
-    top: 100, // -> (media.height/2)-(download.height/2)
-    left: 100, // -> (media.width/2)-(download.width/2)
+    top: 140, // -> (media.height/2)-(download.height/2)
+    left: 140, // -> (media.width/2)-(download.width/2)
     color: 'white',
   },
 };
@@ -43,18 +43,8 @@ class Image extends Component {
   }
 
   mouseClick() {
-    /* TODO
     const { source } = this.props;
-    axios({ url: source, method: 'GET', responseType: 'blob' })
-      .then((response) => {
-         const url = window.URL.createObjectURL(new Blob([response.data]));
-         const link = document.createElement('a');
-         link.href = url;
-         link.setAttribute('download', source.split('/').pop());
-         document.body.appendChild(link);
-         link.click();
-      });
-    */
+    window.open(source);
   }
 
   render() {

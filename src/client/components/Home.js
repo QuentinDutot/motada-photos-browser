@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import ParticleAnimation from 'react-particle-animation';
 import FlagIcon from 'react-flag-kit/lib/FlagIcon';
+import Snackbar from '@material-ui/core/Snackbar';
 import axios from 'axios';
 import Image from './Image';
 import Search from './Search';
@@ -52,6 +53,7 @@ class Home extends Component {
     loading: false,
     count: 0,
     images: [],
+    notification: '',
   }
 
   componentDidMount() {
@@ -86,11 +88,15 @@ class Home extends Component {
     axios(url)
       .then((res) => {
         console.log(res.data);
-        this.saveImages(res.data);
+        if(res.data && res.data.length > 0) {
+          this.saveImages(res.data);
+        } else {
+          this.updateNotification('Oops no results !');
+        }
       })
       .catch((err) => {
         console.log(err);
-        // TODO
+        this.updateNotification('Oops an error has occurred !');
       })
       .then(() => {
         this.setState({ loading: false });
@@ -130,9 +136,13 @@ class Home extends Component {
     }
   }
 
+  updateNotification(notification) {
+    this.setState({ notification });
+  }
+
   render() {
     const { classes } = this.props;
-    const { loading, images, count } = this.state;
+    const { loading, images, count, notification } = this.state;
     const formattedCount = count !== 0 ? count : 'thousands';
 
     const paBackgroundColor = {
@@ -152,14 +162,12 @@ class Home extends Component {
             color={paColor}
             background={paBackgroundColor}
             // background={{ r: 240, g: 240, b: 240, a: 255 }}
-            className={classes.background}
-          />
+            className={classes.background} />
         }
 
         {// Loading animation
           loading && <LinearProgress className={classes.loadingBar} />
         }
-
 
         {// Header with a search bar and suggestions
           <div className={classes.header}>
@@ -169,14 +177,18 @@ class Home extends Component {
           </div>
         }
 
-        {// No data message
-          !loading && images.length === 0 && <Typography variant="display3">No data found..</Typography>
-        }
-
         {// Show the gallery
           <div className={classes.gallery}>
             { images.map(image => <Image key={image.id} source={image.url} />) }
           </div>
+        }
+
+        {// Error informations
+          <Snackbar
+            open={notification.length > 0}
+            autoHideDuration={6000}
+            onClose={() => this.updateNotification('')}
+            message={notification} />
         }
 
       </div>
