@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { updateNotification, isLoading, cleanImages, addImage } from '../reducer';
+import { updateNotification, isLoading, cleanImages, addImage, reachBottom, loadRandomImages } from '../reducer';
 import axios from 'axios';
 import Image from './Image';
 
@@ -18,31 +18,40 @@ class Gallery extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     search: PropTypes.string.isRequired,
+    bottomReached: PropTypes.bool.isRequired,
+    loading: PropTypes.bool.isRequired,
     images: PropTypes.array.isRequired,
     isLoading: PropTypes.func.isRequired,
     updateNotification: PropTypes.func.isRequired,
     cleanImages: PropTypes.func.isRequired,
+    reachBottom: PropTypes.func.isRequired,
+    loadRandomImages: PropTypes.func.isRequired,
   };
 
   componentDidUpdate(prevProps) {
-    const { search } = this.props;
+    const { search, loading, bottomReached, reachBottom, cleanImages } = this.props;
     if (prevProps.search !== search) {
+      cleanImages();
       if (search) {
         this.loadSearch(search);
       } else {
         this.loadDefault();
       }
     }
+    if(prevProps.bottomReached !== bottomReached && bottomReached && !search && !loading) {
+      this.loadRandom(30);
+    }
   }
 
   componentDidMount() {
+    this.props.cleanImages();
     this.loadDefault();
   }
 
   loadDefault() {
-    this.props.cleanImages();
     this.loadLast(15);
     this.loadRandom(30);
+    // this.props.loadRandomImages(30);
   }
 
   saveImages(newImages) {
@@ -78,7 +87,6 @@ class Gallery extends Component {
 
   loadSearch(search) {
     this.props.isLoading(true);
-    this.props.cleanImages();
     this.request(`/api/images?tags=${search.split(' ').join(',')}`);
   }
 
@@ -106,6 +114,8 @@ class Gallery extends Component {
 const mapState = state => ({
   search: state.search,
   images: state.images,
+  loading: state.loading,
+  bottomReached: state.bottomReached,
 });
 
 const mapDispatch = dispatch => ({
@@ -113,6 +123,8 @@ const mapDispatch = dispatch => ({
   updateNotification: notification => dispatch(updateNotification(notification)),
   cleanImages: () => dispatch(cleanImages()),
   addImage: image => dispatch(addImage(image)),
+  reachBottom: reached => dispatch(reachBottom(reached)),
+  loadRandomImages: limit => dispatch(loadRandomImages(limit)),
 });
 
 export default compose(withStyles(styles), connect(mapState, mapDispatch))(Gallery);

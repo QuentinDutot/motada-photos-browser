@@ -14,7 +14,7 @@ import Gallery from './Gallery';
 const styles = {
   root: {
     paddingBottom: 50,
-    backgroundColor: 'rgb(30, 46, 79)',
+    // backgroundColor: 'rgb(30, 46, 79)',
   },
   background: {
     top: 0,
@@ -50,7 +50,7 @@ class Home extends Component {
     const { bottomReached, reachBottom } = this.props;
     const { body, documentElement } = document;
     const windowHeight = 'innerHeight' in window ? window.innerHeight : documentElement.offsetHeight;
-    const windowBottom = windowHeight + window.pageYOffset;
+    const windowBottom = windowHeight + window.pageYOffset + 300;
     const docHeight = Math.max(
       body.scrollHeight, body.offsetHeight,
       documentElement.clientHeight, documentElement.scrollHeight, documentElement.offsetHeight,
@@ -80,8 +80,8 @@ class Home extends Component {
             numParticles={70}
             interactive={false}
             color={paColor}
-            // background={paBackgroundColor}
-            background={{ r: 240, g: 240, b: 240, a: 255 }}
+            background={paBackgroundColor}
+            // background={{ r: 240, g: 240, b: 240, a: 255 }}
             className={classes.background} />
         }
 

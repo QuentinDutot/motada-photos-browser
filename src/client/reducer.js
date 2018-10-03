@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 const Actions = {
   MAKE_SEARCH: 'MAKE_SEARCH',
   UPDATE_NOTIFICATION: 'UPDATE_NOTIFICATION',
@@ -5,6 +7,7 @@ const Actions = {
   IS_LOADING: 'IS_LOADING',
   CLEAN_IMAGES: 'CLEAN_IMAGES',
   ADD_IMAGE: 'ADD_IMAGE',
+  ADD_IMAGES: 'ADD_IMAGES',
 };
 
 export const makeSearch = search => ({
@@ -37,6 +40,26 @@ export const addImage = image => ({
   payload: { image },
 });
 
+export const addImages = images => ({
+  type: Actions.ADD_IMAGES,
+  payload: { images },
+});
+/*
+export function loadRandomImages(limit) {
+  dispatch(isLoading(true));
+  axios(`/api/images?random=${limit}`)
+    .then((res) => {
+      console.log(res.data);
+      if (res.data && res.data.length > 0) {
+        dispatch(addImages(res.data));
+      } else {
+        dispatch(updateNotification('Oops no results !'));
+      }
+    })
+    .catch((err) => dispatch(updateNotification(`Oops an error has occurred : ${err}`)))
+    .then(() => dispatch(isLoading(false)));
+}*/
+
 const defaultState = {
   search: '',
   notification: '',
@@ -61,6 +84,8 @@ export default function reducer(prevState, action) {
       return { ...state, images: action.payload.images };
     case Actions.ADD_IMAGE:
       return { ...state, images: [...state.images, action.payload.image] };
+    case Actions.ADD_IMAGES:
+      return { ...state, images: [...new Set([...state.images, action.payload.images])] };
     default:
       return state;
   }

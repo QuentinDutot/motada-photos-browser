@@ -17,10 +17,10 @@ const styles = {
     backgroundColor: 'white',
   },
   trendingSearchBar: {
-    marginTop: 12,
+    marginTop: 20,
   },
   trendingSearch: {
-    marginLeft: 12,
+    marginLeft: 15,
     backgroundColor: 'white',
   },
 };

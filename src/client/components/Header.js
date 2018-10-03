@@ -16,11 +16,13 @@ const styles = {
     position: 'relative',
   },
   title: {
+    padding: 0,
     color: '#ffffff',
     textAlign: 'left',
-    fontSize: '1.2rem',
+    fontSize: '1.3rem',
   },
   flag: {
+    float: 'right',
     cursor: 'pointer',
   },
 };
@@ -46,8 +48,14 @@ class Header extends Component {
 
     return (
       <div className={classes.header}>
-        <p className={classes.title}>{`Search over ${formattedCount} of free and hig-res images`}</p>
-        <FlagIcon code="GB" size={32} className={classes.flag} onClick={() => updateNotification('Oops translation available !')}/>
+        <p className={classes.title}>
+          {`Search over ${formattedCount} of free and hig-res images`}
+          <FlagIcon
+            code="GB"
+            size={32}
+            className={classes.flag}
+            onClick={() => updateNotification('Oops no translation available !')}/>
+        </p>
         <Search />
       </div>
     );
