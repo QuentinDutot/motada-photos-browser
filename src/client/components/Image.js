@@ -7,6 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import CardMedia from '@material-ui/core/CardMedia';
 import Download from '@material-ui/icons/OpenWith';
 import Zoom from '@material-ui/core/Zoom';
+import axios from 'axios';
 
 const styles = {
   card: {
@@ -36,7 +37,9 @@ const styles = {
 class Image extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
+    id: PropTypes.string.isRequired,
     source: PropTypes.string.isRequired,
+    click: PropTypes.number.isRequired,
   };
 
   state = {
@@ -45,11 +48,14 @@ class Image extends Component {
   }
 
   mouseClick() {
-    const { source } = this.props;
+    const { id, source, click } = this.props;
     this.setState({ clicked: true });
     setTimeout(() => {
-      window.open(source);
-      this.setState({ clicked: false });
+      axios.patch(`/api/images/${id}`, { click: click+1 }).then(() => {
+        const newWnd = window.open(source);
+        newWnd.opener = null;
+        this.setState({ clicked: false });
+      });
     }, 1000);
   }
 
@@ -65,12 +71,10 @@ class Image extends Component {
           onMouseEnter={() => this.setState({ mouseOver: true })}
           onMouseLeave={() => this.setState({ mouseOver: false })} >
           <CardActionArea>
-            <CardMedia className={classes.media} image="a" />
+            <CardMedia className={classes.media} image={`${source}?w=700`} />
             {
-              // <CardMedia className={classes.media} image={`${source}?w=700`} />
-
               clicked
-              ? <CircularProgress className={classes.overlay} size={60} />
+              ? <CircularProgress className={classes.overlay} size={65} />
               : <Zoom in={mouseOver}><Download className={classes.overlay}/></Zoom>
             }
           </CardActionArea>

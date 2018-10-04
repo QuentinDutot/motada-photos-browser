@@ -2,11 +2,10 @@ const webdriver = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const randomWord = require('random-words');
 
-const rootPath = '//*[@id="gridSingle"]/div';
-const infosPath = '/div/figure/a/div/img';
-const tagsPath = '/div/figure/div[3]/div/div/div';
+const rootPath = '/html/body/div[1]/div[2]/div[3]/article';
+const infosPath = '/a/img';
 
-const search = 'https://unsplash.com/search/photos';
+const search = 'https://www.pexels.com/search';
 let driver;
 
 function scrapeItems(callback) {
@@ -19,28 +18,29 @@ function scrapeItems(callback) {
       const customImage = {
         url: '',
         title: '',
-        source: 'unsplash',
+        source: 'pexels',
         tags: [],
       };
 
       row.findElement(webdriver.By.xpath(`${rootPath}[${rowIndex + 1}]${infosPath}`)).then((image) => {
         image.getAttribute('alt').then((title) => { // image's title
-          customImage.title = title;
+          customImage.title = title.indexOf('Free stock photo of ') !== -1 ? title.slice(20) : title;
+          customImage.title.split(' ').forEach(tags => { // image's tags
+            let tag = tags.split(',').join('');
+            tag = tag.charAt(0).toUpperCase()+tag.slice(1);
+            if(tag.length > 1
+              && tag !== 'Or' && tag !== 'And' && tag !== 'By'
+              && tag !== 'The' && tag !== 'In' && tag !== 'Of'
+              && tag !== 'Not' && tag !== 'To' && tag !== 'On') {
+              customImage.tags.push(tag);
+            }
+          });
           image.getAttribute('srcset').then((url) => { // image's url
             [customImage.url] = url.split('?');
-            row.findElements(webdriver.By.xpath(`${rootPath}[${rowIndex + 1}]${tagsPath}`)).then((tags) => { // image's tags
-              tags.forEach((tagElement, tagIndex) => {
-                tagElement.getText().then((tag) => {
-                  customImage.tags.push(tag);
-                  if (tagIndex === tags.length - 1) {
-                    items.push(customImage);
-                    if (rowIndex === elements.length - 1) {
-                      callback(items);
-                    }
-                  }
-                });
-              });
-            });
+            items.push(customImage);
+            if (rowIndex === elements.length - 1) {
+              callback(items);
+            }
           });
         });
       });
@@ -65,6 +65,7 @@ function loadAllItems(callback) {
 }
 
 module.exports = (callback) => {
+  console.log('pexels scraper started');
   driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(new chrome.Options().headless().windowSize({ width: 400, height: 650 })).build();
   const url = `${search}/${randomWord()}`;
   console.log(url);

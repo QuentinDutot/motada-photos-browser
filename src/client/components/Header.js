@@ -15,15 +15,24 @@ const styles = {
     padding: '5% 15% 5% 15%',
     position: 'relative',
   },
-  title: {
+  text: {
     padding: 0,
     color: '#ffffff',
+  },
+  title: {
     textAlign: 'left',
     fontSize: '1.3rem',
+  },
+  description: {
+    textAlign: 'center',
+    fontSize: '0.7rem',
   },
   flag: {
     float: 'right',
     cursor: 'pointer',
+  },
+  link: {
+    marginRight: 10,
   },
 };
 
@@ -35,6 +44,7 @@ class Header extends Component {
 
   state = {
     count: 0,
+    sources: ['unsplash', 'pixabay', 'pexels'],
   }
 
   componentDidMount() {
@@ -43,13 +53,13 @@ class Header extends Component {
 
   render() {
     const { classes, updateNotification } = this.props;
-    const { count } = this.state;
+    const { count, sources } = this.state;
     const formattedCount = count !== 0 ? count : 'thousands';
 
     return (
       <div className={classes.header}>
-        <p className={classes.title}>
-          {`Search over ${formattedCount} of free and hig-res images`}
+        <p className={[classes.text, classes.title].join(' ')}>
+          {`Search over ${formattedCount} free and hig-res images`}
           <FlagIcon
             code="GB"
             size={32}
@@ -57,6 +67,18 @@ class Header extends Component {
             onClick={() => updateNotification('Oops no translation available !')}/>
         </p>
         <Search />
+        <p className={[classes.text, classes.description].join(' ')}>
+          {
+            sources.map(source =>
+              <a
+                href={`https://${source}.com`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={classes.link}>
+                {`${source}.com`}
+              </a>)
+          }
+        </p>
       </div>
     );
   }

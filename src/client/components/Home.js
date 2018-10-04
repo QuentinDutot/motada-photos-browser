@@ -14,7 +14,7 @@ import Gallery from './Gallery';
 const styles = {
   root: {
     paddingBottom: 50,
-    // backgroundColor: 'rgb(30, 46, 79)',
+    backgroundColor: 'rgb(30, 46, 79)',
   },
   background: {
     top: 0,

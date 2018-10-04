@@ -54,13 +54,13 @@ class Search extends Component {
           InputProps={{ startAdornment: searchAdornment, endAdornment: search.length > 0 && clearAdornment }} />
         <div className={classes.trendingSearchBar}>
           {
-            suggestions.map((suggestedSearch) => <Chip
+            /*suggestions.map((suggestedSearch) => <Chip
               color="primary"
               variant="outlined"
               key={suggestedSearch}
               className={classes.trendingSearch}
               onClick={() => makeSearch(suggestedSearch)}
-              label={suggestedSearch} />)
+              label={suggestedSearch} />)*/
           }
         </div>
       </div>
