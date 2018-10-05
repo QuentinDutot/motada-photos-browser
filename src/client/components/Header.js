@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
+import { I18n } from 'react-i18nify';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { updateNotification } from '../reducer';
+import translations from '../../assets/translations/translations';
 import FlagIcon from 'react-flag-kit/lib/FlagIcon';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog';
+import Description from './Description';
 import Search from './Search';
 import axios from 'axios';
 
@@ -15,24 +23,15 @@ const styles = {
     padding: '5% 15% 5% 15%',
     position: 'relative',
   },
-  text: {
+  title: {
     padding: 0,
     color: '#ffffff',
-  },
-  title: {
     textAlign: 'left',
     fontSize: '1.3rem',
-  },
-  description: {
-    textAlign: 'center',
-    fontSize: '0.7rem',
   },
   flag: {
     float: 'right',
     cursor: 'pointer',
-  },
-  link: {
-    marginRight: 10,
   },
 };
 
@@ -44,7 +43,7 @@ class Header extends Component {
 
   state = {
     count: 0,
-    sources: ['unsplash', 'pixabay', 'pexels'],
+    dialog: false,
   }
 
   componentDidMount() {
@@ -53,32 +52,38 @@ class Header extends Component {
 
   render() {
     const { classes, updateNotification } = this.props;
-    const { count, sources } = this.state;
-    const formattedCount = count !== 0 ? count : 'thousands';
+    const { count, dialog } = this.state;
 
     return (
       <div className={classes.header}>
-        <p className={[classes.text, classes.title].join(' ')}>
-          {`Search over ${formattedCount} free and hig-res images`}
+        <p className={classes.title}>
+          {
+            count !== 0
+            ? I18n.t('header.title', { count })
+            : I18n.t('header.default_title')
+          }
           <FlagIcon
-            code="GB"
+            code={I18n.t('flag')}
             size={32}
             className={classes.flag}
-            onClick={() => updateNotification('Oops no translation available !')}/>
+            onClick={() => this.setState({ dialog: true })} />
         </p>
         <Search />
-        <p className={[classes.text, classes.description].join(' ')}>
-          {
-            sources.map(source =>
-              <a
-                href={`https://${source}.com`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={classes.link}>
-                {`${source}.com`}
-              </a>)
-          }
-        </p>
+        <Description />
+        <Dialog open={dialog} onClose={() => this.setState({ dialog: false })}>
+          <DialogTitle>{I18n.t('tooltips.translations')}</DialogTitle>
+          <List>
+            {
+              Object.keys(translations).map(key =>
+                <ListItem
+                  key={translations[key].flag}
+                  button onClick={() => this.setState({ dialog: false })}>
+                  <FlagIcon code={translations[key].flag} size={32} />
+                  <ListItemText primary={translations[key].language} />
+                </ListItem>)
+            }
+          </List>
+        </Dialog>
       </div>
     );
   }

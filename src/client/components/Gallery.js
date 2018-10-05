@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
+import { I18n } from 'react-i18nify';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { updateNotification, isLoading, cleanImages, addImage, reachBottom } from '../reducer';
@@ -72,12 +73,12 @@ class Gallery extends Component {
         if (res.data && res.data.length > 0) {
           this.saveImages(search, res.data);
         } else {
-          updateNotification('Oops no results !');
+          updateNotification(I18n.t('no_results'));
         }
       })
       .catch((err) => {
         console.log(err);
-        updateNotification('Oops an error has occurred !');
+        updateNotification(I18n.t('unknow'));
       })
       .then(() => {
         this.props.isLoading(false);

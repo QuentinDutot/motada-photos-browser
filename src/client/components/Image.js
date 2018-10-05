@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import compose from 'recompose/compose';
+import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -17,19 +19,29 @@ const styles = {
     overflow: 'hidden',
     textAlign: 'center',
   },
-  media: {
+  medium: {
     height: 360,
     width: 360,
   },
   large: {
-    transform: 'scale(2)',
+    height: 480,
+    width: 480,
   },
   overlay: {
     position: 'absolute',
-    width: 80,
-    height: 80,
-    top: 140, // -> (media.height/2)-(download.height/2)
-    left: 140, // -> (media.width/2)-(download.width/2)
+    width: '100%',
+    height: '100%',
+    top: 0,
+    left: 0,
+    opacity: .1,
+    backgroundColor: 'grey'
+  },
+  icon: {
+    position: 'absolute',
+    width: '26%',
+    height: '26%',
+    top: '37%',
+    left: '37%',
     color: 'white',
   },
 };
@@ -37,6 +49,7 @@ const styles = {
 class Image extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
+    format: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     source: PropTypes.string.isRequired,
     click: PropTypes.number.isRequired,
@@ -60,28 +73,29 @@ class Image extends Component {
   }
 
   render() {
-    const { classes, source } = this.props;
+    const { classes, source, format } = this.props;
     const { mouseOver, clicked } = this.state;
 
     return (
       <Zoom in>
         <Card
-          className={[classes.card, classes.media, mouseOver && classes.large].join(' ')}
+          className={classes.card}
           onClick={() => this.mouseClick()}
           onMouseEnter={() => this.setState({ mouseOver: true })}
           onMouseLeave={() => this.setState({ mouseOver: false })} >
-          <CardActionArea>
-            <CardMedia className={classes.media} image={`${source}?w=700`} />
-            {
-              clicked
-              ? <CircularProgress className={classes.overlay} size={65} />
-              : <Zoom in={mouseOver}><Download className={classes.overlay}/></Zoom>
-            }
-          </CardActionArea>
+          <CardMedia
+            className={classes[format]}
+            image={`${source}?w=${format === 'large' ? 1500 : 700}`} />
+          { mouseOver && <div className={classes.overlay}></div> }
+          <Zoom in={mouseOver}><Download className={classes.icon} /></Zoom>
         </Card>
       </Zoom>
     );
   }
 }
 
-export default withStyles(styles)(Image);
+const mapState = state => ({
+  format: state.format,
+});
+
+export default compose(withStyles(styles), connect(mapState, null))(Image);

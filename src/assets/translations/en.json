@@ -1,0 +1,18 @@
+{
+  "flag": "GB",
+  "language": "english",
+  "header": {
+    "title": "Over %{count} free and hig-res images",
+    "default_title": "Over thousands free and hig-res images"
+  },
+  "tooltips": {
+    "search": "Search here...",
+    "clear_search": "Clear",
+    "translations": "Translations"
+  },
+  "errors": {
+    "no_translation": "Oops no translation available !",
+    "no_results": "Oops no results !",
+    "unknow": "Oops an error has occurred !"
+  }
+}

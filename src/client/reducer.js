@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 const Actions = {
   MAKE_SEARCH: 'MAKE_SEARCH',
   UPDATE_NOTIFICATION: 'UPDATE_NOTIFICATION',
@@ -7,6 +5,7 @@ const Actions = {
   IS_LOADING: 'IS_LOADING',
   CLEAN_IMAGES: 'CLEAN_IMAGES',
   ADD_IMAGE: 'ADD_IMAGE',
+  UPDATE_FORMAT: 'UPDATE_FORMAT',
 };
 
 export const makeSearch = search => ({
@@ -39,9 +38,15 @@ export const addImage = image => ({
   payload: { image },
 });
 
+export const updateFormat = format => ({
+  type: Actions.UPDATE_FORMAT,
+  payload: { format },
+});
+
 const defaultState = {
   search: '',
   notification: '',
+  format: 'medium',
   bottomReached: false,
   loading: false,
   images: [],
@@ -63,6 +68,8 @@ export default function reducer(prevState, action) {
       return { ...state, images: action.payload.images };
     case Actions.ADD_IMAGE:
       return { ...state, images: [...state.images, action.payload.image] };
+    case Actions.UPDATE_FORMAT:
+      return { ...state, format: action.payload.format };
     default:
       return state;
   }

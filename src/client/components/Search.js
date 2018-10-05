@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
+import { I18n } from 'react-i18nify';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -41,14 +42,14 @@ class Search extends Component {
     const { suggestions } = this.state;
 
     const searchAdornment = <InputAdornment position="start"><SearchIcon /></InputAdornment>;
-    const clearAdornment = <InputAdornment position="end"><IconButton aria-label="Clear" onClick={() => makeSearch('')}><Clear /></IconButton></InputAdornment>;
+    const clearAdornment = <InputAdornment position="end"><IconButton aria-label={I18n.t('tooltips.clear_search')} onClick={() => makeSearch('')}><Clear /></IconButton></InputAdornment>;
 
     return (
       <div>
         <TextField
           className={classes.searchBar}
           variant="outlined"
-          placeholder="Search here..."
+          placeholder={I18n.t('tooltips.search')}
           value={search}
           onChange={event => makeSearch(event.target.value)}
           InputProps={{ startAdornment: searchAdornment, endAdornment: search.length > 0 && clearAdornment }} />

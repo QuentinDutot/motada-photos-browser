@@ -1,0 +1,18 @@
+{
+  "flag": "FR",
+  "language": "français",
+  "header": {
+    "title": "Plus de %{count} images libres et gratuites",
+    "default_title": "Plusieurs milliers d'images libres et gratuites"
+  },
+  "tooltips": {
+    "search": "Rechercher ici...",
+    "clear_search": "Effacer",
+    "translations": "Traductions"
+  },
+  "errors": {
+    "no_translation": "Oups aucune traduction disponible !",
+    "no_results": "Oups aucun résultat !",
+    "unknow": "Oups une erreur est survenue !"
+  }
+}
