@@ -50,6 +50,12 @@ class Header extends Component {
     axios('/api/images?count').then((res) => this.setState({ count: res.data.images }));
   }
 
+  translate(lang) {
+    this.setState({ dialog: false });
+    localStorage.setItem('motada_language', lang);
+    location.reload();
+  }
+
   render() {
     const { classes, updateNotification } = this.props;
     const { count, dialog } = this.state;
@@ -77,7 +83,7 @@ class Header extends Component {
               Object.keys(translations).map(key =>
                 <ListItem
                   key={translations[key].flag}
-                  button onClick={() => this.setState({ dialog: false })}>
+                  button onClick={() => this.translate(translations[key].code)}>
                   <FlagIcon code={translations[key].flag} size={32} />
                   <ListItemText primary={translations[key].language} />
                 </ListItem>)

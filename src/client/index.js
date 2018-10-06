@@ -9,7 +9,9 @@ import reducer from './reducer';
 import './index.css';
 
 I18n.setTranslations(translations);
-I18n.setLocale((navigator.language || navigator.userLanguage || 'en').substring(0,2));
+I18n.setLocale(
+  (localStorage.getItem('motada_language') || navigator.language || navigator.userLanguage || 'en').substring(0,2)
+);
 
 ReactDOM.render(
   <Provider store={createStore(reducer)}>

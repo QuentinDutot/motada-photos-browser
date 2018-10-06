@@ -85,7 +85,7 @@ class Image extends Component {
           onMouseLeave={() => this.setState({ mouseOver: false })} >
           <CardMedia
             className={classes[format]}
-            image={`${source}?w=${format === 'large' ? 1500 : 700}`} />
+            image={`${source}?w=${format === 'large' ? 1100 : 700}`} />
           { mouseOver && <div className={classes.overlay}></div> }
           <Zoom in={mouseOver}><Download className={classes.icon} /></Zoom>
         </Card>
