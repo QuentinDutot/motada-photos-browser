@@ -5,15 +5,10 @@ import { I18n } from 'react-i18nify';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { updateNotification } from '../reducer';
-import translations from '../../assets/translations/translations';
 import FlagIcon from 'react-flag-kit/lib/FlagIcon';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog';
 import Description from './Description';
 import Search from './Search';
+import Translate from './Translate';
 import axios from 'axios';
 
 const styles = {
@@ -50,12 +45,6 @@ class Header extends Component {
     axios('/api/images?count').then((res) => this.setState({ count: res.data.images }));
   }
 
-  translate(lang) {
-    this.setState({ dialog: false });
-    localStorage.setItem('motada_language', lang);
-    location.reload();
-  }
-
   render() {
     const { classes, updateNotification } = this.props;
     const { count, dialog } = this.state;
@@ -76,20 +65,7 @@ class Header extends Component {
         </p>
         <Search />
         <Description />
-        <Dialog open={dialog} onClose={() => this.setState({ dialog: false })}>
-          <DialogTitle>{I18n.t('tooltips.translations')}</DialogTitle>
-          <List>
-            {
-              Object.keys(translations).map(key =>
-                <ListItem
-                  key={translations[key].flag}
-                  button onClick={() => this.translate(translations[key].code)}>
-                  <FlagIcon code={translations[key].flag} size={32} />
-                  <ListItemText primary={translations[key].language} />
-                </ListItem>)
-            }
-          </List>
-        </Dialog>
+        <Translate open={dialog} close={() => this.setState({ dialog: false })} />
       </div>
     );
   }

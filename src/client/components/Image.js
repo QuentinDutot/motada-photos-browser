@@ -9,6 +9,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import CardMedia from '@material-ui/core/CardMedia';
 import Download from '@material-ui/icons/OpenWith';
 import Zoom from '@material-ui/core/Zoom';
+import Display from './Display';
 import axios from 'axios';
 
 const styles = {
@@ -57,24 +58,18 @@ class Image extends Component {
 
   state = {
     mouseOver: false,
-    clicked: false,
+    display: false,
   }
 
   mouseClick() {
-    const { id, source, click } = this.props;
-    this.setState({ clicked: true });
-    setTimeout(() => {
-      axios.patch(`/api/images/${id}`, { click: click+1 }).then(() => {
-        const newWnd = window.open(source);
-        newWnd.opener = null;
-        this.setState({ clicked: false });
-      });
-    }, 1000);
+    const { id, click } = this.props;
+    this.setState({ display: true });
+    axios.patch(`/api/images/${id}`, { click: click+1 });
   }
 
   render() {
     const { classes, source, format } = this.props;
-    const { mouseOver, clicked } = this.state;
+    const { mouseOver, display } = this.state;
 
     return (
       <Zoom in>
@@ -88,6 +83,7 @@ class Image extends Component {
             image={`${source}?w=${format === 'large' ? 1100 : 700}`} />
           { mouseOver && <div className={classes.overlay}></div> }
           <Zoom in={mouseOver}><Download className={classes.icon} /></Zoom>
+          <Display open={display} close={() => this.setState({ display: false })} />
         </Card>
       </Zoom>
     );
