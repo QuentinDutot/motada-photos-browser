@@ -37,10 +37,13 @@ function getAllImages() {
 function isTagsInData(tags, data) {
   let included = false;
   tags.forEach((singleTag) => {
-    const searchIn = Object.keys(data).reduce((res, val) => (val === 'tags' || val === 'title') ? res + data[val] : res, '');
-    if (searchIn.toLowerCase().includes(singleTag.toLowerCase())) {
-      included = true;
+    const verif = element => {
+      if(element.toLowerCase() === singleTag.toLowerCase()) {
+        included = true;
+      }
     }
+    data.tags.forEach(verif);
+    data.title.split(' ').forEach(verif);
   });
   return included;
 }
