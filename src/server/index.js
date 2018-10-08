@@ -129,8 +129,19 @@ app.post('/api/images', (req, res) => {
   res.send(createImage(req.body));
 });
 
-app.post('/api/scrap', (req, res) => {
-  // scrapePixabay();
+app.post('/api/scrapers/:scraper', (req, res) => {
+  const callback = items => createImages(items);
+  switch(req.params.scraper) {
+    case 'pexels':
+      scrapePexels(callback);
+      break;
+    case 'pixabay':
+      scrapePixabay(callback);
+      break;
+    case 'unsplash':
+    default:
+      scrapeUnsplash(callback);
+  }
   res.send(true);
 });
 

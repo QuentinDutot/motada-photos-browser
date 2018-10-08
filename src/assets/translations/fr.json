@@ -9,7 +9,9 @@
   "tooltips": {
     "search": "Rechercher ici...",
     "clear_search": "Effacer",
-    "translations": "Traductions"
+    "translations": "Traductions",
+    "save": "Enregistrer",
+    "close": "Fermer"
   },
   "errors": {
     "no_translation": "Oups aucune traduction disponible !",

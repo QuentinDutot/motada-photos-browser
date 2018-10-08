@@ -54,6 +54,7 @@ class Image extends Component {
     id: PropTypes.string.isRequired,
     source: PropTypes.string.isRequired,
     click: PropTypes.number.isRequired,
+    tags: PropTypes.array.isRequired,
   };
 
   state = {
@@ -68,7 +69,7 @@ class Image extends Component {
   }
 
   render() {
-    const { classes, source, format } = this.props;
+    const { classes, source, format, tags } = this.props;
     const { mouseOver, display } = this.state;
 
     return (
@@ -83,7 +84,11 @@ class Image extends Component {
             image={`${source}?w=${format === 'large' ? 1100 : 700}`} />
           { mouseOver && <div className={classes.overlay}></div> }
           <Zoom in={mouseOver}><Download className={classes.icon} /></Zoom>
-          <Display open={display} close={() => this.setState({ display: false })} />
+          <Display
+            open={display}
+            close={() => this.setState({ display: false })}
+            source={source}
+            tags={tags} />
         </Card>
       </Zoom>
     );
