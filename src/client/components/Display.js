@@ -14,11 +14,13 @@ import { makeSearch } from '../reducer';
 
 const styles = {
   image: {
-    maxHeight: window.innerHeight-100,
-    width: '100%',
+    maxHeight: window.innerHeight-110,
+    objectFit: 'contain',
   },
   toolbar: {
+    bottom: 0,
     width: '100%',
+    position: 'absolute',
   },
   action: {
     float: 'right',
@@ -57,25 +59,14 @@ class Display extends Component {
     const { classes, open, close, source, tags } = this.props;
 
     return (
-      <Dialog fullWidth maxWidth="lg" open={open} onClose={() => close()}>
+      <Dialog maxWidth="lg" open={open} onClose={() => close()}>
         <ProgressiveImage
-          preview={`${source}?w=300`}
+          preview={`${source}?w=100`}
           src={source}
           render={(src) => <img src={src} className={classes.image} />} />
         <div className={classes.toolbar} >
-          {
-            tags.map(tag =>
-              <Button
-                key={tag}
-                variant="contained"
-                className={classes.button}
-                onClick={() => this.exploreTag(tag)}>
-                {tag}
-              </Button>)
-          }
           <Button
             variant="contained"
-            size="large"
             onClick={() => close()}
             className={[classes.button, classes.action].join(' ')}>
             <Close className={[classes.icon].join(' ')} />
@@ -83,12 +74,21 @@ class Display extends Component {
           </Button>
           <Button
             variant="contained"
-            size="large"
             onClick={() => this.saveImage(source)}
             className={[classes.button, classes.action].join(' ')}>
             <Save className={[classes.icon].join(' ')} />
             {I18n.t('tooltips.save')}
           </Button>
+          {
+            /*tags.map(tag =>
+              <Button
+              key={tag}
+              variant="contained"
+              className={classes.button}
+              onClick={() => this.exploreTag(tag)}>
+              {tag}
+              </Button>)*/
+            }
         </div>
       </Dialog>
     );

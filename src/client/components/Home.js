@@ -1,17 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
+import { I18n } from 'react-i18nify';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { reachBottom } from '../reducer';
 import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import ParticleAnimation from 'react-particle-animation';
+import ScrollUp from 'react-scroll-up';
+import PlayCircleOutline from '@material-ui/icons/PlayCircleOutline';
+import Tooltip from '@material-ui/core/Tooltip';
 import Notification from './Notification';
 import Header from './Header';
 import Gallery from './Gallery';
 
 const styles = {
+
   root: {
     paddingBottom: 50,
     backgroundColor: 'rgb(30, 46, 79)',
@@ -27,6 +32,14 @@ const styles = {
     width: '100%',
     zIndex: 9999,
     position: 'fixed',
+  },
+  scrollToTop: {
+    color: 'white',
+    fontSize: 60,
+    borderRadius: 25,
+    transform: 'rotate(-90deg)',
+    boxShadow: '-2px 2px 5px black',
+    backgroundColor: 'rgb(30, 46, 79)',
   },
 };
 
@@ -89,6 +102,11 @@ class Home extends Component {
         <Header />
         <Gallery />
         <Notification />
+        <ScrollUp showUnder={160}>
+          <Tooltip title={I18n.t('tooltips.scroll_to_top')} placement="bottom">
+            <PlayCircleOutline className={classes.scrollToTop} />
+          </Tooltip>
+        </ScrollUp>
 
       </div>
     );

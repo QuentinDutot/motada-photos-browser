@@ -11,7 +11,8 @@
     "clear_search": "Effacer",
     "translations": "Traductions",
     "save": "Enregistrer",
-    "close": "Fermer"
+    "close": "Fermer",
+    "scroll_to_top": "Défiler vers le haut"
   },
   "errors": {
     "no_translation": "Oups aucune traduction disponible !",
