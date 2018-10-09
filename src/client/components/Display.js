@@ -61,9 +61,9 @@ class Display extends Component {
     return (
       <Dialog maxWidth="lg" open={open} onClose={() => close()}>
         <ProgressiveImage
-          preview={`${source}?w=100`}
+          preview={`${source}?w=700`}
           src={source}
-          render={(src) => <img src={src} className={classes.image} />} />
+          render={(src, style) => <img src={src} className={classes.image} style={style} />} />
         <div className={classes.toolbar} >
           <Button
             variant="contained"

@@ -64,7 +64,7 @@ class Image extends Component {
 
   mouseClick() {
     const { id, click } = this.props;
-    this.setState({ display: true });
+    this.setState({ display: true, mouseOver: false });
     axios.patch(`/api/images/${id}`, { click: click+1 });
   }
 
