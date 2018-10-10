@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
+import { updateDisplay } from '../reducer';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CardMedia from '@material-ui/core/CardMedia';
 import Download from '@material-ui/icons/OpenWith';
 import Zoom from '@material-ui/core/Zoom';
-import Display from './Display';
 import axios from 'axios';
 
 const styles = {
@@ -51,26 +51,24 @@ class Image extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     format: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
-    source: PropTypes.string.isRequired,
-    click: PropTypes.number.isRequired,
-    tags: PropTypes.array.isRequired,
+    data: PropTypes.object.isRequired,
+    updateDisplay: PropTypes.func.isRequired,
   };
 
   state = {
     mouseOver: false,
-    display: false,
   }
 
   mouseClick() {
-    const { id, click } = this.props;
-    this.setState({ display: true, mouseOver: false });
-    axios.patch(`/api/images/${id}`, { click: click+1 });
+    const { updateDisplay, data } = this.props;
+    updateDisplay(data);
+    this.setState({ mouseOver: false });
+    axios.patch(`/api/images/${data.id}`, { click: data.click + 1 });
   }
 
   render() {
-    const { classes, source, format, tags } = this.props;
-    const { mouseOver, display } = this.state;
+    const { classes, format, data } = this.props;
+    const { mouseOver } = this.state;
 
     return (
       <Zoom in>
@@ -81,14 +79,9 @@ class Image extends Component {
           onMouseLeave={() => this.setState({ mouseOver: false })} >
           <CardMedia
             className={classes[format]}
-            image={`${source}?w=${format === 'large' ? 1100 : 700}`} />
+            image={`${data.url}?w=${format === 'large' ? 1100 : 700}`} />
           { mouseOver && <div className={classes.overlay}></div> }
           <Zoom in={mouseOver}><Download className={classes.icon} /></Zoom>
-          <Display
-            open={display}
-            close={() => this.setState({ display: false })}
-            source={source}
-            tags={tags} />
         </Card>
       </Zoom>
     );
@@ -99,4 +92,8 @@ const mapState = state => ({
   format: state.format,
 });
 
-export default compose(withStyles(styles), connect(mapState, null))(Image);
+const mapDispatch = dispatch => ({
+  updateDisplay: image => dispatch(updateDisplay(image)),
+});
+
+export default compose(withStyles(styles), connect(mapState, mapDispatch))(Image);

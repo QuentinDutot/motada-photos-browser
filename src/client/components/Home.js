@@ -12,6 +12,7 @@ import ScrollUp from 'react-scroll-up';
 import PlayCircleOutline from '@material-ui/icons/PlayCircleOutline';
 import Tooltip from '@material-ui/core/Tooltip';
 import Notification from './Notification';
+import Display from './Display';
 import Header from './Header';
 import Gallery from './Gallery';
 
@@ -100,6 +101,7 @@ class Home extends Component {
 
         { loading && <LinearProgress className={classes.loadingBar} /> }
         <Header />
+        <Display />
         <Gallery />
         <Notification />
         <ScrollUp showUnder={160}>

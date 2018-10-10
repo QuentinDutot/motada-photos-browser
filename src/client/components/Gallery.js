@@ -105,7 +105,7 @@ class Gallery extends Component {
 
     return (
       <div className={classes.gallery}>
-        { images.map(image => <Image key={image.id} id={image.id} source={image.url} click={image.click} tags={image.tags} />) }
+        { images.map(image => <Image key={image.id} data={image} />) }
       </div>
     );
   }

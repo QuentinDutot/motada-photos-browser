@@ -6,6 +6,7 @@ const Actions = {
   CLEAN_IMAGES: 'CLEAN_IMAGES',
   ADD_IMAGE: 'ADD_IMAGE',
   UPDATE_FORMAT: 'UPDATE_FORMAT',
+  UPDATE_DISPLAY: 'UPDATE_DISPLAY',
 };
 
 export const makeSearch = search => ({
@@ -43,6 +44,11 @@ export const updateFormat = format => ({
   payload: { format },
 });
 
+export const updateDisplay = image => ({
+  type: Actions.UPDATE_DISPLAY,
+  payload: { image },
+});
+
 const defaultState = {
   search: '',
   notification: '',
@@ -50,6 +56,7 @@ const defaultState = {
   bottomReached: false,
   loading: false,
   images: [],
+  display: {},
 };
 
 export default function reducer(prevState, action) {
@@ -70,6 +77,8 @@ export default function reducer(prevState, action) {
       return { ...state, images: [...state.images, action.payload.image] };
     case Actions.UPDATE_FORMAT:
       return { ...state, format: action.payload.format };
+    case Actions.UPDATE_DISPLAY:
+      return { ...state, display: action.payload.image };
     default:
       return state;
   }
