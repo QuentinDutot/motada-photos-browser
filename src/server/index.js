@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const dbLow = require('lowdb');
 const dbFileSync = require('lowdb/adapters/FileSync');
 const shortid = require('shortid');
@@ -13,6 +14,7 @@ const database = dbLow(dbAdapter);
 const app = express();
 
 database.defaults({ images: [] }).write();
+app.use(express.static(path.join(__dirname, '../../dist')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use((req, res, next) => {
@@ -146,6 +148,10 @@ app.post('/api/scrapers/:scraper', (req, res) => {
       scrapeUnsplash(callback);
   }
   res.send(true);
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../dist', 'index.html'));
 });
 
 app.listen(8080, () => console.log('Listening on port 8080!'));
