@@ -78,11 +78,14 @@ function scrapePages(items, callback) {
 
 module.exports = (callback) => {
   console.log('pixabay scraper started');
-  driver = new webdriver.Builder().forBrowser('chrome').setChromeOptions(new chrome.Options().headless().windowSize({ width: 400, height: 650 })).build();
+  driver = new webdriver.Builder()
+            .withCapabilities(webdriver.Capabilities.chrome().set('chromeOptions', { 'args': ['--headless', '--window-size=400,650', '--no-sandbox'] }))
+            .build();
   const url = `${search}/?q=${randomWord()}`;
   console.log(url);
   driver.get(url).then(() => {
     scrapePages([], (items) => {
+      driver.quit();
       //console.log(items.length);
       //callback(items);
     });

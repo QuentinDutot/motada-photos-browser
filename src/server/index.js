@@ -76,9 +76,8 @@ function getFilteredImages(query) {
 
 function createImage(img) {
   if (!database.get('images').find({ url: img.url }).value()) {
-    const id = shortid.generate();
     const result = database.get('images').push({
-      id,
+      id: shortid.generate(),
       url: img.url,
       title: img.title || '',
       source: img.source || '',
@@ -86,7 +85,7 @@ function createImage(img) {
       tags: img.tags || [],
       click: 0,
     }).write();
-    return result && getImage(id).url.length > 0;
+    return result;
   }
   return false;
 }
