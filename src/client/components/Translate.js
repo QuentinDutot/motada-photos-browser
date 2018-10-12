@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { I18n } from 'react-i18nify';
 import translations from '../../assets/translations/translations';
-import FlagIcon from 'react-flag-kit/lib/FlagIcon';
+import FlagIcon from 'react-flag-kit/lib/CDNFlagIcon';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';

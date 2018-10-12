@@ -5,7 +5,7 @@ import { I18n } from 'react-i18nify';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { updateNotification } from '../reducer';
-import FlagIcon from 'react-flag-kit/lib/FlagIcon';
+import FlagIcon from 'react-flag-kit/lib/CDNFlagIcon';
 import Description from './Description';
 import Search from './Search';
 import Translate from './Translate';

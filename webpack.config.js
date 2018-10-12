@@ -1,12 +1,15 @@
 const webpack = require("webpack");
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 
 module.exports = {
   entry: './src/client/index.js',
   output: {
-    path: path.join(__dirname, 'dist'),
-    filename: 'bundle.js'
+    path: path.resolve(__dirname, './dist'),
+    filename: 'bundle.[hash].js'
   },
   module: {
     rules: [
@@ -32,6 +35,10 @@ module.exports = {
     }
   },
   plugins: [
-    new HtmlWebpackPlugin({ template: './src/client/index.html', inject: false })
+    new BundleAnalyzerPlugin(),
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new HtmlWebpackPlugin({ filename: path.resolve(__dirname, './dist')+'/index.html', template: './src/client/index.template.html', alwaysWriteToDisk: true }),
+    new HtmlWebpackHarddiskPlugin({ outputPath: path.resolve(__dirname, './dist') }),
+    new WebpackCleanupPlugin()
   ]
 };
