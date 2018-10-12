@@ -4,12 +4,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCSSAssets = require("optimize-css-assets-webpack-plugin");
 
 module.exports = {
   entry: './src/client/index.js',
   output: {
     path: path.resolve(__dirname, './dist'),
-    filename: 'bundle.[hash].js'
+    filename: 'main.[hash].js'
   },
   module: {
     rules: [
@@ -20,11 +22,11 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: [MiniCssExtractPlugin.loader, 'css-loader']
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-        loader: ['url-loader']
+        use: [{ loader: 'url-loader', options: { limit: 50000 } }]
       }
     ]
   },
@@ -35,10 +37,12 @@ module.exports = {
     }
   },
   plugins: [
+    new WebpackCleanupPlugin(),
     new BundleAnalyzerPlugin(),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new HtmlWebpackPlugin({ filename: path.resolve(__dirname, './dist')+'/index.html', template: './src/client/index.template.html', alwaysWriteToDisk: true }),
     new HtmlWebpackHarddiskPlugin({ outputPath: path.resolve(__dirname, './dist') }),
-    new WebpackCleanupPlugin()
+    new MiniCssExtractPlugin({ path: path.resolve(__dirname, './dist'), filename: 'style.[hash].css' }),
+    new OptimizeCSSAssets()
   ]
 };
