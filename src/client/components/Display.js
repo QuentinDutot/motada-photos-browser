@@ -6,8 +6,9 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { makeSearch, updateDisplay } from '../reducer';
 import ProgressiveImage from 'react-progressive-image-loading';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import FileSaver from 'file-saver';
-import Save from '@material-ui/icons/Save';
+import Save from '@material-ui/icons/SaveAlt';
 import Close from '@material-ui/icons/Close';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -17,20 +18,20 @@ const styles = {
     maxHeight: window.innerHeight-110,
     objectFit: 'contain',
   },
+  loadingbar: {
+    top: 0,
+    width: '100%',
+    position: 'absolute',
+  },
   toolbar: {
     bottom: 0,
     width: '100%',
     position: 'absolute',
-  },
-  action: {
-    float: 'right',
+    textAlign: 'left',
   },
   button: {
-    margin: 10,
-  },
-  icon: {
-    marginRight: 10,
-    fontSize: 20,
+    margin: 5,
+    height: 40,
   },
 };
 
@@ -41,6 +42,10 @@ class Display extends Component {
     makeSearch: PropTypes.func.isRequired,
     updateDisplay: PropTypes.func.isRequired,
   };
+
+  state = {
+    loading: false,
+  }
 
   saveImage(url) {
     const filename = url.substring(url.lastIndexOf('/')+1)+'.jpg';
@@ -55,38 +60,53 @@ class Display extends Component {
 
   render() {
     const { classes, display, updateDisplay } = this.props;
+    const { loading } = this.state;
 
     return (
-      <Dialog maxWidth="lg" open={Object.keys(display).length !== 0} onClose={() => updateDisplay({})}>
+      <Dialog
+        maxWidth="lg"
+        open={Object.keys(display).length !== 0}
+        onClose={() => updateDisplay({})}>
+        { loading && <LinearProgress className={classes.loadingbar} /> }
         <ProgressiveImage
           preview={`${display.url}?w=700`}
           src={display.url}
-          render={(src, style) => <img src={src} className={classes.image} />} />
+          render={(src, style) => {
+            const loadingState = style.filter.charAt(5) === '1';
+            if(loading !== loadingState) this.setState({ loading: loadingState  });
+            return <img src={src} className={classes.image} />;
+          }} />
         <div className={classes.toolbar} >
-          <Button
-            variant="contained"
-            onClick={() => updateDisplay({})}
-            className={[classes.button, classes.action].join(' ')}>
-            <Close className={[classes.icon].join(' ')} />
-            {I18n.t('tooltips.close')}
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => this.saveImage(display.source)}
-            className={[classes.button, classes.action].join(' ')}>
-            <Save className={[classes.icon].join(' ')} />
-            {I18n.t('tooltips.save')}
-          </Button>
-          {
-            /*display.tags.map(tag =>
-              <Button
+        {
+          display.tags && display.tags.map(tag =>
+            <Button
               key={tag}
+              size="small"
+              color="primary"
               variant="contained"
               className={classes.button}
               onClick={() => this.exploreTag(tag)}>
               {tag}
-              </Button>)*/
-            }
+            </Button>)
+         }
+         <Button
+            size="small"
+            color="primary"
+            variant="contained"
+            onClick={() => updateDisplay({})}
+            className={classes.button}
+            style={{ float: 'right' }}>
+            <Close />
+          </Button>
+          <Button
+            size="small"
+            color="primary"
+            variant="contained"
+            onClick={() => this.saveImage(display.url)}
+            className={classes.button}
+            style={{ float: 'right' }}>
+            <Save />
+          </Button>
         </div>
       </Dialog>
     );
