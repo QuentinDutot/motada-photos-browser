@@ -20,6 +20,7 @@
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "chromedriver": "^2.42.0",
+    "copy-to-clipboard": "^3.0.8",
     "express": "^4.16.3",
     "file-saver": "^2.0.0-rc.3",
     "lowdb": "^1.0.0",

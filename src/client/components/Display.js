@@ -4,11 +4,14 @@ import compose from 'recompose/compose';
 import { I18n } from 'react-i18nify';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { makeSearch, updateDisplay } from '../reducer';
+import { makeSearch, updateDisplay, updateNotification } from '../reducer';
 import ProgressiveImage from 'react-progressive-image-loading';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Tooltip from '@material-ui/core/Tooltip';
 import FileSaver from 'file-saver';
-import Save from '@material-ui/icons/SaveAlt';
+import copy from 'copy-to-clipboard';
+import FileCopy from '@material-ui/icons/FileCopy';
+import SaveAlt from '@material-ui/icons/SaveAlt';
 import Close from '@material-ui/icons/Close';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -41,6 +44,7 @@ class Display extends Component {
     display: PropTypes.object.isRequired,
     makeSearch: PropTypes.func.isRequired,
     updateDisplay: PropTypes.func.isRequired,
+    updateNotification: PropTypes.func.isRequired,
   };
 
   state = {
@@ -58,8 +62,14 @@ class Display extends Component {
     makeSearch(tag);
   }
 
+  copyToClipboard(url) {
+    const { updateNotification } = this.props;
+    copy(url);
+    updateNotification(url);
+  }
+
   render() {
-    const { classes, display, updateDisplay } = this.props;
+    const { classes, display, updateDisplay, updateNotification } = this.props;
     const { loading } = this.state;
 
     return (
@@ -89,24 +99,39 @@ class Display extends Component {
               {tag}
             </Button>)
          }
-         <Button
-            size="small"
-            color="primary"
-            variant="contained"
-            onClick={() => updateDisplay({})}
-            className={classes.button}
-            style={{ float: 'right' }}>
-            <Close />
-          </Button>
-          <Button
-            size="small"
-            color="primary"
-            variant="contained"
-            onClick={() => this.saveImage(display.url)}
-            className={classes.button}
-            style={{ float: 'right' }}>
-            <Save />
-          </Button>
+         <Tooltip title={I18n.t('tooltips.close')} placement="bottom">
+           <Button
+              size="small"
+              color="primary"
+              variant="contained"
+              onClick={() => updateDisplay({})}
+              className={classes.button}
+              style={{ float: 'right' }}>
+              <Close />
+            </Button>
+         </Tooltip>
+         <Tooltip title={I18n.t('tooltips.save')} placement="bottom">
+           <Button
+              size="small"
+              color="primary"
+              variant="contained"
+              onClick={() => this.saveImage(display.url)}
+              className={classes.button}
+              style={{ float: 'right' }}>
+              <SaveAlt />
+            </Button>
+         </Tooltip>
+         <Tooltip title={I18n.t('tooltips.copy')} placement="bottom">
+           <Button
+              size="small"
+              color="primary"
+              variant="contained"
+              onClick={() => this.copyToClipboard(display.url)}
+              className={classes.button}
+              style={{ float: 'right' }}>
+              <FileCopy />
+            </Button>
+         </Tooltip>
         </div>
       </Dialog>
     );
@@ -120,6 +145,7 @@ const mapState = state => ({
 const mapDispatch = dispatch => ({
   makeSearch: search => dispatch(makeSearch(search)),
   updateDisplay: image => dispatch(updateDisplay(image)),
+  updateNotification: notification => dispatch(updateNotification(notification)),
 });
 
 export default compose(withStyles(styles), connect(mapState, mapDispatch))(Display);
