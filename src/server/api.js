@@ -1,4 +1,5 @@
 const express = require('express');
+const similarity = require("similarity");
 
 module.exports = function(database) {
   const router = express.Router();
@@ -11,7 +12,7 @@ module.exports = function(database) {
     let included = false;
     tags.forEach((singleTag) => {
       const verif = element => {
-        if(element.toLowerCase() === singleTag.toLowerCase()) {
+        if(similarity(element, singleTag) > 0.85) {
           included = true;
         }
       }

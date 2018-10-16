@@ -37,7 +37,8 @@
     "recompose": "^0.30.0",
     "redux": "^4.0.0",
     "selenium-webdriver": "^4.0.0-alpha.1",
-    "shortid": "^2.2.13"
+    "shortid": "^2.2.13",
+    "similarity": "^1.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
