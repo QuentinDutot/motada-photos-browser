@@ -6,6 +6,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssets = require("optimize-css-assets-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/client/index.js',
@@ -43,6 +44,7 @@ module.exports = {
     new HtmlWebpackPlugin({ filename: path.resolve(__dirname, './dist')+'/index.html', template: './src/client/index.template.html', alwaysWriteToDisk: true }),
     new HtmlWebpackHarddiskPlugin({ outputPath: path.resolve(__dirname, './dist') }),
     new MiniCssExtractPlugin({ path: path.resolve(__dirname, './dist'), filename: 'style.[hash].css' }),
-    new OptimizeCSSAssets()
+    new OptimizeCSSAssets(),
+    new CopyWebpackPlugin([{ from: './src/client/favicon.ico' }])
   ]
 };

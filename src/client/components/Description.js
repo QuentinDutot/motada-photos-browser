@@ -15,7 +15,7 @@ const styles = {
     lineHeight: 2.4,
     color: '#ffffff',
     textAlign: 'left',
-    fontSize: '0.8rem',
+    fontSize: '0.9rem',
   },
   link: {
     marginRight: 10,
