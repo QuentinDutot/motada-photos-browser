@@ -1,0 +1,23 @@
+{
+  "code": "it",
+  "flag": "IT",
+  "language": "italiano",
+  "header": {
+    "title": "Oltre %{count} immagini gratuite e ad alta risoluzione",
+    "default_title": "Oltre mille immagini gratuito e ad alta risoluzione"
+  },
+  "tooltips": {
+    "search": "Cerca qui...",
+    "clear_search": "Cancellare",
+    "translations": "Traduzioni",
+    "save": "Registrare",
+    "copy": "Copia",
+    "close": "Chiudere",
+    "scroll_to_top": "Scorri in alto"
+  },
+  "errors": {
+    "no_translation": "Oops nessuna traduzione disponibile !",
+    "no_results": "Spiacenti alcun risultato!",
+    "unknow": "Spiacenti, si è verificato un errore !"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "code": "de",
+  "flag": "DE",
+  "language": "deutsch",
+  "header": {
+    "title": "Über %{count} kostenlose und hochauflösende Bilder",
+    "default_title": "Über tausende kostenlose und hochauflösende Bilder"
+  },
+  "tooltips": {
+    "search": "Suche hier...",
+    "clear_search": "Löschen",
+    "translations": "Übersetzungen",
+    "save": "Speichern",
+    "copy": "Kopieren",
+    "close": "Schließen",
+    "scroll_to_top": "Scrolle nach oben"
+  },
+  "errors": {
+    "no_translation": "Ups keine Übersetzung verfügbar !",
+    "no_results": "Hoppla, keine Ergebnisse !",
+    "unknow": "Ups ein Fehler ist aufgetreten !"
+  }
+}

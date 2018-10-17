@@ -1,0 +1,23 @@
+{
+  "code": "es",
+  "flag": "ES",
+  "language": "español",
+  "header": {
+    "title": "Más de %{count} imágenes gratuitas y de alta resolución",
+    "default_title": "Más de miles de imágenes gratuitas y de alta resolución"
+  },
+  "tooltips": {
+    "search": "Buscar aquí...",
+    "clear_search": "Limpiar",
+    "translations": "Traducciones",
+    "save": "Guardar",
+    "copy": "Copiar",
+    "close": "Cerrar",
+    "scroll_to_top": "Vuelve al comienzo"
+  },
+  "errors": {
+    "no_translation": "¡ Uy, ninguna traducción disponible !",
+    "no_results": "¡ Uy no hay resultados !",
+    "unknow": "¡ Uy, ha ocurrido un error !"
+  }
+}
