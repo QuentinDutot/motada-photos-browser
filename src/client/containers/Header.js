@@ -7,9 +7,10 @@ import { withStyles } from '@material-ui/core/styles';
 import { updateNotification } from '../reducer';
 import FlagIcon from 'react-flag-kit/lib/CDNFlagIcon';
 import SvgIcon from '@material-ui/core/SvgIcon';
-import Description from './Description';
-import Search from './Search';
-import Translate from './Translate';
+import Description from '../components/Description';
+import Format from '../components/Format';
+import Search from '../components/Search';
+import Translate from '../components/Translate';
 import axios from 'axios';
 
 const styles = {
@@ -18,10 +19,10 @@ const styles = {
     width: '70%',
     padding: '5% 15% 5% 15%',
     position: 'relative',
+    color: '#ffffff',
   },
   title: {
     padding: 0,
-    color: '#ffffff',
     textAlign: 'left',
     fontSize: '1.5rem',
   },
@@ -71,6 +72,8 @@ class Header extends Component {
 
     return (
       <div className={classes.header}>
+
+        {/* Over the search area */}
         <p className={classes.title}>
           {
             count !== 0
@@ -80,9 +83,7 @@ class Header extends Component {
           <SvgIcon
             className={[classes.icon, classes.github].join(' ')}
             onClick={this.openGithubProjet}>
-            <path
-              fill="black"
-              d={this.getGithubSvg()} />
+            <path fill="black" d={this.getGithubSvg()} />
           </SvgIcon>
           <FlagIcon
             code={I18n.t('flag')}
@@ -90,8 +91,16 @@ class Header extends Component {
             className={[classes.icon, classes.flag].join(' ')}
             onClick={() => this.setState({ dialog: true })} />
         </p>
+
+
+        {/* The search area */}
         <Search />
+
+        {/* Under the search area */}
         <Description />
+        <Format />
+
+        {/* The translation popup */}
         <Translate open={dialog} close={() => this.setState({ dialog: false })} />
       </div>
     );

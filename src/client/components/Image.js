@@ -8,7 +8,7 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CardMedia from '@material-ui/core/CardMedia';
-import Download from '@material-ui/icons/OpenWith';
+import OpenWith from '@material-ui/icons/OpenWith';
 import Zoom from '@material-ui/core/Zoom';
 import axios from 'axios';
 
@@ -81,7 +81,7 @@ class Image extends Component {
             className={classes[format]}
             image={`${data.url}?w=${format === 'large' ? 1100 : 700}`} />
           { mouseOver && <div className={classes.overlay}></div> }
-          <Zoom in={mouseOver}><Download className={classes.icon} /></Zoom>
+          <Zoom in={mouseOver}><OpenWith className={classes.icon} /></Zoom>
         </Card>
       </Zoom>
     );

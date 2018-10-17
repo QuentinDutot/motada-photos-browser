@@ -4,7 +4,7 @@ import { I18n } from 'react-i18nify';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import translations from '../assets/translations/translations';
-import Home from './components/Home';
+import Home from './containers/Home';
 import reducer from './reducer';
 import './index.css';
 

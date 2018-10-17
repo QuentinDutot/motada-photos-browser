@@ -5,8 +5,8 @@ import { I18n } from 'react-i18nify';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { updateNotification, isLoading, cleanImages, addImage, reachBottom } from '../reducer';
+import Image from '../components/Image';
 import axios from 'axios';
-import Image from './Image';
 
 const styles = {
   gallery: {
