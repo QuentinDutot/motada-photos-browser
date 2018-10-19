@@ -97,8 +97,10 @@ class Header extends Component {
         <Search />
 
         {/* Under the search area */}
-        <Description />
-        <Format />
+        <div style={{ marginTop: 20, lineHeight: 1.9 }}>
+          <Description />
+          <Format />
+        </div>
 
         {/* The translation popup */}
         <Translate open={dialog} close={() => this.setState({ dialog: false })} />

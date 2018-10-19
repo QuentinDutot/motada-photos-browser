@@ -12,7 +12,6 @@ import Gallery from './Gallery';
 
 class Home extends Component {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
     bottomReached: PropTypes.bool.isRequired,
     reachBottom: PropTypes.func.isRequired,
   };
@@ -42,8 +41,6 @@ class Home extends Component {
   }
 
   render() {
-    const { classes } = this.props;
-
     return (
       <div style={{ paddingBottom: 50, backgroundColor: 'rgb(30, 46, 79)' }}>
 

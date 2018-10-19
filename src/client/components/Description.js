@@ -9,7 +9,7 @@ class Description extends Component {
     const { sources } = this.state;
 
     return (
-      <div>
+      <div style={{ float: 'left' }}>
         {
           sources.map(source =>
             <a
@@ -17,7 +17,11 @@ class Description extends Component {
               href={`https://${source}.com`}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ marginRight: 10, fontSize: '0.9rem', color: '#ffffff' }}>
+              style={{
+                marginRight: 10,
+                fontSize: '0.9rem',
+                color: '#ffffff',
+              }}>
               {`${source}.com`}
             </a>)
         }
