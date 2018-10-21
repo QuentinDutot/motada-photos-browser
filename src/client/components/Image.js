@@ -14,11 +14,8 @@ import axios from 'axios';
 
 const styles = {
   card: {
-    marginLeft: 4,
-    position: 'relative',
+    margin: 5,
     display: 'inline-block',
-    overflow: 'hidden',
-    textAlign: 'center',
   },
   medium: {
     height: 360,

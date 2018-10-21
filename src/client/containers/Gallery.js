@@ -1,23 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import compose from 'recompose/compose';
 import { I18n } from 'react-i18nify';
 import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
 import { updateNotification, isLoading, cleanImages, addImage, reachBottom } from '../reducer';
 import Image from '../components/Image';
 import axios from 'axios';
 
-const styles = {
-  gallery: {
-    top: 20,
-    position: 'relative',
-  },
-};
-
 class Gallery extends Component {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
     search: PropTypes.string.isRequired,
     bottomReached: PropTypes.bool.isRequired,
     loading: PropTypes.bool.isRequired,
@@ -101,10 +91,10 @@ class Gallery extends Component {
   }
 
   render() {
-    const { classes, images } = this.props;
+    const { images } = this.props;
 
     return (
-      <div className={classes.gallery}>
+      <div style={{ top: 25 }}>
         { images.map(image => <Image key={image.id} data={image} />) }
       </div>
     );
@@ -126,4 +116,4 @@ const mapDispatch = dispatch => ({
   reachBottom: reached => dispatch(reachBottom(reached)),
 });
 
-export default compose(withStyles(styles), connect(mapState, mapDispatch))(Gallery);
+export default connect(mapState, mapDispatch)(Gallery);
