@@ -1,5 +1,5 @@
 const Twit = require('twit');
-const base64 = require('node-base64-image');
+const request = require('request');
 
 let T;
 
@@ -41,11 +41,11 @@ const getRandomTrend = (placeId) => new Promise((resolve, reject) => {
 });
 
 const encodeImage = (url) => new Promise((resolve, reject) => {
-  base64.encode(`${url}?w=700`, { string: true }, (error, data) => {
-    if(error) {
-      reject('Can\'t encode image from url');
+  request({ url: `${url}?w=700`, encoding: null }, (error, response, body) => {
+    if(body && response.statusCode === 200) {
+      resolve(body.toString('base64'));
     } else {
-      resolve(data);
+      reject('Can\'t encode image from url');
     }
   });
 });
