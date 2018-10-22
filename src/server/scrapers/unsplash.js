@@ -64,7 +64,7 @@ function loadAllItems(callback) {
   });
 }
 
-module.exports = (callback) => {
+module.exports = async (callback) => {
   console.log('unsplash scraper started');
   driver = new webdriver.Builder()
             .withCapabilities(webdriver.Capabilities.chrome().set('chromeOptions', { 'args': ['--headless', '--window-size=400,650', '--no-sandbox'] }))

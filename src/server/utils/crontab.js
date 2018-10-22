@@ -1,5 +1,6 @@
 const shortid = require('shortid');
 const cron = require('node-cron');
+const reboot = require('nodejs-system-reboot');
 
 module.exports = function(database) {
 
@@ -20,15 +21,21 @@ module.exports = function(database) {
     });
   };
 
-  cron.schedule('0 */2 * * *', () => {
-    require('../scrapers/unsplash.js')(items => saveImages(items));
-  });
+  async function engine() {
+    // Let's find new data
+    await require('../scrapers/unsplash.js')(items => saveImages(items));
+    await require('../scrapers/pexels.js')(items => saveImages(items));
+    // await require('../scrapers/pixabay.js')(items => saveImages(items));
 
-  cron.schedule('15 */2 * * *', () => {
-    require('../scrapers/pexels.js')(items => saveImages(items))
-  });
+    // Automatically post on social medias
+    const image = database.get('images').sample().value();
+    await require('../scrapers/twitter.js')(image);
 
-  /*cron.schedule('* * * * *', () => {
-    require('../scrapers/pixabay.js')(items => saveImages(items))
-  });*/
+    // Reboot to cut any possible memory leaks
+    reboot((err, stderr, stdout) => {
+      if(!err && !stderr) console.log(stdout);
+    });
+  }
+
+  cron.schedule('00 */2 * * *', () => engine());
 };

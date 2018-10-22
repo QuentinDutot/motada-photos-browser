@@ -24,7 +24,9 @@
     "express": "^4.16.3",
     "file-saver": "^2.0.0-rc.3",
     "lowdb": "^1.0.0",
+    "node-base64-image": "^1.0.5",
     "node-cron": "^2.0.1",
+    "nodejs-system-reboot": "0.0.4",
     "prop-types": "^15.6.2",
     "random-words": "^1.1.0",
     "react": "^16.5.2",
@@ -40,7 +42,8 @@
     "redux": "^4.0.0",
     "selenium-webdriver": "^4.0.0-alpha.1",
     "shortid": "^2.2.13",
-    "similarity": "^1.1.1"
+    "similarity": "^1.1.1",
+    "twit": "^2.2.11"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
