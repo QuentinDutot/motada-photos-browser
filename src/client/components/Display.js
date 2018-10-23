@@ -52,7 +52,10 @@ class Display extends Component {
   }
 
   saveImage(url) {
-    const filename = url.substring(url.lastIndexOf('/')+1)+'.jpg';
+    let filename = url.substring(url.lastIndexOf('/')+1);
+    if (filename.indexOf('.jpeg') === -1 && filename.indexOf('.jpg') === -1 && filename.indexOf('.png') === -1) {
+      filename += '.jpg';
+    }
     FileSaver.saveAs(url, filename);
   }
 
@@ -84,7 +87,7 @@ class Display extends Component {
           render={(src, style) => {
             const loadingState = style.filter.charAt(5) === '1';
             if(loading !== loadingState) this.setState({ loading: loadingState  });
-            return <img src={src} className={classes.image} />;
+            return <img src={src} className={classes.image} alt={display.title} />;
           }} />
         <div className={classes.toolbar} >
         {
