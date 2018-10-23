@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 class Description extends Component {
   state = {
-    sources: ['unsplash', 'pixabay', 'pexels'],
+    sources: ['unsplash', 'pexels'],
   }
 
   render() {

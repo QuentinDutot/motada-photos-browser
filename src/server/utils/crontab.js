@@ -24,8 +24,7 @@ module.exports = function(database) {
   async function engine() {
     // Let's find new data
     await require('../scrapers/unsplash.js')(items => saveImages(items));
-    await require('../scrapers/pexels.js')(items => saveImages(items));
-    // await require('../scrapers/pixabay.js')(items => saveImages(items));
+    // await require('../scrapers/pexels.js')(items => saveImages(items));
 
     // Automatically post on social medias
     const image = database.get('images').sample().value();
