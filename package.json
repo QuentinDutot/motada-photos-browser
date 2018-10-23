@@ -19,7 +19,7 @@
     "@material-ui/lab": "^3.0.0-alpha.21",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
-    "chromedriver": "^2.43.0",
+    "chromedriver": "^2.42.0",
     "copy-to-clipboard": "^3.0.8",
     "express": "^4.16.4",
     "file-saver": "^2.0.0-rc.4",
