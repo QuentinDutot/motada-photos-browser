@@ -25,19 +25,32 @@ class Translate extends Component {
   render() {
     const { open, close } = this.props;
 
+    const languages = Object.keys(translations).map(key => {
+        return <ListItem
+          button
+          key={translations[key].flag}
+          onClick={() => this.translate(translations[key].code)}>
+          <FlagIcon code={translations[key].flag} size={32} />
+          <ListItemText primary={translations[key].language} />
+        </ListItem>
+    })
+
     return (
-      <Dialog open={open} onClose={() => close()}>
-        <DialogTitle>{I18n.t('tooltips.translations')}</DialogTitle>
-        <List>
-          {
-            Object.keys(translations).map(key =>
-              <ListItem
-                key={translations[key].flag}
-                button onClick={() => this.translate(translations[key].code)}>
-                <FlagIcon code={translations[key].flag} size={32} />
-                <ListItemText primary={translations[key].language} />
-              </ListItem>)
-          }
+      <Dialog
+        open={open}
+        onClose={() => close()}
+        maxWidth="xs"
+        fullWidth={true}>
+        <DialogTitle>
+          {I18n.t('tooltips.translations')}
+        </DialogTitle>
+        <List style={{ display: 'flex' }}>
+          <div style={{ flex: '50%' }}>
+            {languages.map((l, i) => i % 2 == 0 ? l : null)}
+          </div>
+          <div style={{ flex: '50%' }}>
+            {languages.map((l, i) => i % 2 != 0 ? l : null)}
+          </div>
         </List>
       </Dialog>
     );
