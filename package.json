@@ -33,6 +33,7 @@
     "react-flag-kit": "^0.2.3",
     "react-ga": "^2.5.3",
     "react-i18nify": "^1.11.14",
+    "react-masonry-component": "^6.2.1",
     "react-particle-animation": "^1.0.1",
     "react-progressive-image-loading": "^3.0.3",
     "react-redux": "^5.0.7",

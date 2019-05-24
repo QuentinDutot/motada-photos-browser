@@ -4,6 +4,7 @@ import { I18n } from 'react-i18nify';
 import { connect } from 'react-redux';
 import { updateNotification, isLoading, cleanImages, addImage, reachBottom } from '../reducer';
 import Image from '../components/Image';
+import Masonry from 'react-masonry-component';
 import axios from 'axios';
 
 class Gallery extends Component {
@@ -93,10 +94,20 @@ class Gallery extends Component {
   render() {
     const { images } = this.props;
 
+    /*if (images.length > 0) {
+      const tmp = images[0]
+      for (let i = 0; i < 20; i++) {
+        images.push({
+          ...tmp,
+          id: tmp.id + i + 1,
+        })
+      }
+    }*/
+
     return (
-      <div style={{ top: 25 }}>
+      <Masonry style={{ top: 25 }}>
         { images.map(image => <Image key={image.id} data={image} />) }
-      </div>
+      </Masonry>
     );
   }
 }

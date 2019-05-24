@@ -2,7 +2,7 @@ const webdriver = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const randomWord = require('random-words');
 
-const rootPath = '/html/body/div[1]/div[2]/div[3]/article';
+const rootPath = '/html/body/div[1]/div[3]/div[2]/div/div';
 let driver;
 
 const buildDriver = () => new Promise((resolve, reject) => {
@@ -37,7 +37,7 @@ const scrapeItems = async (items) => {
   let itemIndex = 0;
   while(itemIndex < items.length) {
     // Get wanted element
-    const image = await driver.findElement(webdriver.By.xpath(`${rootPath}[${itemIndex + 1}]/a/img`));
+    const image = await driver.findElement(webdriver.By.xpath(`${rootPath}[${itemIndex + 1}]/article/a/img`));
 
     // Building custom object
     const customImage = { source: 'pexels', tags: [], };
