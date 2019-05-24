@@ -20,7 +20,7 @@ class Description extends Component {
               style={{
                 marginRight: 10,
                 fontSize: '0.9rem',
-                color: '#ffffff',
+                color: '#333',
               }}>
               {`${source}.com`}
             </a>)

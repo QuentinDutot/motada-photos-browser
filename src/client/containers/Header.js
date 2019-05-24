@@ -19,7 +19,7 @@ const styles = {
     width: '70%',
     padding: '5% 15% 5% 15%',
     position: 'relative',
-    color: '#ffffff',
+    color: '#333',
   },
   title: {
     padding: 0,

@@ -15,6 +15,7 @@ import axios from 'axios';
 const styles = {
   card: {
     margin: 5,
+    cursor: 'pointer',
     display: 'inline-block',
   },
   medium: {
