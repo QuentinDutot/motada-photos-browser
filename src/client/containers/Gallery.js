@@ -94,16 +94,6 @@ class Gallery extends Component {
   render() {
     const { images } = this.props;
 
-    /*if (images.length > 0) {
-      const tmp = images[0]
-      for (let i = 0; i < 20; i++) {
-        images.push({
-          ...tmp,
-          id: tmp.id + i + 1,
-        })
-      }
-    }*/
-
     return (
       <Masonry style={{ top: 25 }}>
         { images.map(image => <Image key={image.id} data={image} />) }

@@ -2,7 +2,7 @@ const webdriver = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const randomWord = require('random-words');
 
-const rootPath = '//*[@id="gridSingle"]/div';
+const rootPath = '//*[@id="app"]/div/div[5]/div[2]/div/div[1]/div/figure';
 let driver;
 
 const buildDriver = () => new Promise((resolve, reject) => {
@@ -37,7 +37,7 @@ const scrapeItems = async (items) => {
   let itemIndex = 0;
   while(itemIndex < items.length) {
     // Get wanted element
-    const image = await driver.findElement(webdriver.By.xpath(`${rootPath}[${itemIndex + 1}]/div/figure/a/div/img`));
+    const image = await driver.findElement(webdriver.By.xpath(`${rootPath}[${itemIndex + 1}]/div/div/div[1]/a/div/img`));
 
     // Building custom object
     const customImage = { source: 'unsplash', tags: [], };
@@ -45,7 +45,7 @@ const scrapeItems = async (items) => {
     [customImage.url] = (await image.getAttribute('srcset')).split('?');
 
     // Adding tags
-    const tags = await driver.findElements(webdriver.By.xpath(`${rootPath}[${itemIndex + 1}]/div/figure/div[3]/div/div/div`));
+    const tags = await driver.findElements(webdriver.By.xpath(`${rootPath}[${itemIndex + 1}]/div/div/div[2]/div[2]/div`));
     for(const tag of tags) {
       customImage.tags.push(await tag.getText());
     }
