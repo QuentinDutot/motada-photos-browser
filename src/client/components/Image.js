@@ -9,6 +9,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CardMedia from '@material-ui/core/CardMedia';
 import OpenWith from '@material-ui/icons/OpenWith';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import Zoom from '@material-ui/core/Zoom';
 import axios from 'axios';
 
@@ -20,6 +21,25 @@ const styles = {
   image: {
     width: '100%',
     display: 'block'
+  },
+  bar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '45%',
+    height: 50,
+    marginTop: -65,
+    float: 'right',
+    opacity: .9,
+    color: 'white',
+    fontSize: '28px',
+    borderRadius: '27px 0 0 27px',
+    backgroundColor: '#00000099'
+  },
+  heart: {
+    width: '32px',
+    height: '32px',
+    marginLeft: 10
   },
   overlay: {
     position: 'absolute',
@@ -50,6 +70,7 @@ class Image extends Component {
 
   state = {
     mouseOver: false,
+    favorites: this.getFavorites(),
   }
 
   mouseClick() {
@@ -59,9 +80,21 @@ class Image extends Component {
     axios.patch(`/api/images/${data.id}`, { click: data.click + 1 });
   }
 
+  getFavorites() {
+    const min = 10;
+    const max = 2000;
+
+    const favorites = (Math.floor(Math.random() * (max - min + 1)) + min).toString();
+
+    const thousands = favorites.substring(0, favorites.length-3);
+    const hundreds = favorites.substring(favorites.length-3, favorites.length-2);
+
+    return favorites < 1000 ? favorites : `${thousands}.${hundreds} k`;
+  }
+
   render() {
     const { classes, format, data } = this.props;
-    const { mouseOver } = this.state;
+    const { mouseOver, favorites } = this.state;
 
     // TODO card width responsive
     // TODO image format
@@ -75,7 +108,12 @@ class Image extends Component {
           className={classes.image}
           src={`${data.url}?w=700`}
           alt={data.title} />
-        { mouseOver && <div className={classes.overlay}></div> }
+        { mouseOver
+          ? <div className={classes.overlay}></div>
+          :  <div className={classes.bar}>
+          {favorites}
+          <FavoriteBorder className={classes.heart} fontSize="large" />
+        </div>}
         <Zoom in={mouseOver}><OpenWith className={classes.icon} /></Zoom>
       </div>
     );
