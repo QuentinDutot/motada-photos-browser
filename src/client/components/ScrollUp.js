@@ -14,12 +14,12 @@ class ScrollUp extends Component {
           placement="bottom">
           <PlayCircleOutline
             style={{
-              color: 'white',
+              color: '#00000099',
               fontSize: 60,
-              borderRadius: 25,
+              borderRadius: 50,
               transform: 'rotate(-90deg)',
               boxShadow: '-2px 2px 5px black',
-              backgroundColor: 'rgb(30, 46, 79)',
+              backgroundColor: 'white',
             }} />
         </Tooltip>
       </ScrollUpLib>
