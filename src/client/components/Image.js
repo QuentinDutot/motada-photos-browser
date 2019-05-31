@@ -14,17 +14,12 @@ import axios from 'axios';
 
 const styles = {
   card: {
-    margin: 5,
-    cursor: 'pointer',
-    display: 'inline-block',
+    width: 'calc(25% - 5px)',
+    margin: 2.5
   },
-  medium: {
-    height: 360,
-    width: 360,
-  },
-  large: {
-    height: 480,
-    width: 480,
+  image: {
+    width: '100%',
+    display: 'block'
   },
   overlay: {
     position: 'absolute',
@@ -37,11 +32,11 @@ const styles = {
   },
   icon: {
     position: 'absolute',
-    width: '26%',
-    height: '26%',
-    top: '37%',
-    left: '37%',
-    color: 'white',
+    width: '80px',
+    height: '80px',
+    top: 'calc(50% - 40px)',
+    left: 'calc(50% - 40px)',
+    color: 'white'
   },
 };
 
@@ -68,20 +63,21 @@ class Image extends Component {
     const { classes, format, data } = this.props;
     const { mouseOver } = this.state;
 
+    // TODO card width responsive
+    // TODO image format
     return (
-      <Zoom in>
-        <Card
-          className={classes.card}
-          onClick={() => this.mouseClick()}
-          onMouseEnter={() => this.setState({ mouseOver: true })}
-          onMouseLeave={() => this.setState({ mouseOver: false })} >
-          <CardMedia
-            className={classes[format]}
-            image={`${data.url}?w=${format === 'large' ? 1100 : 700}`} />
-          { mouseOver && <div className={classes.overlay}></div> }
-          <Zoom in={mouseOver}><OpenWith className={classes.icon} /></Zoom>
-        </Card>
-      </Zoom>
+      <div
+        className={classes.card}
+        onClick={() => this.mouseClick()}
+        onMouseEnter={() => this.setState({ mouseOver: true })}
+        onMouseLeave={() => this.setState({ mouseOver: false })} >
+        <img
+          className={classes.image}
+          src={`${data.url}?w=700`}
+          alt={data.title} />
+        { mouseOver && <div className={classes.overlay}></div> }
+        <Zoom in={mouseOver}><OpenWith className={classes.icon} /></Zoom>
+      </div>
     );
   }
 }

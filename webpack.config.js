@@ -39,7 +39,7 @@ module.exports = {
   },
   plugins: [
     new WebpackCleanupPlugin(),
-    new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new HtmlWebpackPlugin({ filename: path.resolve(__dirname, './dist')+'/index.html', template: './src/client/index.template.html', alwaysWriteToDisk: true }),
     new HtmlWebpackHarddiskPlugin({ outputPath: path.resolve(__dirname, './dist') }),

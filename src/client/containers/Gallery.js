@@ -95,7 +95,7 @@ class Gallery extends Component {
     const { images } = this.props;
 
     return (
-      <Masonry style={{ top: 25 }}>
+      <Masonry style={{ top: 25, padding: 0 }} >
         { images.map(image => <Image key={image.id} data={image} />) }
       </Masonry>
     );
