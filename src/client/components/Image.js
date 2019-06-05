@@ -63,7 +63,6 @@ const styles = {
 class Image extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
-    format: PropTypes.string.isRequired,
     data: PropTypes.object.isRequired,
     updateDisplay: PropTypes.func.isRequired,
   };
@@ -93,10 +92,9 @@ class Image extends Component {
   }
 
   render() {
-    const { classes, format, data } = this.props;
+    const { classes, data } = this.props;
     const { mouseOver, favorites } = this.state;
 
-    // TODO image format
     return (
       <div
         className={classes.card}
@@ -119,12 +117,8 @@ class Image extends Component {
   }
 }
 
-const mapState = state => ({
-  format: state.format,
-});
-
 const mapDispatch = dispatch => ({
   updateDisplay: image => dispatch(updateDisplay(image)),
 });
 
-export default compose(withStyles(styles), connect(mapState, mapDispatch))(Image);
+export default compose(withStyles(styles), connect(() => {}, mapDispatch))(Image);

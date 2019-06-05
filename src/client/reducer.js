@@ -5,7 +5,6 @@ const Actions = {
   IS_LOADING: 'IS_LOADING',
   CLEAN_IMAGES: 'CLEAN_IMAGES',
   ADD_IMAGE: 'ADD_IMAGE',
-  UPDATE_FORMAT: 'UPDATE_FORMAT',
   UPDATE_DISPLAY: 'UPDATE_DISPLAY',
 };
 
@@ -39,11 +38,6 @@ export const addImage = image => ({
   payload: { image },
 });
 
-export const updateFormat = format => ({
-  type: Actions.UPDATE_FORMAT,
-  payload: { format },
-});
-
 export const updateDisplay = image => ({
   type: Actions.UPDATE_DISPLAY,
   payload: { image },
@@ -52,7 +46,6 @@ export const updateDisplay = image => ({
 const defaultState = {
   search: '',
   notification: '',
-  format: 'medium',
   bottomReached: false,
   loading: false,
   images: [],
@@ -75,8 +68,6 @@ export default function reducer(prevState, action) {
       return { ...state, images: action.payload.images };
     case Actions.ADD_IMAGE:
       return { ...state, images: [...state.images, action.payload.image] };
-    case Actions.UPDATE_FORMAT:
-      return { ...state, format: action.payload.format };
     case Actions.UPDATE_DISPLAY:
       return { ...state, display: action.payload.image };
     default:

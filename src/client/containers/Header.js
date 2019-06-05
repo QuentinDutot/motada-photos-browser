@@ -8,7 +8,6 @@ import { updateNotification } from '../reducer';
 import FlagIcon from 'react-flag-kit/lib/CDNFlagIcon';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import Description from '../components/Description';
-import Format from '../components/Format';
 import Search from '../components/Search';
 import Translate from '../components/Translate';
 import axios from 'axios';
@@ -105,7 +104,6 @@ class Header extends Component {
         {/* Under the search area */}
         <div style={{ marginTop: 20, lineHeight: 1.9 }}>
           <Description />
-          <Format />
         </div>
 
         {/* The translation popup */}

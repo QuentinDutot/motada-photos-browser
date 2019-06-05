@@ -9,7 +9,7 @@ class Description extends Component {
     const { sources } = this.state;
 
     return (
-      <div style={{ float: 'left' }}>
+      <div>
         {
           sources.map(source =>
             <a
