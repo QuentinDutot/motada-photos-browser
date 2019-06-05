@@ -4,10 +4,6 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { updateDisplay } from '../reducer';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import CardMedia from '@material-ui/core/CardMedia';
 import OpenWith from '@material-ui/icons/OpenWith';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import Zoom from '@material-ui/core/Zoom';
@@ -15,6 +11,7 @@ import axios from 'axios';
 
 const styles = {
   card: {
+    cursor: 'pointer',
     width: 'calc(25% - 5px)',
     margin: 2.5
   },
