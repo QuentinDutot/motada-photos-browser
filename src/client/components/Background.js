@@ -5,10 +5,10 @@ class Background extends Component {
   render() {
     return (
       <ParticleAnimation
-        numParticles={70}
+        numParticles={45}
         interactive={false}
-        color={{ r: 130, g: 247, b: 249, a: 255 }}
-        background={{ r: 30, g: 46, b: 79, a: 255 }}
+        color={{ r: 51, g: 51, b: 51, a: 255 }}
+        background={{ r: 255, g: 255, b: 255, a: 255 }}
         style={{
           top: 0,
           width: '100%',
