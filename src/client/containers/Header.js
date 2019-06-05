@@ -16,10 +16,16 @@ import axios from 'axios';
 const styles = {
   header: {
     top: 0,
-    width: '70%',
-    padding: '5% 15% 5% 15%',
     position: 'relative',
     color: '#333',
+    '@media screen and (min-width: 1251px)': { 
+      width: '70%',
+      padding: '5% 15% 5% 15%',
+    },
+    '@media screen and (max-width: 1250px)': {
+      width: '90%',
+      padding: '5% 5% 5% 5%',
+    },
   },
   title: {
     padding: 0,

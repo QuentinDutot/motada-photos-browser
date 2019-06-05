@@ -12,8 +12,11 @@ import axios from 'axios';
 const styles = {
   card: {
     cursor: 'pointer',
-    width: 'calc(25% - 5px)',
-    margin: 2.5
+    margin: 2.5,
+    '@media screen and (min-width: 1251px)': { width: 'calc(25% - 5px)' },
+    '@media screen and (max-width: 1250px)': { width: 'calc(33% - 5px)' },
+    '@media screen and (max-width: 950px)': { width: 'calc(50% - 5px)' },
+    '@media screen and (max-width: 630px)': { width: 'calc(100% - 5px)' },
   },
   image: {
     width: '100%',
@@ -93,7 +96,6 @@ class Image extends Component {
     const { classes, format, data } = this.props;
     const { mouseOver, favorites } = this.state;
 
-    // TODO card width responsive
     // TODO image format
     return (
       <div
