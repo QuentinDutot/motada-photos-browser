@@ -5,36 +5,68 @@ import { I18n } from 'react-i18nify';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { makeSearch, updateDisplay, updateNotification } from '../reducer';
-import ProgressiveImage from 'react-progressive-image-loading';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import Tooltip from '@material-ui/core/Tooltip';
-import FileSaver from 'file-saver';
-import copy from 'copy-to-clipboard';
-import FileCopy from '@material-ui/icons/FileCopy';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Close from '@material-ui/icons/Close';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
+import FileSaver from 'file-saver';
 
 const styles = {
-  image: {
-    maxHeight: window.innerHeight-110,
-    objectFit: 'contain',
-  },
-  loadingbar: {
-    top: 0,
+  overlay: {
+    position: 'fixed',
+    backgroundColor: '#9e9e9ec7',
+    height: '100%',
     width: '100%',
+    top: 0,
+    zIndex: 1,
+  },
+  image: {
+    maxHeight: '80%',
+    maxWidth: '80%',
     position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    margin: 'auto',
   },
   toolbar: {
-    bottom: 0,
-    width: '100%',
     position: 'absolute',
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    color: 'rgb(51, 51, 51)',
     textAlign: 'left',
+    fontSize: 16,
+    padding: 15,
+    left: 0,
+    right: 0,
+  },
+  bottomToolbar: {
+    bottom: 0,
   },
   button: {
-    margin: 5,
-    height: 40,
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    height: 'fit-content',
+    border: '1px solid rgb(51, 51, 51)',
+    padding: '0px 30px',
+    borderRadius: 3,
+    '&:hover': { backgroundColor: '#b3b3b326' },       
+  },
+  buttonIcon: {
+    fontSize: 20,
+  },
+  buttonText: {
+    margin: '0 10px 0 0',
+  },
+  title: {
+    flexBasis: '100%',
+    margin: 0,
+  },
+  link: {
+    cursor: 'pointer',
+    textDecoration: 'underline',
   },
 };
 
@@ -48,7 +80,12 @@ class Display extends Component {
   };
 
   state = {
-    loading: false,
+    loaded: false,
+  }
+
+  static getDerivedStateFromProps(props) {
+    document.body.style.overflow = props.display && props.display.url ? 'hidden' : null;
+    return null;
   }
 
   saveImage(url) {
@@ -65,78 +102,58 @@ class Display extends Component {
     makeSearch(tag);
   }
 
-  copyToClipboard(url) {
-    const { updateNotification } = this.props;
-    copy(url);
-    updateNotification(url);
-  }
-
   render() {
     const { classes, display, updateDisplay, updateNotification } = this.props;
-    const { loading } = this.state;
+    const { loaded } = this.state;
+
+    // TODO downloading animation
+    // TODO debug download logic
+    // TODO dl button 'download' instead of 'save' ??
+    // TODO translate 'Related keywords'
+
+    if (!display || !display.url) return null;
 
     return (
-      <Dialog
-        maxWidth="lg"
-        open={Object.keys(display).length !== 0}
-        onClose={() => updateDisplay({})}>
-        { loading && <LinearProgress className={classes.loadingbar} /> }
-        <ProgressiveImage
-          preview={`${display.url}?w=700`}
-          src={display.url}
-          render={(src, style) => {
-            const loadingState = style.filter.charAt(5) === '1';
-            if(loading !== loadingState) this.setState({ loading: loadingState  });
-            return <img src={src} className={classes.image} alt={display.title} />;
-          }} />
-        <div className={classes.toolbar} >
-        {
-          display.tags && display.tags.map(tag =>
-            <Button
-              key={tag}
-              size="small"
-              color="primary"
-              variant="contained"
-              className={classes.button}
-              onClick={() => this.exploreTag(tag)}>
-              {tag}
-            </Button>)
-         }
-         <Tooltip title={I18n.t('tooltips.close')} placement="bottom">
-           <Button
-              size="small"
-              color="primary"
-              variant="contained"
-              onClick={() => updateDisplay({})}
-              className={classes.button}
-              style={{ float: 'right' }}>
-              <Close />
-            </Button>
-         </Tooltip>
-         <Tooltip title={I18n.t('tooltips.save')} placement="bottom">
-           <Button
-              size="small"
-              color="primary"
-              variant="contained"
-              onClick={() => this.saveImage(display.url)}
-              className={classes.button}
-              style={{ float: 'right' }}>
-              <SaveAlt />
-            </Button>
-         </Tooltip>
-         <Tooltip title={I18n.t('tooltips.copy')} placement="bottom">
-           <Button
-              size="small"
-              color="primary"
-              variant="contained"
-              onClick={() => this.copyToClipboard(display.url)}
-              className={classes.button}
-              style={{ float: 'right' }}>
-              <FileCopy />
-            </Button>
-         </Tooltip>
+      <div className={classes.overlay} onClick={() => updateDisplay({})} >
+
+        <div className={classes.toolbar} onClick={e => e.stopPropagation()} >
+          <p className={classes.title}>{display.title}</p>
+
+          <div className={classes.button} style={{ marginRight: 12 }} onClick={e => e.stopPropagation()} >
+            <p className={classes.buttonText} >{I18n.t('tooltips.save')}</p>
+            <SaveAlt className={classes.buttonIcon} />
+          </div>
+
+          <div className={classes.button} onClick={() => updateDisplay({})} >
+            <p className={classes.buttonText} >{I18n.t('tooltips.close')}</p>
+            <Close className={classes.buttonIcon} />
+          </div>
         </div>
-      </Dialog>
+
+        {!loaded && <CircularProgress className={classes.image} style={{ width: 60, height: 60, color: 'white' }} />}
+
+        <img
+          src={display.url}
+          alt={display.title}
+          style={loaded ? {} : { display: 'none' }}
+          className={classes.image}
+          onClick={e => e.stopPropagation()}
+          onLoad={() => this.setState({ loaded: true })}
+        />
+
+        <div className={[classes.toolbar, classes.bottomToolbar].join(' ')} onClick={e => e.stopPropagation()} >
+          <p className={classes.title}>
+            Related keywords :{` `}
+            {display.tags.map((tag, index) =>
+              <span key={tag} >
+                <span className={classes.link} onClick={() => this.exploreTag(tag)} >{tag}</span>
+                { index != display.tags.length-1 && <span>, </span>}
+              </span>
+            )}
+          </p>
+        </div>
+
+      </div>
     );
   }
 }

@@ -121,4 +121,4 @@ const mapDispatch = dispatch => ({
   updateDisplay: image => dispatch(updateDisplay(image)),
 });
 
-export default compose(withStyles(styles), connect(() => {}, mapDispatch))(Image);
+export default compose(withStyles(styles), connect(() => ({}), mapDispatch))(Image);
