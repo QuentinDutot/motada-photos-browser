@@ -16,7 +16,6 @@
   "dependencies": {
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.1",
-    "@material-ui/lab": "^3.0.0-alpha.30",
     "axios": "^0.18.1",
     "body-parser": "^1.19.0",
     "chromedriver": "^2.46.0",
@@ -53,7 +52,6 @@
     "@babel/runtime": "^7.4.5",
     "babel-eslint": "^9.0.0",
     "babel-loader": "^8.0.6",
-    "clean-webpack-plugin": "^0.1.19",
     "concurrently": "^4.0.0",
     "copy-webpack-plugin": "^4.5.4",
     "css-loader": "^1.0.0",
@@ -62,7 +60,7 @@
     "eslint-plugin-import": "^2.17.3",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.13.0",
-    "file-loader": "^1.1.11",
+    "file-loader": "^4.0.0",
     "html-webpack-harddisk-plugin": "^0.2.0",
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.4.4",
@@ -72,7 +70,7 @@
     "webpack": "^4.33.0",
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cleanup-plugin": "^0.5.1",
-    "webpack-cli": "^3.3.3",
+    "webpack-cli": "^3.3.4",
     "webpack-dev-server": "^3.7.1"
   }
 }
