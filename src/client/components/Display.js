@@ -88,9 +88,11 @@ class Display extends Component {
     return null;
   }
 
-  saveImage(url) {
+  async saveImage(url) {
     let filename = url.substring(url.lastIndexOf('/')+1);
-    if (filename.indexOf('.jpeg') === -1 && filename.indexOf('.jpg') === -1 && filename.indexOf('.png') === -1) {
+    if (filename.indexOf('.jpeg') === -1
+     && filename.indexOf('.jpg') === -1
+     && filename.indexOf('.png') === -1) {
       filename += '.jpg';
     }
     FileSaver.saveAs(url, filename);
@@ -106,11 +108,6 @@ class Display extends Component {
     const { classes, display, updateDisplay, updateNotification } = this.props;
     const { loaded } = this.state;
 
-    // TODO downloading animation
-    // TODO debug download logic
-    // TODO dl button 'download' instead of 'save' ??
-    // TODO translate 'Related keywords'
-
     if (!display || !display.url) return null;
 
     return (
@@ -119,8 +116,8 @@ class Display extends Component {
         <div className={classes.toolbar} onClick={e => e.stopPropagation()} >
           <p className={classes.title}>{display.title}</p>
 
-          <div className={classes.button} style={{ marginRight: 12 }} onClick={e => e.stopPropagation()} >
-            <p className={classes.buttonText} >{I18n.t('tooltips.save')}</p>
+          <div className={classes.button} style={{ marginRight: 12 }} onClick={() => this.saveImage(display.url)} >
+            <p className={classes.buttonText} >{I18n.t('tooltips.download')}</p>
             <SaveAlt className={classes.buttonIcon} />
           </div>
 
@@ -130,7 +127,7 @@ class Display extends Component {
           </div>
         </div>
 
-        {!loaded && <CircularProgress className={classes.image} style={{ width: 60, height: 60, color: 'white' }} />}
+        {!loaded && <CircularProgress className={classes.image} style={{ width: 65, height: 65, color: 'white' }} />}
 
         <img
           src={display.url}
@@ -143,8 +140,8 @@ class Display extends Component {
 
         <div className={[classes.toolbar, classes.bottomToolbar].join(' ')} onClick={e => e.stopPropagation()} >
           <p className={classes.title}>
-            Related keywords :{` `}
-            {display.tags.map((tag, index) =>
+            {`${I18n.t('tooltips.keywords')} : `}
+            {Array.from(new Set(display.tags)).map((tag, index) =>
               <span key={tag} >
                 <span className={classes.link} onClick={() => this.exploreTag(tag)} >{tag}</span>
                 { index != display.tags.length-1 && <span>, </span>}

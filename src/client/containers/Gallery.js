@@ -60,7 +60,7 @@ class Gallery extends Component {
     const { search } = this.props;
     axios(url)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data && res.data.length > 0) {
           this.saveImages(search, res.data);
         } else {
@@ -68,7 +68,7 @@ class Gallery extends Component {
         }
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         updateNotification(I18n.t('unknow'));
       })
       .then(() => {
