@@ -1,12 +1,13 @@
 const Puppeteer = require("puppeteer");
 const Pexels = require("./pexels");
 const Unsplash = require("./unsplash");
+const Negative = require("./negative");
 
 class Scraper {
 
 	constructor() {
     this.config = {
-      headless: false,
+      headless: true,
       options: ["--disable-gpu", "--no-sandbox", "--window-size=1024x768"],
       viewport: { "width": 1024, "height": 768 },
       header: { "Accept-Language": "en" },
@@ -33,6 +34,9 @@ class Scraper {
     switch (flow) {
       case 'unsplash':
         this.api = new Unsplash(this.page);
+        break;
+      case 'negative':
+        this.api = new Negative(this.page);
         break;
       case 'pexels': default:
         this.api = new Pexels(this.page);

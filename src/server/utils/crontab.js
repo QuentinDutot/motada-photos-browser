@@ -33,7 +33,8 @@ module.exports = function(database) {
   }
 
   async function engine() {
-    scrapeImages('pexels');
+    await scrapeImages('pexels');
+    await scrapeImages('negative');
     // scrapeImages('unsplash'); TOFIX
 
     // Automatically post on social medias TOFIX
@@ -42,9 +43,9 @@ module.exports = function(database) {
 
     // Reboot to cut any possible memory leaks
     // Not working on heroku
-    reboot((err, stderr, stdout) => {
-      if(!err && !stderr) console.log(stdout);
-    });
+    // reboot((err, stderr, stdout) => {
+    //   if(!err && !stderr) console.log(stdout);
+    // });
   }
 
   cron.schedule('00 */1 * * *', () => engine());

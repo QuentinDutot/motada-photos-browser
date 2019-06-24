@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 class Description extends Component {
   state = {
-    sources: ['unsplash', 'pexels'],
+    sources: ['unsplash.com', 'pexels.com', 'negativespace.co'],
   }
 
   render() {
@@ -14,7 +14,7 @@ class Description extends Component {
           sources.map(source =>
             <a
               key={source}
-              href={`https://${source}.com`}
+              href={`https://${source}`}
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -22,7 +22,7 @@ class Description extends Component {
                 fontSize: '0.9rem',
                 color: '#333',
               }}>
-              {`${source}.com`}
+              {source}
             </a>)
         }
       </div>
