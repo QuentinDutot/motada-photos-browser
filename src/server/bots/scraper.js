@@ -2,6 +2,7 @@ const Puppeteer = require("puppeteer");
 const Pexels = require("./pexels");
 const Unsplash = require("./unsplash");
 const Negative = require("./negative");
+const Kaboom = require("./kaboom");
 
 class Scraper {
 
@@ -37,6 +38,9 @@ class Scraper {
         break;
       case 'negative':
         this.api = new Negative(this.page);
+        break;
+      case 'kaboom':
+        this.api = new Kaboom(this.page);
         break;
       case 'pexels': default:
         this.api = new Pexels(this.page);

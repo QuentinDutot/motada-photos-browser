@@ -35,6 +35,7 @@ module.exports = function(database) {
   async function engine() {
     await scrapeImages('pexels');
     await scrapeImages('negative');
+    await scrapeImages('kaboom');
     // scrapeImages('unsplash'); TOFIX
 
     // Automatically post on social medias TOFIX
