@@ -1,6 +1,7 @@
 const shortid = require('shortid');
 const cron = require('node-cron');
 const reboot = require('nodejs-system-reboot');
+const Scraper = require('../bots/scraper.js');
 
 module.exports = function(database) {
 
@@ -19,22 +20,32 @@ module.exports = function(database) {
         }).write();
       }
     });
-  };
+  }
+
+  async function scrapeImages(website) {
+    const scraper = new Scraper();
+    await scraper.start();
+    await scraper.api(website);
+    await scraper.api.flow();
+    const result = await scraper.api.export();
+    await scraper.stop();
+    saveImages(result);
+  }
 
   async function engine() {
-    // Let's find new data
-    // await require('../scrapers/unsplash.js')(items => saveImages(items)); TODO FIX
-    await require('../scrapers/pexels.js')(items => saveImages(items));
+    scrapeImages('pexels');
+    // scrapeImages('unsplash'); TOFIX
 
-    // Automatically post on social medias
-    const image = database.get('images').sample().value();
-    await require('../scrapers/twitter.js')(image);
+    // Automatically post on social medias TOFIX
+    // const image = database.get('images').sample().value();
+    // await require('../scrapers/twitter.js')(image);
 
     // Reboot to cut any possible memory leaks
+    // Not working on heroku
     reboot((err, stderr, stdout) => {
       if(!err && !stderr) console.log(stdout);
     });
   }
 
-  cron.schedule('00 */2 * * *', () => engine());
+  cron.schedule('00 */1 * * *', () => engine());
 };

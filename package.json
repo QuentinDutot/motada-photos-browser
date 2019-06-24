@@ -25,6 +25,7 @@
     "node-cron": "^2.0.3",
     "nodejs-system-reboot": "0.0.4",
     "prop-types": "^15.7.2",
+    "puppeteer": "^1.17.0",
     "random-words": "^1.1.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -38,7 +39,6 @@
     "recompose": "^0.30.0",
     "redux": "^4.0.1",
     "request": "^2.88.0",
-    "selenium-webdriver": "^4.0.0-alpha.1",
     "shortid": "^2.2.13",
     "similarity": "^1.1.1",
     "twitter": "^1.7.1"
