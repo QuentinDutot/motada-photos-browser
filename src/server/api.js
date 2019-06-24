@@ -12,7 +12,7 @@ module.exports = function(database) {
     let included = false;
     tags.forEach((singleTag) => {
       const verif = element => {
-        if(similarity(element, singleTag) > 0.85) {
+        if(similarity(element, singleTag) > 0.80) {
           included = true;
         }
       }

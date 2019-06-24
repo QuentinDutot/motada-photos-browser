@@ -20,6 +20,7 @@
   "errors": {
     "no_translation": "Oups aucune traduction disponible !",
     "no_results": "Oups aucun résultat !",
+    "no_results_tip": "Désolé actuellement le moteur de recherche ne fonctionne qu'en anglais...",
     "unknow": "Oups une erreur est survenue !"
   }
 }

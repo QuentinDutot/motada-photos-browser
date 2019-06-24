@@ -80,8 +80,8 @@ class Image extends Component {
   }
 
   getFavorites() {
-    const min = 10;
-    const max = 2000;
+    const min = 0;
+    const max = 10 * (this.props.data.click + 1);
 
     const favorites = (Math.floor(Math.random() * (max - min + 1)) + min).toString();
 

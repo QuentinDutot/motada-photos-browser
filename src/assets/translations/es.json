@@ -20,6 +20,7 @@
   "errors": {
     "no_translation": "¡ Uy, ninguna traducción disponible !",
     "no_results": "¡ Uy no hay resultados !",
+    "no_results_tip": "Lo sentimos, el motor de búsqueda solo funciona en inglés por ahora...",
     "unknow": "¡ Uy, ha ocurrido un error !"
   }
 }

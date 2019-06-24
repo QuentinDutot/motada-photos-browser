@@ -6,6 +6,7 @@ import { updateNotification, isLoading, cleanImages, addImage, reachBottom } fro
 import Image from '../components/Image';
 import Masonry from 'react-masonry-component';
 import axios from 'axios';
+import NoData from '../components/NoData';
 
 class Gallery extends Component {
   static propTypes = {
@@ -93,11 +94,16 @@ class Gallery extends Component {
 
   render() {
     const { images } = this.props;
+    console.log(images)
 
-    return (
+    return images.length
+    ? (
       <Masonry style={{ top: 10, padding: 0 }} >
         { images.map(image => <Image key={image.id} data={image} />) }
       </Masonry>
+    )
+    : (
+      <NoData />
     );
   }
 }

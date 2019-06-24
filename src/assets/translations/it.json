@@ -19,7 +19,8 @@
   },
   "errors": {
     "no_translation": "Oops nessuna traduzione disponibile !",
-    "no_results": "Spiacenti alcun risultato!",
+    "no_results": "Spiacenti alcun risultato !",
+    "no_results_tip": "Siamo spiacenti, il motore di ricerca funziona solo in inglese per ora...",
     "unknow": "Spiacenti, si è verificato un errore !"
   }
 }
