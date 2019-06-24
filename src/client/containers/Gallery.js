@@ -94,7 +94,6 @@ class Gallery extends Component {
 
   render() {
     const { images } = this.props;
-    console.log(images)
 
     return images.length
     ? (
