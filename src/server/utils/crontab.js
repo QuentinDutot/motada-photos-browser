@@ -49,5 +49,5 @@ module.exports = function(database) {
     // });
   }
 
-  cron.schedule('00 */1 * * *', () => engine());
+  cron.schedule(process.env.SCRAPING_CRON || '00 */1 * * *', () => engine());
 };
