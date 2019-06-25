@@ -27,7 +27,7 @@ class Gallery extends Component {
       if (search) {
         this.loadSearch(search);
       } else {
-        this.loadDefault();
+        this.loadRandom(30);
       }
     }
     if(prevProps.bottomReached !== bottomReached && bottomReached && !search && !loading) {
@@ -37,11 +37,6 @@ class Gallery extends Component {
 
   componentDidMount() {
     this.props.cleanImages();
-    this.loadDefault();
-  }
-
-  loadDefault() {
-    this.loadLast(15);
     this.loadRandom(30);
   }
 
@@ -80,11 +75,6 @@ class Gallery extends Component {
   loadSearch(search) {
     this.props.isLoading(true);
     this.request(`/api/images?tags=${search.split(' ').join(',')}`);
-  }
-
-  loadLast(limit) {
-    this.props.isLoading(true);
-    this.request(`/api/images?last=${limit}`);
   }
 
   loadRandom(limit) {

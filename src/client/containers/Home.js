@@ -24,7 +24,7 @@ class Home extends Component {
     window.removeEventListener('scroll', this.checkScrolling);
   }
 
-  checkScrolling() {
+  checkScrolling = () => {
     const { bottomReached, reachBottom } = this.props;
     const { body, documentElement } = document;
     const windowHeight = 'innerHeight' in window ? window.innerHeight : documentElement.offsetHeight;

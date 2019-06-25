@@ -175,7 +175,10 @@ class Display extends Component {
               const { value } = target;
               if (value === process.env.ADMIN_KEY) {
                 axios.delete(`/api/images/${display.id}`).then(({ data }) => {
-                  if (data) location.reload();
+                  if (data) {
+                    this.setState({ admin: false });
+                    location.reload();
+                  }
                 });
               }
             }}

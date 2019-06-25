@@ -31,10 +31,6 @@ module.exports = function(database) {
     if (Object.prototype.hasOwnProperty.call(query, 'random')) {
       return database.get('images').sampleSize(query.random || 1).value();
     }
-    // api/images?last=3
-    if (Object.prototype.hasOwnProperty.call(query, 'last')) {
-      return database.get('images').sortBy('date').reverse().take(query.last || 1).value();
-    }
     // api/images?tags=sky,car
     if (Object.prototype.hasOwnProperty.call(query, 'tags')) {
       let tags = query.tags.split(',');
