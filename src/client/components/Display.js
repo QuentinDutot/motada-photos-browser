@@ -9,6 +9,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Close from '@material-ui/icons/Close';
 import FileSaver from 'file-saver';
+import axios from 'axios';
 
 const styles = {
   overlay: {
@@ -81,11 +82,20 @@ class Display extends Component {
 
   state = {
     loaded: false,
+    admin: false,
   }
 
   static getDerivedStateFromProps(props) {
     document.body.style.overflow = props.display && props.display.url ? 'hidden' : null;
     return null;
+  }
+
+  componentDidMount() {
+    window.addEventListener('keydown', this.checkAdmin);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.checkAdmin);
   }
 
   async saveImage(url) {
@@ -104,9 +114,18 @@ class Display extends Component {
     makeSearch(tag);
   }
 
+  checkAdmin = ({ keyCode }) => {
+    const { admin } = this.state;
+    if (!admin) {
+      this.setState({
+        admin: (keyCode == 46)
+      });
+    }
+  }
+
   render() {
     const { classes, display, updateDisplay, updateNotification } = this.props;
-    const { loaded } = this.state;
+    const { loaded, admin } = this.state;
 
     if (!display || !display.url) return null;
 
@@ -148,6 +167,19 @@ class Display extends Component {
               </span>
             )}
           </p>
+
+          {admin && <input
+            type="text"
+            className={classes.button}
+            onChange={({ target }) => {
+              const { value } = target;
+              if (value === process.env.ADMIN_KEY) {
+                axios.delete(`/api/images/${display.id}`).then(({ data }) => {
+                  if (data) location.reload();
+                });
+              }
+            }}
+          />}
         </div>
 
       </div>

@@ -17,11 +17,11 @@ class Home extends Component {
   };
 
   componentDidMount() {
-    window.addEventListener('scroll', () => this.checkScrolling());
+    window.addEventListener('scroll', this.checkScrolling);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', () => this.checkScrolling());
+    window.removeEventListener('scroll', this.checkScrolling);
   }
 
   checkScrolling() {

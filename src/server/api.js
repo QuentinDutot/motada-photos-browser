@@ -77,5 +77,18 @@ module.exports = function(database) {
     }
   });
 
+  router.delete('/images/:id?', (req, res) => {
+    const id = req.params.id;
+    let result = false;
+    if(getImage(id)) {
+      result = Boolean(
+        database.get('images')
+                .remove({ id })
+                .write()
+      );
+    }
+    res.send(result);
+  });
+
   return router;
 };
