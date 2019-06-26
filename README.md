@@ -14,13 +14,9 @@ Daily new images from  unsplash.com, pexels.com, pixabay.com, freerangestock.com
 
 ## Stack
 React/Redux standard frontend.  
-Backend side a REST API and lowdb as local json database.  
+Backend side a REST API and mongodb database.  
 Built with the [simple-react-full-stack](https://github.com/crsandeep/simple-react-full-stack).
 
 #### `frontend` : [React](https://github.com/facebook/react) - [Redux](https://github.com/reduxjs/redux) - [Webpack](https://github.com/webpack/webpack) - [Material-UI](https://github.com/mui-org/material-ui) - [Axios](https://github.com/axios/axios)
 
-#### `backend` : [Node.js](https://nodejs.org/en/) - [Express](https://github.com/expressjs/express) - [Lowdb](https://github.com/typicode/lowdb) - [selenium-webdriver](https://github.com/SeleniumHQ/selenium/tree/master/javascript/node/selenium-webdriver)
-
-## TODO list
- - [ ] Replace lowdb with mongodb
- - [ ] New scrappers
+#### `backend` : [Node.js](https://nodejs.org/en/) - [Express](https://github.com/expressjs/express) - [MongoDB](https://github.com/mongodb/mongo) - [Puppeteer](https://github.com/GoogleChrome/puppeteer)

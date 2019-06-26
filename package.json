@@ -1,6 +1,6 @@
 {
   "name": "motada-photos-browser",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Search over thousands free images",
   "main": "src/server/index.js",
   "scripts": {
@@ -22,7 +22,7 @@
     "express": "^4.17.1",
     "file-saver": "^2.0.2",
     "heroku-ssl-redirect": "0.0.4",
-    "lowdb": "^1.0.0",
+    "mongoose": "^5.6.1",
     "node-cron": "^2.0.3",
     "nodejs-system-reboot": "0.0.4",
     "prop-types": "^15.7.2",
@@ -40,7 +40,6 @@
     "recompose": "^0.30.0",
     "redux": "^4.0.1",
     "request": "^2.88.0",
-    "shortid": "^2.2.13",
     "similarity": "^1.1.1",
     "twitter": "^1.7.1"
   },

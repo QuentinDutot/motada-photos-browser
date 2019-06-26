@@ -1,24 +1,18 @@
-const shortid = require('shortid');
 const cron = require('node-cron');
 const reboot = require('nodejs-system-reboot');
 const Scraper = require('../bots/scraper.js');
+const Images = require('../api/images.model.js');
 
-module.exports = function(database) {
+module.exports = () => {
 
-  function saveImages(images) {
+  function persistImages(images) {
     images.forEach((item) => {
-      const exist = database.get('images').find({ url: item.url }).value();
-      if (!exist) {
-        database.get('images').push({
-          id: shortid.generate(),
-          url: item.url,
-          title: item.title || '',
-          source: item.source || '',
-          date: Date.now(),
-          tags: item.tags || [],
-          click: 0,
-        }).write();
-      }
+      new Images({
+        url: item.url,
+        title: item.title,
+        source: item.source,
+        tags: item.tags,
+      }).save();
     });
   }
 
@@ -29,7 +23,7 @@ module.exports = function(database) {
     await scraper.api.flow();
     const result = await scraper.api.export();
     await scraper.stop();
-    saveImages(result);
+    persistImages(result);
   }
 
   async function engine() {

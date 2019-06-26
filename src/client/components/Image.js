@@ -76,7 +76,7 @@ class Image extends Component {
     const { updateDisplay, data } = this.props;
     updateDisplay(data);
     this.setState({ mouseOver: false });
-    axios.patch(`/api/images/${data.id}`, { click: data.click + 1 });
+    axios.patch(`/api/images/${data._id}`, { click: data.click + 1 });
   }
 
   getFavorites() {

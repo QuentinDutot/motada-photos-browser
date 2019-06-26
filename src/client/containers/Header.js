@@ -60,7 +60,7 @@ class Header extends Component {
   }
 
   componentDidMount() {
-    axios('/api/images?count').then((res) => this.setState({ count: res.data.images }));
+    axios('/api/images?count').then((res) => this.setState({ count: res.data.count }));
   }
 
   getGithubSvg() {

@@ -16,4 +16,8 @@ server.use((req, res, next) => {
   next();
 });
 
+server.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../../dist', 'index.html'));
+});
+
 module.exports = server;

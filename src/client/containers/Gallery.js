@@ -45,20 +45,20 @@ class Gallery extends Component {
     for (let i = 0; i < newImages.length; i++) {
       setTimeout(() => {
         const { search, images } = this.props;
-        if (!images.find(e => e.id === newImages[i].id) && currentSearch === search) {
+        if (!images.find(e => e._id === newImages[i]._id) && currentSearch === search) {
           addImage(newImages[i]);
         }
       }, i * 500);
     }
   }
 
-  request(url) {
+  request(url, type) {
     const { search } = this.props;
     axios(url)
       .then((res) => {
         // console.log(res.data);
-        if (res.data && res.data.length > 0) {
-          this.saveImages(search, res.data);
+        if (res.data[type] && res.data[type].length > 0) {
+          this.saveImages(search, res.data[type]);
         } else {
           updateNotification(I18n.t('no_results'));
         }
@@ -74,12 +74,12 @@ class Gallery extends Component {
 
   loadSearch(search) {
     this.props.isLoading(true);
-    this.request(`/api/images?tags=${search.split(' ').join(',')}`);
+    this.request(`/api/images?tags=${search.split(' ').join(',')}`, 'tags');
   }
 
   loadRandom(limit) {
     this.props.isLoading(true);
-    this.request(`/api/images?random=${limit}`);
+    this.request(`/api/images?random=${limit}`, 'random');
   }
 
   render() {
@@ -88,7 +88,7 @@ class Gallery extends Component {
     return images.length
     ? (
       <Masonry style={{ top: 10, padding: 0 }} >
-        { images.map(image => <Image key={image.id} data={image} />) }
+        { images.map(image => <Image key={image._id} data={image} />) }
       </Masonry>
     )
     : (
