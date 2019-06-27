@@ -69,6 +69,7 @@ class Image extends Component {
 
   state = {
     mouseOver: false,
+    loaded: false,
     favorites: this.getFavorites(),
   }
 
@@ -93,7 +94,7 @@ class Image extends Component {
 
   render() {
     const { classes, data } = this.props;
-    const { mouseOver, favorites } = this.state;
+    const { mouseOver, loaded, favorites } = this.state;
 
     return (
       <div
@@ -102,12 +103,12 @@ class Image extends Component {
         onMouseEnter={() => this.setState({ mouseOver: true })}
         onMouseLeave={() => this.setState({ mouseOver: false })} >
         <img
+          onLoad={() => this.setState({ loaded: true })}
           className={classes.image}
           src={`${data.url}?w=700`}
           alt={data.title} />
-        { mouseOver
-          ? <div className={classes.overlay}></div>
-          :  <div className={classes.bar}>
+        { loaded && mouseOver && <div className={classes.overlay}></div> }
+        { loaded && !mouseOver && <div className={classes.bar}>
           {favorites}
           <FavoriteBorder className={classes.heart} fontSize="large" />
         </div>}
