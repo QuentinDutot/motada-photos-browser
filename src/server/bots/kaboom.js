@@ -61,15 +61,7 @@ class Kaboom {
     if (title.indexOf('Kaboompics - ') !== -1) title = title.slice(13);
     if (url.indexOf('https') === -1) url = `https://kaboompics.com${url}`;
 
-    const tags = title
-      .split(' ')
-      .map(e => e.split(',').join(''))
-      .map(e => e.split('.').join(''))
-      .map(e => e.charAt(0).toUpperCase() + e.slice(1))
-      .filter(e => e.length > 1)
-      .filter(e => e !== 'Or' && e !== 'And' && e !== 'By')
-      .filter(e => e !== 'The' && e !== 'In' && e !== 'Of')
-      .filter(e => e !== 'Not' && e !== 'To' && e !== 'On');
+    const tags = title.split(' ');
 
     this.data.push({ source: 'kaboom', tags, title, url });
   }

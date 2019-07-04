@@ -5,13 +5,23 @@ const Images = require('../api/images.model.js');
 
 module.exports = () => {
 
+  function betterTags(tags) {
+    return (tags
+      .map(e => e.split(',').join(''))
+      .map(e => e.split('.').join(''))
+      .map(e => e.charAt(0).toUpperCase() + e.slice(1))
+      .filter(e => e.length > 1)
+      .filter(e => e !== 'Or' && e !== 'And' && e !== 'By' && e !== 'The' && e !== 'In' && e !== 'Of')
+      .filter(e => e !== 'Not' && e !== 'To' && e !== 'On' && e !== 'At' && e !== 'His' && e !== 'Her'));
+  }
+
   function persistImages(images) {
     images.forEach((item) => {
       new Images({
         url: item.url,
         title: item.title,
         source: item.source,
-        tags: item.tags,
+        tags: betterTags(item.tags),
       }).save();
     });
   }

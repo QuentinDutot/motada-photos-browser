@@ -65,15 +65,7 @@ class Unsplash {
     let url = await this.core.evaluate(e => e.getAttribute('srcset'), item);
     if (url.includes('?')) url = url.split('?')[0];
 
-    const tags = title
-      .split(' ')
-      .map(e => e.split(',').join(''))
-      .map(e => e.split('.').join(''))
-      .map(e => e.charAt(0).toUpperCase() + e.slice(1))
-      .filter(e => e.length > 1)
-      .filter(e => e !== 'Or' && e !== 'And' && e !== 'By')
-      .filter(e => e !== 'The' && e !== 'In' && e !== 'Of')
-      .filter(e => e !== 'Not' && e !== 'To' && e !== 'On');
+    const tags = title.split(' ');
 
     this.data.push({ source: 'unsplash', tags, title, url });
   }
