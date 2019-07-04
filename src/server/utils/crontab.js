@@ -28,12 +28,17 @@ module.exports = () => {
 
   async function scrapeImages(website) {
     const scraper = new Scraper();
-    await scraper.start();
-    await scraper.api(website);
-    await scraper.api.flow();
-    const result = await scraper.api.export();
-    await scraper.stop();
-    persistImages(result);
+    try {
+      await scraper.start();
+      await scraper.api(website);
+      await scraper.api.flow();
+      const result = await scraper.api.export();
+      persistImages(result);
+    } catch(e) {
+      console.error(e);
+    } finally {
+      await scraper.stop();
+    }
   }
 
   async function engine() {
