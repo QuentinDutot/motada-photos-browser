@@ -20,24 +20,28 @@ class Gallery extends Component {
     reachBottom: PropTypes.func.isRequired,
   };
 
+  state = {
+    limit: 10,
+  }
+
   componentDidUpdate(prevProps) {
-    const { search, loading, bottomReached, reachBottom, cleanImages } = this.props;
+    const { search, images, loading, bottomReached, cleanImages, reachBottom } = this.props;
+    const { limit } = this.state;
     if (prevProps.search !== search) {
       cleanImages();
-      if (search) {
-        this.loadSearch(search);
-      } else {
-        this.loadRandom(30);
-      }
+      if (search) this.loadSearch(search);
+      else this.loadRandom(100);
     }
-    if(prevProps.bottomReached !== bottomReached && bottomReached && !search && !loading) {
-      this.loadRandom(30);
+    if(prevProps.bottomReached !== bottomReached && bottomReached && !loading) {
+      if (limit < images.length) this.setState({ limit: limit + 10 });
+      else if (!search) this.loadRandom(50);
     }
   }
 
   componentDidMount() {
-    this.props.cleanImages();
-    this.loadRandom(30);
+    const { cleanImages } = this.props;
+    cleanImages();
+    this.loadRandom(100);
   }
 
   saveImages(currentSearch, newImages) {
@@ -84,11 +88,12 @@ class Gallery extends Component {
 
   render() {
     const { images } = this.props;
+    const { limit } = this.state;
 
     return images.length
     ? (
       <Masonry style={{ top: 10, padding: 0 }} >
-        { images.map(image => <Image key={image._id} data={image} />) }
+        { images.slice(0, limit).map(image => <Image key={image._id} data={image} />) }
       </Masonry>
     )
     : (
