@@ -25,7 +25,9 @@ class NoData extends Component {
   state = {}
 
   render() {
-    const { classes, search } = this.props;
+    const { classes, search, loading } = this.props;
+
+    if (loading) return null;
     
     return (
       <div className={classes.nodataBlock}>
@@ -42,6 +44,7 @@ class NoData extends Component {
 
 const mapState = state => ({
   search: state.search,
+  loading: state.loading,
 });
 
 export default compose(withStyles(styles), connect(mapState, null))(NoData);
