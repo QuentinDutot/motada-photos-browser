@@ -7,7 +7,7 @@ import { I18n } from 'react-i18nify';
 const styles = {
   nodataBlock: {
     position: 'relative',
-    padding: '20% 10%',
+    padding: '10% 10%',
   },
   nodataText: {
     padding: 0,

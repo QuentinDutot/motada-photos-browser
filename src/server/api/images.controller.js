@@ -1,4 +1,3 @@
-const similarity = require('similarity');
 const Images = require('./images.model.js');
 
 exports.find = async (req, res) => {
@@ -20,21 +19,8 @@ exports.find = async (req, res) => {
   }
   // api/images?tags=sky,car
   if (Object.prototype.hasOwnProperty.call(query, 'tags')) {
-    const keywords = tags.split(',');
-    let images = await Images.find();
-
-    images = images.filter(img => {
-      let included = false;
-      keywords.forEach(searchTag => {
-        img.tags.forEach(dataTag => {
-          if(similarity(dataTag, searchTag) > 0.80) included = true;
-        });
-      });
-      return included;
-    });
-
     result = {
-      tags: images
+      tags: await Images.find({ $text: { $search: tags.split(',').join(' ') } })
     }
   }
 
