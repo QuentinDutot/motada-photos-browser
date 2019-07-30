@@ -8,8 +8,15 @@ class Description extends Component {
   render() {
     const { sources } = this.state;
 
+    const style = {
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+      marginTop: '2rem'
+    }
+
     return (
-      <div>
+      <div style={style} >
         {
           sources.map(source =>
             <a

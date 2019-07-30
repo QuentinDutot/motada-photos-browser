@@ -17,18 +17,20 @@ const styles = {
     top: 0,
     position: 'relative',
     color: '#333',
-    '@media screen and (min-width: 1251px)': { 
-      width: '70%',
-      padding: '5% 15% 5% 15%',
-    },
+    width: '70%',
+    padding: '5% 15% 5% 15%',
     '@media screen and (max-width: 1250px)': {
-      width: '90%',
-      padding: '5% 5% 5% 5%',
+      width: 'calc(100% - 10px)',
+      margin: '3rem 0',
+      padding: '5px',
     },
   },
+  row: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
   title: {
-    padding: 0,
-    textAlign: 'left',
     fontSize: '1.5rem',
   },
   icon: {
@@ -79,32 +81,30 @@ class Header extends Component {
       <div className={classes.header}>
 
         {/* Over the search area */}
-        <p className={classes.title}>
-          {
-            count !== 0
-            ? I18n.t('header.title', { count })
-            : I18n.t('header.default_title')
-          }
-          <SvgIcon
-            className={[classes.icon, classes.github].join(' ')}
-            onClick={this.openGithubProjet}>
-            <path fill="black" d={this.getGithubSvg()} />
-          </SvgIcon>
-          <FlagIcon
-            code={I18n.t('flag')}
-            size={40}
-            className={[classes.icon, classes.flag].join(' ')}
-            onClick={() => this.setState({ dialog: true })} />
-        </p>
+        <div className={classes.row} >
+          <p className={classes.title} >
+            { count !== 0 ? I18n.t('header.title', { count }) : I18n.t('header.default_title') }
+          </p>
+          <div>
+            <SvgIcon
+              className={[classes.icon, classes.github].join(' ')}
+              onClick={this.openGithubProjet}>
+              <path fill="black" d={this.getGithubSvg()} />
+            </SvgIcon>
+            <FlagIcon
+              code={I18n.t('flag')}
+              size={40}
+              className={[classes.icon, classes.flag].join(' ')}
+              onClick={() => this.setState({ dialog: true })} />
+          </div>
+        </div>
 
 
         {/* The search area */}
         <Search />
 
         {/* Under the search area */}
-        <div style={{ marginTop: 20, lineHeight: 1.9 }}>
-          <Description />
-        </div>
+        <Description />
 
         {/* The translation popup */}
         <Translate open={dialog} close={() => this.setState({ dialog: false })} />
