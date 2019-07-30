@@ -44,7 +44,7 @@ class Translate extends Component {
         <DialogTitle>
           {I18n.t('tooltips.translations')}
         </DialogTitle>
-        <List style={{ display: 'flex' }}>
+        <List style={{ display: 'flex', flexWrap: 'wrap' }}>
           <div style={{ flex: '50%' }}>
             {languages.map((l, i) => i % 2 == 0 ? l : null)}
           </div>

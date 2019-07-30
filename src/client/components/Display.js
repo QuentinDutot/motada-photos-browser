@@ -34,6 +34,8 @@ const styles = {
     position: 'absolute',
     display: 'flex',
     alignItems: 'center',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
     backgroundColor: 'white',
     color: 'rgb(51, 51, 51)',
     textAlign: 'left',
@@ -45,13 +47,20 @@ const styles = {
   bottomToolbar: {
     bottom: 0,
   },
+  tools: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+  },
   button: {
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
     height: 'fit-content',
+    minWidth: 80,
     border: '1px solid rgb(51, 51, 51)',
     padding: '0px 30px',
+    margin: '0 5px',
     borderRadius: 3,
     '&:hover': { backgroundColor: '#b3b3b326' },       
   },
@@ -62,7 +71,6 @@ const styles = {
     margin: '0 10px 0 0',
   },
   title: {
-    flexBasis: '100%',
     margin: 0,
   },
   link: {
@@ -134,15 +142,15 @@ class Display extends Component {
 
         <div className={classes.toolbar} onClick={e => e.stopPropagation()} >
           <p className={classes.title}>{display.title}</p>
-
-          <div className={classes.button} style={{ marginRight: 12 }} onClick={() => this.saveImage(display.url)} >
-            <p className={classes.buttonText} >{I18n.t('tooltips.download')}</p>
-            <SaveAlt className={classes.buttonIcon} />
-          </div>
-
-          <div className={classes.button} onClick={() => updateDisplay({})} >
-            <p className={classes.buttonText} >{I18n.t('tooltips.close')}</p>
-            <Close className={classes.buttonIcon} />
+          <div className={classes.tools} >
+            <div className={classes.button} onClick={() => this.saveImage(display.url)} >
+              <p className={classes.buttonText} >{I18n.t('tooltips.download')}</p>
+              <SaveAlt className={classes.buttonIcon} />
+            </div>
+            <div className={classes.button} onClick={() => updateDisplay({})} >
+              <p className={classes.buttonText} >{I18n.t('tooltips.close')}</p>
+              <Close className={classes.buttonIcon} />
+            </div>
           </div>
         </div>
 
