@@ -83,7 +83,7 @@ class Header extends Component {
         {/* Over the search area */}
         <div className={classes.row} >
           <p className={classes.title} >
-            { count !== 0 ? I18n.t('header.title', { count }) : I18n.t('header.default_title') }
+            { count !== 0 ? I18n.t('header.title', { count: `${Math.round(count/1000)}k` }) : I18n.t('header.default_title') }
           </p>
           <div>
             <SvgIcon
