@@ -1,22 +1,27 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import ParticleAnimation from 'react-particle-animation';
 
-class Background extends Component {
-  render() {
-    return (
-      <ParticleAnimation
-        numParticles={45}
-        interactive={false}
-        color={{ r: 51, g: 51, b: 51, a: 255 }}
-        background={{ r: 255, g: 255, b: 255, a: 255 }}
-        style={{
-          top: 0,
-          width: '100%',
-          height: '100%',
-          position: 'absolute',
-        }} />
-    );
-  }
-}
+const styles = {
+  background: {
+    top: 0,
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    '@media screen and (max-width: 1250px)': {
+      display: 'none',
+    },
+  },
+};
 
-export default Background;
+const Background = ({ classes }) => (
+  <ParticleAnimation
+    numParticles={45}
+    interactive={false}
+    color={{ r: 51, g: 51, b: 51, a: 255 }}
+    background={{ r: 255, g: 255, b: 255, a: 255 }}
+    className={classes.background}
+  />
+);
+
+export default withStyles(styles)(Background);
