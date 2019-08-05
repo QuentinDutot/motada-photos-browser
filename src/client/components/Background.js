@@ -1,6 +1,6 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import ParticleAnimation from 'react-particle-animation';
+import React from 'react'
+import { withStyles } from '@material-ui/core/styles'
+import ParticleAnimation from 'react-particle-animation'
 
 const styles = {
   background: {
@@ -12,7 +12,7 @@ const styles = {
       display: 'none',
     },
   },
-};
+}
 
 const Background = ({ classes }) => (
   <ParticleAnimation
@@ -22,6 +22,6 @@ const Background = ({ classes }) => (
     background={{ r: 255, g: 255, b: 255, a: 255 }}
     className={classes.background}
   />
-);
+)
 
-export default withStyles(styles)(Background);
+export default withStyles(styles)(Background)

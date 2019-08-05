@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const schema = mongoose.Schema({
     url: { type: String, default: '' },
@@ -8,6 +8,6 @@ const schema = mongoose.Schema({
     click: { type: Number, default: 0 }
 }, {
     timestamps: true
-});
+})
 
-module.exports = mongoose.model('images', schema);
+module.exports = mongoose.model('images', schema)

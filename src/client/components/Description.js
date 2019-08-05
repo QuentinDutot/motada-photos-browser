@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
 class Description extends Component {
   state = {
@@ -6,7 +6,7 @@ class Description extends Component {
   }
 
   render() {
-    const { sources } = this.state;
+    const { sources } = this.state
 
     const style = {
       display: 'flex',
@@ -33,8 +33,8 @@ class Description extends Component {
             </a>)
         }
       </div>
-    );
+    )
   }
 }
 
-export default Description;
+export default Description

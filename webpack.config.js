@@ -1,12 +1,12 @@
-const webpack = require("webpack");
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSAssets = require("optimize-css-assets-webpack-plugin");
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const webpack = require("webpack")
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const OptimizeCSSAssets = require("optimize-css-assets-webpack-plugin")
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
   entry: './src/client/index.js',
@@ -47,4 +47,4 @@ module.exports = {
     new OptimizeCSSAssets(),
     new CopyWebpackPlugin([{ from: './src/client/favicon.ico' }])
   ]
-};
+}

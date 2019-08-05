@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import compose from 'recompose/compose';
-import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
-import { I18n } from 'react-i18nify';
+import React, { Component } from 'react'
+import compose from 'recompose/compose'
+import { connect } from 'react-redux'
+import { withStyles } from '@material-ui/core/styles'
+import { I18n } from 'react-i18nify'
 
 const styles = {
   nodataBlock: {
@@ -19,15 +19,15 @@ const styles = {
   nodataTip: {
     fontSize: '1rem',
   },
-};
+}
 
 class NoData extends Component {
   state = {}
 
   render() {
-    const { classes, search, loading } = this.props;
+    const { classes, search, loading } = this.props
 
-    if (loading) return null;
+    if (loading) return null
     
     return (
       <div className={classes.nodataBlock}>
@@ -38,13 +38,13 @@ class NoData extends Component {
           {I18n.t('errors.no_results_tip')}
         </p>}
       </div>
-    );
+    )
   }
 }
 
 const mapState = state => ({
   search: state.search,
   loading: state.loading,
-});
+})
 
-export default compose(withStyles(styles), connect(mapState, null))(NoData);
+export default compose(withStyles(styles), connect(mapState, null))(NoData)

@@ -1,9 +1,9 @@
-const Images = require('./images.model.js');
+const Images = require('./images.model.js')
 
 exports.find = async (req, res) => {
-  const { query } = req;
-  const { random, tags } = query;
-  let result = false;
+  const { query } = req
+  const { random, tags } = query
+  let result = false
 
   // api/images?count
   if (Object.prototype.hasOwnProperty.call(query, 'count')) {
@@ -24,29 +24,29 @@ exports.find = async (req, res) => {
     }
   }
 
-  res.send(JSON.stringify(result));
-};
+  res.send(JSON.stringify(result))
+}
 
 exports.update = async (req, res) => {
-  const { params, body } = req;
-  let result = false;
+  const { params, body } = req
+  let result = false
 
   if (params.id) {
-    const image = await Images.findByIdAndUpdate(params.id, body, { new: true });
-    if (image) result = true;
+    const image = await Images.findByIdAndUpdate(params.id, body, { new: true })
+    if (image) result = true
   }
 
-  res.send(JSON.stringify(result));
-};
+  res.send(JSON.stringify(result))
+}
 
 exports.delete = async (req, res) => {
-  const { params } = req;
-  let result = false;
+  const { params } = req
+  let result = false
 
   if (params.id) {
-    const image = await Images.findByIdAndRemove(params.id);
-    if (image) result = true;
+    const image = await Images.findByIdAndRemove(params.id)
+    if (image) result = true
   }
 
-  res.send(JSON.stringify(result));
-};
+  res.send(JSON.stringify(result))
+}

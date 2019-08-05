@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { I18n } from 'react-i18nify';
-import ScrollUpLib from 'react-scroll-up';
-import PlayCircleOutline from '@material-ui/icons/PlayCircleOutline';
-import Tooltip from '@material-ui/core/Tooltip';
+import React, { Component } from 'react'
+import { I18n } from 'react-i18nify'
+import ScrollUpLib from 'react-scroll-up'
+import PlayCircleOutline from '@material-ui/icons/PlayCircleOutline'
+import Tooltip from '@material-ui/core/Tooltip'
 
 class ScrollUp extends Component {
   render() {
@@ -23,8 +23,8 @@ class ScrollUp extends Component {
             }} />
         </Tooltip>
       </ScrollUpLib>
-    );
+    )
   }
 }
 
-export default ScrollUp;
+export default ScrollUp

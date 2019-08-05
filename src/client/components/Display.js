@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import compose from 'recompose/compose';
-import { I18n } from 'react-i18nify';
-import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
-import { makeSearch, updateDisplay, updateNotification } from '../reducer';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import SaveAlt from '@material-ui/icons/SaveAlt';
-import Close from '@material-ui/icons/Close';
-import FileSaver from 'file-saver';
-import axios from 'axios';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import compose from 'recompose/compose'
+import { I18n } from 'react-i18nify'
+import { connect } from 'react-redux'
+import { withStyles } from '@material-ui/core/styles'
+import { makeSearch, updateDisplay, updateNotification } from '../reducer'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import SaveAlt from '@material-ui/icons/SaveAlt'
+import Close from '@material-ui/icons/Close'
+import FileSaver from 'file-saver'
+import axios from 'axios'
 
 const styles = {
   overlay: {
@@ -77,7 +77,7 @@ const styles = {
     cursor: 'pointer',
     textDecoration: 'underline',
   },
-};
+}
 
 class Display extends Component {
   static propTypes = {
@@ -86,7 +86,7 @@ class Display extends Component {
     makeSearch: PropTypes.func.isRequired,
     updateDisplay: PropTypes.func.isRequired,
     updateNotification: PropTypes.func.isRequired,
-  };
+  }
 
   state = {
     loaded: false,
@@ -94,48 +94,48 @@ class Display extends Component {
   }
 
   static getDerivedStateFromProps(props) {
-    document.body.style.overflow = props.display && props.display.url ? 'hidden' : null;
-    return null;
+    document.body.style.overflow = props.display && props.display.url ? 'hidden' : null
+    return null
   }
 
   componentDidMount() {
-    window.addEventListener('keydown', this.checkAdmin);
+    window.addEventListener('keydown', this.checkAdmin)
   }
 
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.checkAdmin);
+    window.removeEventListener('keydown', this.checkAdmin)
   }
 
   async saveImage(url) {
-    let filename = url.substring(url.lastIndexOf('/')+1);
+    let filename = url.substring(url.lastIndexOf('/')+1)
     if (filename.indexOf('.jpeg') === -1
      && filename.indexOf('.jpg') === -1
      && filename.indexOf('.png') === -1) {
-      filename += '.jpg';
+      filename += '.jpg'
     }
-    FileSaver.saveAs(url, filename);
+    FileSaver.saveAs(url, filename)
   }
 
   exploreTag(tag) {
-    const { updateDisplay, makeSearch } = this.props;
-    updateDisplay({});
-    makeSearch(tag);
+    const { updateDisplay, makeSearch } = this.props
+    updateDisplay({})
+    makeSearch(tag)
   }
 
   checkAdmin = ({ keyCode }) => {
-    const { admin } = this.state;
+    const { admin } = this.state
     if (!admin) {
       this.setState({
         admin: (keyCode == 46)
-      });
+      })
     }
   }
 
   render() {
-    const { classes, display, updateDisplay, updateNotification } = this.props;
-    const { loaded, admin } = this.state;
+    const { classes, display, updateDisplay, updateNotification } = this.props
+    const { loaded, admin } = this.state
 
-    if (!display || !display.url) return null;
+    if (!display || !display.url) return null
 
     return (
       <div className={classes.overlay} onClick={() => updateDisplay({})} >
@@ -180,32 +180,32 @@ class Display extends Component {
             type="text"
             className={classes.button}
             onChange={({ target }) => {
-              const { value } = target;
+              const { value } = target
               if (value === process.env.ADMIN_KEY) {
                 axios.delete(`/api/images/${display._id}`).then(({ data }) => {
                   if (data) {
-                    this.setState({ admin: false });
-                    location.reload();
+                    this.setState({ admin: false })
+                    location.reload()
                   }
-                });
+                })
               }
             }}
           />}
         </div>
 
       </div>
-    );
+    )
   }
 }
 
 const mapState = state => ({
   display: state.display,
-});
+})
 
 const mapDispatch = dispatch => ({
   makeSearch: search => dispatch(makeSearch(search)),
   updateDisplay: image => dispatch(updateDisplay(image)),
   updateNotification: notification => dispatch(updateNotification(notification)),
-});
+})
 
-export default compose(withStyles(styles), connect(mapState, mapDispatch))(Display);
+export default compose(withStyles(styles), connect(mapState, mapDispatch))(Display)
