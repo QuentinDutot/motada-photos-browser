@@ -58,5 +58,6 @@ module.exports = () => {
     // })
   }
 
-  cron.schedule(process.env.SCRAPING_CRON || '00 */1 * * *', () => engine())
+  // stop scraping as database need to be purged
+  // cron.schedule(process.env.SCRAPING_CRON || '00 */1 * * *', () => engine())
 }
