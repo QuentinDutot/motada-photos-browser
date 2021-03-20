@@ -52,7 +52,7 @@
     "@babel/runtime": "^7.4.5",
     "babel-eslint": "^9.0.0",
     "babel-loader": "^8.0.6",
-    "concurrently": "^4.0.0",
+    "concurrently": "^6.0.0",
     "copy-webpack-plugin": "^4.5.4",
     "css-loader": "^1.0.0",
     "eslint": "^5.16.0",
