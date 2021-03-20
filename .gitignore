@@ -2,3 +2,4 @@
 /dist
 database.json
 config.json
+.env

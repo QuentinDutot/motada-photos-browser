@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const database = require('./utils/database.js')
 const crontab = require('./utils/crontab.js')
 const api = require('./api/images.routes.js')
