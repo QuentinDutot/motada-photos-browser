@@ -1,68 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import compose from 'recompose/compose'
 import { connect } from 'react-redux'
-import { withStyles } from '@material-ui/core/styles'
 import { updateDisplay } from '../reducer'
-import OpenWith from '@material-ui/icons/OpenWith'
-import FavoriteBorder from '@material-ui/icons/FavoriteBorder'
 import Zoom from '@material-ui/core/Zoom'
 import axios from 'axios'
 
-const styles = {
-  card: {
-    cursor: 'pointer',
-    margin: 2.5,
-    '@media screen and (min-width: 1251px)': { width: 'calc(25% - 5px)' },
-    '@media screen and (max-width: 1250px)': { width: 'calc(33% - 5px)' },
-    '@media screen and (max-width: 950px)': { width: 'calc(50% - 5px)' },
-    '@media screen and (max-width: 630px)': { width: 'calc(100% - 5px)' },
-  },
-  image: {
-    width: '100%',
-    display: 'block'
-  },
-  bar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '45%',
-    height: 50,
-    marginTop: -65,
-    float: 'right',
-    opacity: .9,
-    color: 'white',
-    fontSize: '28px',
-    borderRadius: '27px 0 0 27px',
-    backgroundColor: '#00000099'
-  },
-  heart: {
-    width: '32px',
-    height: '32px',
-    marginLeft: 10
-  },
-  overlay: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    top: 0,
-    left: 0,
-    opacity: .1,
-    backgroundColor: 'grey'
-  },
-  icon: {
-    position: 'absolute',
-    width: '80px',
-    height: '80px',
-    top: 'calc(50% - 40px)',
-    left: 'calc(50% - 40px)',
-    color: 'white'
-  },
-}
-
 class Image extends Component {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
     data: PropTypes.object.isRequired,
     updateDisplay: PropTypes.func.isRequired,
   }
@@ -93,26 +37,39 @@ class Image extends Component {
   }
 
   render() {
-    const { classes, data } = this.props
+    const { data } = this.props
     const { mouseOver, loaded, favorites } = this.state
 
     return (
       <div
-        className={classes.card}
+        className="lg:w-3/12 md:4/12 sm:w-6/12 w-full rounded cursor-pointer p-1"
         onClick={() => this.mouseClick()}
         onMouseEnter={() => this.setState({ mouseOver: true })}
-        onMouseLeave={() => this.setState({ mouseOver: false })} >
+        onMouseLeave={() => this.setState({ mouseOver: false })}
+      >
+
         <img
           onLoad={() => this.setState({ loaded: true })}
-          className={classes.image}
+          className="block w-full rounded shadow"
           src={`${data.url}?w=700`}
-          alt={data.title} />
-        { loaded && mouseOver && <div className={classes.overlay}></div> }
-        { loaded && !mouseOver && <div className={classes.bar}>
-          {favorites}
-          <FavoriteBorder className={classes.heart} fontSize="large" />
-        </div>}
-        <Zoom in={mouseOver}><OpenWith className={classes.icon} /></Zoom>
+          alt={data.title}
+        />
+
+        {loaded && (
+          mouseOver ? (
+            <div className="flex items-center justify-center absolute top-0 left-0 h-full w-full bg-gray-300 bg-opacity-30 rounded">
+              <Zoom in={mouseOver}>
+                <i className="fa fa-arrows-alt text-white text-6xl" aria-hidden="true" />
+              </Zoom>
+            </div>
+          ) : (
+            <div className="flex items-center justify-center w-1/3 bg-gray-800 text-white float-right opacity-90 rounded-l -mt-20 p-2">
+              <span className="text-2xl leading-none">{favorites}</span>
+              <i className="fa fa-heart text-white text-xl ml-4" aria-hidden="true" />
+            </div>
+          )
+        )}
+
       </div>
     )
   }
@@ -122,4 +79,4 @@ const mapDispatch = dispatch => ({
   updateDisplay: image => dispatch(updateDisplay(image)),
 })
 
-export default compose(withStyles(styles), connect(() => ({}), mapDispatch))(Image)
+export default connect(() => ({}), mapDispatch)(Image)

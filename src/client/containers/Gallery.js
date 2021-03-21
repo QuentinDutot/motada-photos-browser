@@ -92,8 +92,8 @@ class Gallery extends Component {
 
     return images.length
     ? (
-      <Masonry style={{ top: 10, padding: 0 }} >
-        { images.slice(0, limit).map(image => <Image key={image._id} data={image} />) }
+      <Masonry className="p-0">
+        {images.slice(0, limit).map(image => <Image key={image._id} data={image} />)}
       </Masonry>
     )
     : (

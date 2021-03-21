@@ -2,11 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { I18n } from 'react-i18nify'
 import { connect } from 'react-redux'
-import TextField from '@material-ui/core/TextField'
-import InputAdornment from '@material-ui/core/InputAdornment'
-import SearchIcon from '@material-ui/icons/Search'
-import Clear from '@material-ui/icons/Clear'
-import IconButton from '@material-ui/core/IconButton'
 import { makeSearch } from '../reducer'
 
 class Search extends Component {
@@ -15,44 +10,27 @@ class Search extends Component {
     makeSearch: PropTypes.func.isRequired,
   }
 
-  getSearchAdornement() {
-    return (
-      <InputAdornment position="start">
-        <SearchIcon />
-      </InputAdornment>
-    )
-  }
-
-  getClearAdornement() {
-    const { makeSearch } = this.props
-    return (
-      <InputAdornment position="end">
-        <IconButton aria-label={I18n.t('tooltips.clear_search')} onClick={() => makeSearch('')}>
-          <Clear />
-        </IconButton>
-      </InputAdornment>
-    )
-  }
-
-  getInputProps() {
-    const { search } = this.props
-    return {
-      startAdornment: this.getSearchAdornement(),
-      endAdornment: search.length > 0 && this.getClearAdornement(),
-    }
-  }
-
   render() {
     const { search, makeSearch } = this.props
 
     return (
-      <TextField
-        value={search}
-        variant="outlined"
-        style={{ width: '100%', backgroundColor: 'white' }}
-        placeholder={I18n.t('tooltips.search')}
-        onChange={event => makeSearch(event.target.value)}
-        InputProps={this.getInputProps()} />
+      <form className="relative">
+        <i className="fa fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-900" aria-hidden="true" />
+        <input
+          type="text"
+          value={search}
+          placeholder={I18n.t('tooltips.search')}
+          onChange={event => makeSearch(event.target.value)}
+          className="focus:border-blue-900 focus:ring-1 focus:ring-blue-900 focus:outline-none w-full text-lg text-black placeholder-gray-900 border border-gray-200 rounded shadow px-12 py-4"
+        />
+        {search.length > 0 && (
+          <i
+            className="fa fa-times absolute right-4 top-1/2 transform -translate-y-1/2 bg-gray-50 hover:bg-gray-300 text-gray-900 text-lg rounded-full cursor-pointer px-4 py-2"
+            aria-label={I18n.t('tooltips.clear_search')}
+            onClick={() => makeSearch('')}
+          />
+        )}
+      </form>
     )
   }
 }

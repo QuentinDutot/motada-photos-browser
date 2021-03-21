@@ -25,22 +25,24 @@ class Translate extends Component {
   render() {
     const { open, close } = this.props
 
-    const languages = Object.keys(translations).map(key => {
-        return <ListItem
-          button
-          key={translations[key].flag}
-          onClick={() => this.translate(translations[key].code)}>
-          <FlagIcon code={translations[key].flag} size={32} />
-          <ListItemText primary={translations[key].language} />
-        </ListItem>
-    })
+    const languages = Object.keys(translations).map(key => (
+      <ListItem
+        button
+        key={translations[key].flag}
+        onClick={() => this.translate(translations[key].code)}
+      >
+        <FlagIcon code={translations[key].flag} size={32} />
+        <ListItemText primary={translations[key].language} />
+      </ListItem>
+    ))
 
     return (
       <Dialog
         open={open}
         onClose={() => close()}
         maxWidth="xs"
-        fullWidth={true}>
+        fullWidth={true}
+      >
         <DialogTitle>
           {I18n.t('tooltips.translations')}
         </DialogTitle>

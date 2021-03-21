@@ -42,7 +42,7 @@ class Home extends Component {
 
   render() {
     return (
-      <div style={{ paddingBottom: 50, backgroundColor: 'rgb(255, 255, 255)' }}>
+      <div className="pb-40 bg-white">
 
         {/* Background */}
         <Background />

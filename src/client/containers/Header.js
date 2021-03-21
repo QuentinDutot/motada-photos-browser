@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import compose from 'recompose/compose'
 import { I18n } from 'react-i18nify'
 import { connect } from 'react-redux'
-import { withStyles } from '@material-ui/core/styles'
 import { updateNotification } from '../reducer'
 import FlagIcon from 'react-flag-kit/lib/CDNFlagIcon'
 import SvgIcon from '@material-ui/core/SvgIcon'
@@ -12,47 +10,8 @@ import Search from '../components/Search'
 import Translate from '../components/Translate'
 import axios from 'axios'
 
-const styles = {
-  header: {
-    top: 0,
-    position: 'relative',
-    color: '#333',
-    width: '70%',
-    padding: '5% 15% 5% 15%',
-    '@media screen and (max-width: 1250px)': {
-      width: 'calc(100% - 10px)',
-      margin: '3rem 0',
-      padding: '5px',
-    },
-  },
-  row: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  },
-  title: {
-    fontSize: '1.5rem',
-  },
-  icon: {
-    marginRight: 8,
-    float: 'right',
-    cursor: 'pointer',
-  },
-  flag: {
-    marginTop: -6,
-  },
-  github: {
-    padding: 2,
-    width: 26,
-    height: 26,
-    borderRadius: 100,
-    backgroundColor: 'white',
-  },
-}
-
 class Header extends Component {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
     updateNotification: PropTypes.func.isRequired,
   }
 
@@ -74,40 +33,44 @@ class Header extends Component {
   }
 
   render() {
-    const { classes, updateNotification } = this.props
+    const { updateNotification } = this.props
     const { count, dialog } = this.state
 
     return (
-      <div className={classes.header}>
+      <div className="w-full flex items-center justify-center">
+        <div className="md:w-3/5 w-full relative md:mx-32 md:my-28 mx-1 my-16">
 
-        {/* Over the search area */}
-        <div className={classes.row} >
-          <p className={classes.title} >
-            { count !== 0 ? I18n.t('header.title', { count: `${Math.round(count/1000)}k` }) : I18n.t('header.default_title') }
-          </p>
-          <div>
-            <SvgIcon
-              className={[classes.icon, classes.github].join(' ')}
-              onClick={this.openGithubProjet}>
-              <path fill="black" d={this.getGithubSvg()} />
-            </SvgIcon>
-            <FlagIcon
-              code={I18n.t('flag')}
-              size={40}
-              className={[classes.icon, classes.flag].join(' ')}
-              onClick={() => this.setState({ dialog: true })} />
+          {/* Over the search area */}
+          <div className="flex items-center justify-between mb-8">
+            <p className="text-2xl text-gray-900">
+              {count !== 0 ? I18n.t('header.title', { count: `${Math.round(count/1000)}k` }) : I18n.t('header.default_title')}
+            </p>
+            <div>
+              <FlagIcon
+                code={I18n.t('flag')}
+                size={40}
+                className="cursor-pointer mr-4 p-1"
+                onClick={() => this.setState({ dialog: true })}
+              />
+              <SvgIcon
+                className="h-20 bg-white rounded-full shadow cursor-pointer"
+                onClick={this.openGithubProjet}
+              >
+                <path fill="black" d={this.getGithubSvg()} />
+              </SvgIcon>
+            </div>
           </div>
+
+
+          {/* The search area */}
+          <Search />
+
+          {/* Under the search area */}
+          <Description />
+
+          {/* The translation popup */}
+          <Translate open={dialog} close={() => this.setState({ dialog: false })} />
         </div>
-
-
-        {/* The search area */}
-        <Search />
-
-        {/* Under the search area */}
-        <Description />
-
-        {/* The translation popup */}
-        <Translate open={dialog} close={() => this.setState({ dialog: false })} />
       </div>
     )
   }
@@ -117,4 +80,4 @@ const mapDispatch = dispatch => ({
   updateNotification: notification => dispatch(updateNotification(notification)),
 })
 
-export default compose(withStyles(styles), connect(null, mapDispatch))(Header)
+export default connect(null, mapDispatch)(Header)

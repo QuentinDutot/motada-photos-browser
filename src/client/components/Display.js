@@ -1,87 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import compose from 'recompose/compose'
 import { I18n } from 'react-i18nify'
 import { connect } from 'react-redux'
-import { withStyles } from '@material-ui/core/styles'
 import { makeSearch, updateDisplay, updateNotification } from '../reducer'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import SaveAlt from '@material-ui/icons/SaveAlt'
-import Close from '@material-ui/icons/Close'
 import FileSaver from 'file-saver'
 import axios from 'axios'
 
-const styles = {
-  overlay: {
-    position: 'fixed',
-    backgroundColor: '#9e9e9ec7',
-    height: '100%',
-    width: '100%',
-    top: 0,
-    zIndex: 1,
-  },
-  image: {
-    maxHeight: '80%',
-    maxWidth: '80%',
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    margin: 'auto',
-  },
-  toolbar: {
-    position: 'absolute',
-    display: 'flex',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    backgroundColor: 'white',
-    color: 'rgb(51, 51, 51)',
-    textAlign: 'left',
-    fontSize: 16,
-    padding: 15,
-    left: 0,
-    right: 0,
-  },
-  bottomToolbar: {
-    bottom: 0,
-  },
-  tools: {
-    display: 'flex',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-  },
-  button: {
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    height: 'fit-content',
-    minWidth: 80,
-    border: '1px solid rgb(51, 51, 51)',
-    padding: '0px 30px',
-    margin: '0 5px',
-    borderRadius: 3,
-    '&:hover': { backgroundColor: '#b3b3b326' },       
-  },
-  buttonIcon: {
-    fontSize: 20,
-  },
-  buttonText: {
-    margin: '0 10px 0 0',
-  },
-  title: {
-    margin: 0,
-  },
-  link: {
-    cursor: 'pointer',
-    textDecoration: 'underline',
-  },
-}
-
 class Display extends Component {
   static propTypes = {
-    classes: PropTypes.object.isRequired,
     display: PropTypes.object.isRequired,
     makeSearch: PropTypes.func.isRequired,
     updateDisplay: PropTypes.func.isRequired,
@@ -132,65 +58,88 @@ class Display extends Component {
   }
 
   render() {
-    const { classes, display, updateDisplay, updateNotification } = this.props
+    const { display, updateDisplay, updateNotification } = this.props
     const { loaded, admin } = this.state
 
     if (!display || !display.url) return null
 
     return (
-      <div className={classes.overlay} onClick={() => updateDisplay({})} >
+      <div className="fixed top-0 h-full w-full bg-gray-300 bg-opacity-80 z-10" onClick={() => updateDisplay({})}>
 
-        <div className={classes.toolbar} onClick={e => e.stopPropagation()} >
-          <p className={classes.title}>{display.title}</p>
-          <div className={classes.tools} >
-            <div className={classes.button} onClick={() => this.saveImage(display.url)} >
-              <p className={classes.buttonText} >{I18n.t('tooltips.download')}</p>
-              <SaveAlt className={classes.buttonIcon} />
-            </div>
-            <div className={classes.button} onClick={() => updateDisplay({})} >
-              <p className={classes.buttonText} >{I18n.t('tooltips.close')}</p>
-              <Close className={classes.buttonIcon} />
-            </div>
+        <div
+          className="absolute top-0 left-0 right-0 w-full h-14 flex items-center justify-between bg-white border p-4"
+          onClick={event => event.stopPropagation()}
+        >
+          <p className="text m-0">{display.title}</p>
+          <div className="flex flex-wrap">
+            <button
+              type="button"
+              className="flex-none flex items-center justify-center rounded border border-gray-300 hover:bg-gray-50 mr-4 px-2 py-1"
+              onClick={() => this.saveImage(display.url)}
+            >
+              <p className="text-gray-900 mr-3">{I18n.t('tooltips.download')}</p>
+              <i className="fa fa-download text-gray-900" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              className="flex-none flex items-center justify-center rounded border border-gray-300 hover:bg-gray-50 px-2 py-1"
+              onClick={() => updateDisplay()}
+            >
+              <p className="text-gray-900 mr-3">{I18n.t('tooltips.close')}</p>
+              <i className="fa fa-times text-gray-900" aria-hidden="true" />
+            </button>
           </div>
         </div>
 
-        {!loaded && <CircularProgress className={classes.image} style={{ width: 65, height: 65, color: 'white' }} />}
+        {!loaded && (
+          <div className="flex items-center justify-center absolute top-0 right-0 bottom-0 left-0 m-auto">
+            <i className="fa fa-circle-o-notch fa-spin text-white text-8xl" style={{ height: 'fit-content' }} aria-hidden="true" />
+          </div>
+        )}
 
         <img
           src={display.url}
           alt={display.title}
           style={loaded ? {} : { display: 'none' }}
-          className={classes.image}
-          onClick={e => e.stopPropagation()}
+          className="absolute top-0 right-0 bottom-0 left-0 rounded shadow m-auto"
+          style={{ maxHeight: '80%', maxWidth: '80%' }}
+          onClick={event => event.stopPropagation()}
           onLoad={() => this.setState({ loaded: true })}
         />
 
-        <div className={[classes.toolbar, classes.bottomToolbar].join(' ')} onClick={e => e.stopPropagation()} >
-          <p className={classes.title}>
-            {`${I18n.t('tooltips.keywords')} : `}
-            {Array.from(new Set(display.tags)).map((tag, index) =>
-              <span key={tag} >
-                <span className={classes.link} onClick={() => this.exploreTag(tag)} >{tag}</span>
-                { index != display.tags.length-1 && <span>, </span>}
-              </span>
+        <div
+          className="absolute bottom-0 left-0 right-0 w-full h-14 flex items-center justify-between bg-white border p-4"
+          onClick={event => event.stopPropagation()}
+        >
+          <p className="m-0">
+            <span>{`${I18n.t('tooltips.keywords')}: `}</span>
+            {Array.from(new Set(display.tags)).map(tag =>
+              <button
+                key={tag}
+                className="h-9 bg-blue-100 hover:bg-blue-300 text-blue-900 hover:text-white rounded ml-4 px-2 py-1"
+                onClick={() => this.exploreTag(tag)}
+              >
+                {tag}
+              </button>
             )}
           </p>
-
-          {admin && <input
-            type="text"
-            className={classes.button}
-            onChange={({ target }) => {
-              const { value } = target
-              if (value === process.env.ADMIN_KEY) {
-                axios.delete(`/api/images/${display._id}`).then(({ data }) => {
-                  if (data) {
-                    this.setState({ admin: false })
-                    location.reload()
-                  }
-                })
-              }
-            }}
-          />}
+          {admin && (
+            <input
+              type="text"
+              className="flex-none flex items-center justify-center rounded border border-gray-900 hover:bg-gray-50 mr-4 px-2 py-1"
+              onChange={({ target }) => {
+                const { value } = target
+                if (value === process.env.ADMIN_KEY) {
+                  axios.delete(`/api/images/${display._id}`).then(({ data }) => {
+                    if (data) {
+                      this.setState({ admin: false })
+                      location.reload()
+                    }
+                  })
+                }
+              }}
+            />
+          )}
         </div>
 
       </div>
@@ -208,4 +157,4 @@ const mapDispatch = dispatch => ({
   updateNotification: notification => dispatch(updateNotification(notification)),
 })
 
-export default compose(withStyles(styles), connect(mapState, mapDispatch))(Display)
+export default connect(mapState, mapDispatch)(Display)

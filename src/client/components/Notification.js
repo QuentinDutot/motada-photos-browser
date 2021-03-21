@@ -18,7 +18,8 @@ class Notification extends Component {
         open={notification.length > 0}
         autoHideDuration={6000}
         onClose={() => updateNotification('')}
-        message={notification} />
+        message={notification}
+      />
     )
   }
 }

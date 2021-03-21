@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { I18n } from 'react-i18nify'
 import { connect } from 'react-redux'
 import LinearProgress from '@material-ui/core/LinearProgress'
 
@@ -12,19 +11,9 @@ class Loading extends Component {
   render() {
     const { loading } = this.props
 
-    return (
-      <div>
-        {
-          loading
-          && <LinearProgress style={{
-            top: 0,
-            width: '100%',
-            zIndex: 9999,
-            position: 'fixed',
-          }} />
-        }
-      </div>
-    )
+    return loading ? (
+      <LinearProgress className="fixed top-0 w-full z-10" />
+    ) : null
   }
 }
 
