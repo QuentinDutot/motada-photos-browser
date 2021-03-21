@@ -24,7 +24,6 @@
     "mongoose": "^5.12.1",
     "node-cron": "^2.0.3",
     "nodejs-system-reboot": "0.0.4",
-    "prop-types": "^15.7.2",
     "puppeteer": "^1.17.0",
     "random-words": "^1.1.0",
     "react": "^16.8.6",

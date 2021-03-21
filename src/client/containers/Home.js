@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { reachBottom } from '../reducer'
 import Notification from '../components/Notification'
@@ -10,22 +9,9 @@ import Background from '../components/Background'
 import Header from './Header'
 import Gallery from './Gallery'
 
-class Home extends Component {
-  static propTypes = {
-    bottomReached: PropTypes.bool.isRequired,
-    reachBottom: PropTypes.func.isRequired,
-  }
+const Home = ({ bottomReached = false, reachBottom = () => {} }) => {
 
-  componentDidMount() {
-    window.addEventListener('scroll', this.checkScrolling)
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.checkScrolling)
-  }
-
-  checkScrolling = () => {
-    const { bottomReached, reachBottom } = this.props
+  const onScroll = () => {
     const { body, documentElement } = document
     const windowHeight = 'innerHeight' in window ? window.innerHeight : documentElement.offsetHeight
     const windowBottom = windowHeight + window.pageYOffset + 300
@@ -40,27 +26,30 @@ class Home extends Component {
     }
   }
 
-  render() {
-    return (
-      <div className="pb-40 bg-white">
+  useEffect(() => {
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [bottomReached])
 
-        {/* Background */}
-        <Background />
+  return (
+    <div className="pb-40 bg-white">
 
-        {/* Head */}
-        <Loading />
-        <Header />
+      {/* Background */}
+      <Background />
 
-        {/* Body */}
-        <Display />
-        <Gallery />
-        <ScrollUp />
+      {/* Head */}
+      <Loading />
+      <Header />
 
-        {/* Notif's snackbar */}
-        <Notification />
-      </div>
-    )
-  }
+      {/* Body */}
+      <Display />
+      <Gallery />
+      <ScrollUp />
+
+      {/* Notif's snackbar */}
+      <Notification />
+    </div>
+  )
 }
 
 const mapState = state => ({

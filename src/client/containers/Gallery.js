@@ -1,105 +1,85 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState, useEffect } from 'react'
 import { I18n } from 'react-i18nify'
 import { connect } from 'react-redux'
-import { updateNotification, isLoading, cleanImages, addImage, reachBottom } from '../reducer'
+import { updateNotification, isLoading, cleanImages, addImage } from '../reducer'
 import Image from '../components/Image'
 import Masonry from 'react-masonry-component'
 import axios from 'axios'
 import NoData from '../components/NoData'
 
-class Gallery extends Component {
-  static propTypes = {
-    search: PropTypes.string.isRequired,
-    bottomReached: PropTypes.bool.isRequired,
-    loading: PropTypes.bool.isRequired,
-    images: PropTypes.array.isRequired,
-    isLoading: PropTypes.func.isRequired,
-    updateNotification: PropTypes.func.isRequired,
-    cleanImages: PropTypes.func.isRequired,
-    reachBottom: PropTypes.func.isRequired,
-  }
+const Gallery = ({
+  search = '',
+  bottomReached = false,
+  loading = false,
+  images = [],
+  isLoading = () => {},
+  updateNotification = () => {},
+  cleanImages = () => {},
+  addImage = () => {},
+}) => {
 
-  state = {
-    limit: 10,
-  }
+  const [limit, setLimit] = useState(10)
 
-  componentDidUpdate(prevProps) {
-    const { search, images, loading, bottomReached, cleanImages, reachBottom } = this.props
-    const { limit } = this.state
-    if (prevProps.search !== search) {
-      cleanImages()
-      if (search) this.loadSearch(search)
-      else this.loadRandom(100)
-    }
-    if(prevProps.bottomReached !== bottomReached && bottomReached && !loading) {
-      if (limit < images.length) this.setState({ limit: limit + 10 })
-      else if (!search) this.loadRandom(50)
-    }
-  }
-
-  componentDidMount() {
-    const { cleanImages } = this.props
-    cleanImages()
-    this.loadRandom(100)
-  }
-
-  saveImages(currentSearch, newImages) {
-    const { addImage } = this.props
-    for (let i = 0; i < newImages.length; i++) {
+  const saveImages = (_search, _images) => {
+    for (let i = 0; i < _images.length; i++) {
       setTimeout(() => {
-        const { search, images } = this.props
-        if (!images.find(e => e._id === newImages[i]._id) && currentSearch === search) {
-          addImage(newImages[i])
+        if (!images.find(image => image._id === _images[i]._id) && _search === search) {
+          addImage(_images[i])
         }
       }, i * 500)
     }
   }
 
-  request(url, type) {
-    const { search } = this.props
+  const request = (url, type) => {
     axios(url)
-      .then((res) => {
-        // console.log(res.data)
-        if (res.data[type] && res.data[type].length > 0) {
-          this.saveImages(search, res.data[type])
+      .then((response) => {
+        // console.log(response.data)
+        if (response.data[type] && response.data[type].length > 0) {
+          saveImages(search, response.data[type])
         } else {
-          updateNotification(I18n.t('no_results'))
+          updateNotification(I18n.t('errors.no_results'))
         }
       })
-      .catch((err) => {
-        // console.log(err)
-        updateNotification(I18n.t('unknow'))
+      .catch((error) => {
+        // console.log(error)
+        updateNotification(I18n.t('errors.unknow'))
       })
-      .then(() => {
-        this.props.isLoading(false)
-      })
+      .then(() => isLoading(false))
   }
 
-  loadSearch(search) {
-    this.props.isLoading(true)
-    this.request(`/api/images?tags=${search.split(' ').join(',')}`, 'tags')
+  const loadSearch = (_search) => {
+    isLoading(true)
+    request(`/api/images?tags=${_search.split(' ').join(',')}`, 'tags')
   }
 
-  loadRandom(limit) {
-    this.props.isLoading(true)
-    this.request(`/api/images?random=${limit}`, 'random')
+  const loadRandom = (_limit) => {
+    isLoading(true)
+    request(`/api/images?random=${_limit}`, 'random')
   }
 
-  render() {
-    const { images } = this.props
-    const { limit } = this.state
+  useEffect(() => {
+    cleanImages()
+    if (search) loadSearch(search)
+    else loadRandom(100)
+  }, [search])
 
-    return images.length
-    ? (
+  useEffect(() => {
+    if (!bottomReached || loading) return
+    if (limit < images.length) setLimit(limit + 10)
+    else if (!search) loadRandom(50)
+  }, [bottomReached, loading])
+
+  return (
+    images.length ? (
       <Masonry className="p-0">
-        {images.slice(0, limit).map(image => <Image key={image._id} data={image} />)}
+        {images.slice(0, limit).map(image => (
+          <Image key={image._id} data={image} />
+        ))}
       </Masonry>
-    )
-    : (
+    ) : (
       <NoData />
     )
-  }
+  )
 }
 
 const mapState = state => ({
@@ -114,7 +94,6 @@ const mapDispatch = dispatch => ({
   updateNotification: notification => dispatch(updateNotification(notification)),
   cleanImages: () => dispatch(cleanImages()),
   addImage: image => dispatch(addImage(image)),
-  reachBottom: reached => dispatch(reachBottom(reached)),
 })
 
 export default connect(mapState, mapDispatch)(Gallery)
