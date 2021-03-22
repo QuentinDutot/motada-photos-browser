@@ -1,4 +1,5 @@
 const cron = require('node-cron')
+const axios = require('axios')
 const reboot = require('nodejs-system-reboot')
 const Scraper = require('../bots/scraper.js')
 const Images = require('../api/images.model.js')
@@ -41,23 +42,52 @@ module.exports = () => {
     }
   }
 
-  async function engine() {
-    await scrapeImages('pexels')
-    await scrapeImages('negative')
-    await scrapeImages('kaboom')
-    // scrapeImages('unsplash') TOFIX
+  // scraping cron
+  // cron.schedule(process.env.SCRAPING_CRON || '00 */2 * * *', async () => {
+  //   await scrapeImages('pexels')
+  //   await scrapeImages('negative')
+  //   await scrapeImages('kaboom')
+  //   // scrapeImages('unsplash') TOFIX
 
-    // Automatically post on social medias TOFIX
-    // const image = database.get('images').sample().value()
-    // await require('../scrapers/twitter.js')(image)
+  //   // Automatically post on social medias TOFIX
+  //   // const image = database.get('images').sample().value()
+  //   // await require('../scrapers/twitter.js')(image)
 
-    // Reboot to cut any possible memory leaks
-    // Not working on heroku
-    // reboot((err, stderr, stdout) => {
-    //   if(!err && !stderr) console.log(stdout)
-    // })
-  }
+  //   // Reboot to cut any possible memory leaks
+  //   // Not working on heroku
+  //   // reboot((err, stderr, stdout) => {
+  //   //   if(!err && !stderr) console.log(stdout)
+  //   // })
+  // })
 
-  // stop scraping as database need to be purged
-  // cron.schedule(process.env.SCRAPING_CRON || '00 */1 * * *', () => engine())
+  // cleaning cron
+  cron.schedule(process.env.CLEANING_CRON || '00 */2 * * *', async () => {
+    const items = 100
+
+    const randomImages = await Images.aggregate([
+      { $sample: { size: items } },
+      { $project: { _id: true, url: true } },
+      { $limit: items },
+    ])
+  
+    randomImages.forEach((randomImage) => {
+      axios.head(randomImage.url).then(async () => {
+  
+        // delete duplicate images
+        const similarImages = await Images.find({ url: randomImage.url })
+        const duplicateImages = similarImages.filter(similarImage => similarImage._id.toString() != randomImage._id.toString())
+        duplicateImages.forEach(async (duplicateImage) => {
+          await Images.findByIdAndRemove(duplicateImage._id)
+          console.log('duplicate image deleted:', duplicateImage._id)
+        })
+  
+      }).catch(async () => {
+  
+        // delete unreachable image
+        await Images.findByIdAndRemove(randomImage._id)
+        console.log('unreachable image deleted:', randomImage._id)
+      
+      })
+    })
+  })
 }
