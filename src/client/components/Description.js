@@ -8,7 +8,7 @@ const Description = () => (
         href={`https://${source}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="mx-4 text-base text-gray-500 hover:text-gray-900 hover:underline"
+        className="mx-4 text-base text-gray-500 hover:text-gray-900 hover:underline text-lg"
       >
         {source}
       </a>  

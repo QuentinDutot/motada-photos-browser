@@ -32,7 +32,7 @@ const Home = ({ bottomReached = false, reachBottom = () => {} }) => {
   }, [bottomReached])
 
   return (
-    <div className="pb-40 bg-white">
+    <div className="pb-40 bg-gray-50">
 
       {/* Background */}
       <Background />

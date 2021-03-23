@@ -22,11 +22,11 @@ const Header = () => {
 
   return (
     <div className="w-full flex items-center justify-center">
-      <div className="md:w-3/5 w-full relative md:mx-32 md:my-28 mx-1 my-16">
+      <div className="lg:w-3/5 md:w-4/5 w-full relative md:mx-32 md:my-28 mx-1 my-16">
 
         {/* Over the search area */}
         <div className="flex items-center justify-between mb-8">
-          <p className="text-2xl text-gray-900">
+          <p className="text-xl sm:text-2xl lg:text-3xl leading-none font-extrabold text-gray-900 tracking-tight text-left mb-0">
             {count !== 0 ? I18n.t('header.title', { count: `${Math.round(count/1000)}k` }) : I18n.t('header.default_title')}
           </p>
           <div>

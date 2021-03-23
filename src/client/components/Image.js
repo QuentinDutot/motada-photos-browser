@@ -15,17 +15,17 @@ const Image = ({ data = {}, updateDisplay = () => {} }) => {
     axios.patch(`/api/images/${data._id}`, { click: data.click + 1 })
   }
 
-  // generate random favorites count
+  // generate random views count
   const min = 0
   const max = 10 * (data.click + 1)
-  let favorites = (Math.floor(Math.random() * (max - min + 1)) + min).toString()
-  const thousands = favorites.substring(0, favorites.length-3)
-  const hundreds = favorites.substring(favorites.length-3, favorites.length-2)
-  favorites = favorites < 1000 ? favorites : `${thousands}.${hundreds} k`
+  let views = (Math.floor(Math.random() * (max - min + 1)) + min).toString()
+  const thousands = views.substring(0, views.length-3)
+  const hundreds = views.substring(views.length-3, views.length-2)
+  views = views < 1000 ? views : `${thousands}.${hundreds} k`
 
   return (
     <div
-      className="lg:w-3/12 md:4/12 sm:w-6/12 w-full rounded cursor-pointer p-1"
+      className="lg:w-1/4 md:w-1/3 sm:w-2/4 w-full rounded cursor-pointer p-1"
       onClick={click}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
@@ -46,9 +46,9 @@ const Image = ({ data = {}, updateDisplay = () => {} }) => {
             </Zoom>
           </div>
         ) : (
-          <div className="flex items-center justify-center w-1/3 bg-gray-800 text-white float-right opacity-90 rounded-l -mt-20 p-2">
-            <span className="text-2xl leading-none">{favorites}</span>
-            <i className="fa fa-heart text-white text-xl ml-4" aria-hidden="true" />
+          <div className="flex items-center justify-center bg-gray-800 text-white float-right opacity-90 rounded -mt-20 py-3 px-8">
+            <span className="text-xl leading-none">{views}</span>
+            <i className="fa fa-eye text-white text-xl ml-4" aria-hidden="true" />
           </div>
         )
       )}

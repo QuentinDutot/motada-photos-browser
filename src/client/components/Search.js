@@ -20,17 +20,17 @@ const Search = ({ search = '', makeSearch = () => {} }) => {
   
   return (
     <form className="relative">
-      <i className="fa fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-900" aria-hidden="true" />
+      <i className="fa fa-search absolute md:left-4 left-2 top-1/2 transform -translate-y-1/2 text-gray-900" aria-hidden="true" />
       <input
         type="text"
         value={value}
         placeholder={I18n.t('tooltips.search')}
         onChange={event => setValue(event.target.value)}
-        className="focus:border-blue-900 focus:ring-1 focus:ring-blue-900 focus:outline-none w-full text-lg text-black placeholder-gray-900 border border-gray-200 rounded shadow px-12 py-4"
+        className="focus:border-blue-900 focus:ring-1 focus:ring-blue-900 focus:outline-none w-full text-lg text-black placeholder-gray-900 border border-gray-200 rounded shadow md:px-12 px-6 md:py-6 py-3"
       />
       {search.length > 0 && (
         <i
-          className="fa fa-times absolute right-4 top-1/2 transform -translate-y-1/2 bg-gray-50 hover:bg-gray-300 text-gray-900 text-lg rounded-full cursor-pointer px-4 py-2"
+          className="fa fa-times absolute md:right-4 right-2 top-1/2 transform -translate-y-1/2 bg-gray-50 hover:bg-gray-300 text-gray-900 text-lg rounded-full cursor-pointer px-4 py-2"
           aria-label={I18n.t('tooltips.clear_search')}
           onClick={() => setValue('')}
         />

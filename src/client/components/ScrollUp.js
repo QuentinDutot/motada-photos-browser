@@ -9,7 +9,7 @@ const ScrollUp = () => (
       title={I18n.t('tooltips.scroll_to_top')}
       placement="bottom"
     >
-      <i className="fa fa-chevron-up bg-white shadow rounded-full text-2xl text-gray-800 p-4" aria-hidden="true" />
+      <i className="fa fa-chevron-up bg-white shadow rounded-full text-2xl text-gray-800 py-4 px-5" aria-hidden="true" />
     </Tooltip>
   </ScrollUpLib>
 )
