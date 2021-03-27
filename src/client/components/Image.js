@@ -46,7 +46,7 @@ const Image = ({ data = {}, updateDisplay = () => {} }) => {
             </Zoom>
           </div>
         ) : (
-          <div className="flex items-center justify-center bg-gray-800 text-white float-right opacity-90 rounded -mt-20 py-3 px-8">
+          <div className="flex items-center justify-center bg-gray-800 text-white float-right opacity-90 rounded-l -mt-20 py-3 px-8">
             <span className="text-xl leading-none">{views}</span>
             <i className="fa fa-eye text-white text-xl ml-4" aria-hidden="true" />
           </div>

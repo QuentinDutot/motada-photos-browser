@@ -2,11 +2,6 @@ import React from 'react'
 import { I18n } from 'react-i18nify'
 import translations from '../../assets/translations/translations'
 import FlagIcon from 'react-flag-kit/lib/CDNFlagIcon'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import Dialog from '@material-ui/core/Dialog'
 
 const Translate = ({ open = false, close = () => {} }) => {
 
@@ -17,39 +12,46 @@ const Translate = ({ open = false, close = () => {} }) => {
   }
 
   const languages = Object.keys(translations).map(key => (
-    <ListItem
-      button
+    <button
+      type="button"
       key={translations[key].flag}
       onClick={() => translate(translations[key].code)}
+      className="flex items-center w-full rounded hover:bg-gray-200 rounded text-gray-500 text-lg py-2 px-4 m-2"
     >
       <FlagIcon code={translations[key].flag} size={32} />
-      <ListItemText primary={translations[key].language} />
-    </ListItem>
+      <span className="ml-3">{translations[key].language}</span>
+    </button>
   ))
 
-  return (
-    <Dialog
-      open={open}
-      onClose={close}
-      maxWidth="xs"
-      fullWidth={true}
-    >
+  return open ? (
+    <div class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="translations-dialog" role="dialog" aria-modal="true">
+      <div class="flex items-center justify-center min-h-screen py-4 px-4 text-center sm:block sm:p-0">
 
-      <DialogTitle>
-        {I18n.t('tooltips.translations')}
-      </DialogTitle>
+        <div
+          onClick={close}
+          class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+          aria-hidden="true"
+        />
 
-      <List className="flex flex-wrap">
-        <div className="flex-1">
-          {languages.map((l, i) => i % 2 == 0 ? l : null)}
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+        <div class="inline-block align-bottom bg-white rounded text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg p-8">
+          <h3 class="text-2xl leading-6 font-medium text-gray-900 font-extrabold text-center mt-2 mb-4" id="translations-dialog">
+            {I18n.t('tooltips.translations')}
+          </h3>
+          <div className="flex flex-wrap mt-4">
+            <p className="flex-1">
+              {languages.map((l, i) => i % 2 == 0 ? l : null)}
+            </p>
+            <p className="flex-1">
+              {languages.map((l, i) => i % 2 != 0 ? l : null)}
+            </p>
+          </div>
         </div>
-        <div className="flex-1">
-          {languages.map((l, i) => i % 2 != 0 ? l : null)}
-        </div>
-      </List>
 
-    </Dialog>
-  )
+      </div>
+    </div>
+  ) : null
 }
 
 export default Translate
