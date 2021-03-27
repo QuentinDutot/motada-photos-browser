@@ -4,7 +4,8 @@ module.exports = () => {
   const url = process.env.MONGODB_URI || 'mongodb://localhost:27017/motada'
   const depreciations = {
     useNewUrlParser: true,
-    useFindAndModify: false
+    useFindAndModify: false,
+    useUnifiedTopology: true,
   }
 
   mongoose.Promise = global.Promise
