@@ -7,6 +7,8 @@ import Masonry from 'react-masonry-component'
 import axios from 'axios'
 import NoData from '../components/NoData'
 
+let timeouts = []
+
 const Gallery = ({
   search = '',
   bottomReached = false,
@@ -21,12 +23,14 @@ const Gallery = ({
   const [limit, setLimit] = useState(10)
 
   const saveImages = (_search, _images) => {
+    timeouts = []
     for (let i = 0; i < _images.length; i++) {
-      setTimeout(() => {
+      const tmp = setTimeout(() => {
         if (!images.find(image => image._id === _images[i]._id) && _search === search) {
           addImage(_images[i])
         }
       }, i * 500)
+      timeouts.push(tmp)
     }
   }
 
@@ -59,8 +63,10 @@ const Gallery = ({
 
   useEffect(() => {
     cleanImages()
+    timeouts.forEach(timeout => clearTimeout(timeout))
+    timeouts = []
     if (search) loadSearch(search)
-    else loadRandom(100)
+    else loadRandom(50)
   }, [search])
 
   useEffect(() => {
