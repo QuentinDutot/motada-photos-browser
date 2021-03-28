@@ -12,6 +12,6 @@ module.exports = () => {
   mongoose.Promise = global.Promise
 
   mongoose.connect(url, depreciations)
-    .then(() => console.log('Database connected !'))
-    .catch(() => console.log('Error connecting to database !'))
+    .then(() => console.log('Database connected!'))
+    .catch(() => console.log('Error connecting to database!'))
 }

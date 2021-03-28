@@ -2,7 +2,7 @@ const Images = require('./images.model.js')
 
 exports.find = async (req, res) => {
   const { query } = req
-  const { random, tags } = query
+  const { random, search } = query
   let result = false
 
   // api/images?count
@@ -14,13 +14,16 @@ exports.find = async (req, res) => {
   // api/images?random=3
   if (Object.prototype.hasOwnProperty.call(query, 'random')) {
     result = {
-      random: await Images.aggregate([{ $sample: { size: Number(random) || 1 } }])
+      random: await Images.getSamples(random)
     }
   }
-  // api/images?tags=sky,car
-  if (Object.prototype.hasOwnProperty.call(query, 'tags')) {
+  // api/images?search=beautiful car
+  if (Object.prototype.hasOwnProperty.call(query, 'search')) {
+    // console.log('search', search)
+    // const { hits } = await algolia('images').search(search)
+    // console.log('hits', hits)
     result = {
-      tags: await Images.find({ $text: { $search: tags.split(',').join(' ') } })
+      search: await Images.find({ $text: { $search: search } })
     }
   }
 
@@ -44,7 +47,7 @@ exports.delete = async (req, res) => {
   let result = false
 
   if (params.id) {
-    const image = await Images.findByIdAndRemove(params.id)
+    const image = await Images.cleanDelete(params.id)
     if (image) result = true
   }
 

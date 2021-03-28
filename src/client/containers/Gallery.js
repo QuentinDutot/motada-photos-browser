@@ -49,7 +49,7 @@ const Gallery = ({
 
   const loadSearch = (_search) => {
     isLoading(true)
-    request(`/api/images?tags=${_search.split(' ').join(',')}`, 'tags')
+    request(`/api/images?search=${_search}`, 'search')
   }
 
   const loadRandom = (_limit) => {
