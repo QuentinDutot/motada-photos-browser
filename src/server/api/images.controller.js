@@ -1,3 +1,4 @@
+const algolia = require('../utils/algolia.js')
 const Images = require('./images.model.js')
 
 exports.find = async (req, res) => {
@@ -11,19 +12,20 @@ exports.find = async (req, res) => {
       count: await Images.estimatedDocumentCount()
     }
   }
+
   // api/images?random=3
   if (Object.prototype.hasOwnProperty.call(query, 'random')) {
     result = {
       random: await Images.getSamples(random)
     }
   }
+  
   // api/images?search=beautiful car
   if (Object.prototype.hasOwnProperty.call(query, 'search')) {
-    // console.log('search', search)
-    // const { hits } = await algolia('images').search(search)
-    // console.log('hits', hits)
+    const { hits } = await algolia('images').search(search, { page: 0, hitsPerPage: 1000 })
+    const ids = hits.map(({ objectID }) => objectID)
     result = {
-      search: await Images.find({ $text: { $search: search } })
+      search: await Images.find({ _id: { $in: ids } })
     }
   }
 
