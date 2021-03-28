@@ -1,10 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import LinearProgress from '@material-ui/core/LinearProgress'
 
 const Loading = ({ loading = false }) => (
   loading ? (
-    <LinearProgress className="fixed top-0 w-full z-10" />
+    <div className="w-full h-2 fixed top-0 bg-blue-900 z-10 animate-pulse" />
   ) : null
 )
 

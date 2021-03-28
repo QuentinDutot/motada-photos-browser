@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { updateDisplay } from '../reducer'
-import Zoom from '@material-ui/core/Zoom'
 import axios from 'axios'
+import Zoom from 'react-reveal/Zoom'
 
 const Image = ({ data = {}, updateDisplay = () => {} }) => {
 
@@ -25,7 +25,7 @@ const Image = ({ data = {}, updateDisplay = () => {} }) => {
 
   return (
     <div
-      className="lg:w-1/4 md:w-1/3 sm:w-2/4 w-full rounded cursor-pointer p-1"
+      className="lg:w-1/4 md:w-1/3 sm:w-2/4 w-full rounded overflow-hidden cursor-pointer p-1"
       onClick={click}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
@@ -33,20 +33,20 @@ const Image = ({ data = {}, updateDisplay = () => {} }) => {
 
       <img
         onLoad={() => setLoaded(true)}
-        className="block w-full rounded shadow"
+        className="block w-full rounded shadow transform hover:scale-125 transition ease-in-out"
         src={`${data.url}?w=700`}
         alt={data.title}
       />
 
       {loaded && (
         hover ? (
-          <div className="flex items-center justify-center absolute top-0 left-0 h-full w-full bg-gray-300 bg-opacity-30 rounded">
-            <Zoom in={hover}>
+          <div className="flex items-center justify-center absolute top-0 left-0 h-full w-full bg-gray-300 bg-opacity-30 rounded pointer-events-none">
+            <Zoom clear duration={500} when={hover}>
               <i className="fa fa-arrows-alt text-white text-6xl" aria-hidden="true" />
             </Zoom>
           </div>
         ) : (
-          <div className="flex items-center justify-center bg-gray-800 text-white float-right opacity-90 rounded-l -mt-20 py-3 px-8">
+          <div className="flex items-center justify-center bg-gray-800 text-white float-right opacity-90 rounded-l pointer-events-none -mt-20 py-3 px-8">
             <span className="text-xl leading-none">{views}</span>
             <i className="fa fa-eye text-white text-xl ml-4" aria-hidden="true" />
           </div>
