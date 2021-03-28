@@ -1,11 +1,11 @@
 import React from 'react'
-import { I18n } from 'react-i18nify'
+import { translate } from 'react-i18nify'
 import translations from '../../assets/translations/translations'
-import FlagIcon from 'react-flag-kit/lib/CDNFlagIcon'
+import { FlagIcon } from 'react-flag-kit'
 
 const Translate = ({ open = false, close = () => {} }) => {
 
-  const translate = (lang) => {
+  const applyTranslation = (lang) => {
     close()
     localStorage.setItem('motada_language', lang)
     location.reload()
@@ -15,7 +15,7 @@ const Translate = ({ open = false, close = () => {} }) => {
     <button
       type="button"
       key={translations[key].flag}
-      onClick={() => translate(translations[key].code)}
+      onClick={() => applyTranslation(translations[key].code)}
       className="flex items-center w-full rounded hover:bg-gray-200 rounded text-gray-500 text-lg py-2 px-4 m-2"
     >
       <FlagIcon code={translations[key].flag} size={32} />
@@ -37,7 +37,7 @@ const Translate = ({ open = false, close = () => {} }) => {
 
         <div class="inline-block align-bottom bg-white rounded text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg p-8">
           <h3 class="text-2xl leading-6 font-medium text-gray-900 font-extrabold text-center mt-2 mb-4" id="translations-dialog">
-            {I18n.t('tooltips.translations')}
+            {translate('tooltips.translations')}
           </h3>
           <div className="flex flex-wrap mt-4">
             <p className="flex-1">

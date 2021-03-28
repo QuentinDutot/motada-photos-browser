@@ -1,50 +1,68 @@
-const webpack = require("webpack")
+'use strict'
+
 const path = require('path')
+const glob = require('glob')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const OptimizeCSSAssets = require("optimize-css-assets-webpack-plugin")
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const PurgeCssPlugin = require('purgecss-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const ESLintPlugin = require('eslint-webpack-plugin')
 
-module.exports = {
+module.exports = (env, argv) => ({
   entry: './src/client/index.js',
   output: {
     path: path.resolve(__dirname, './dist'),
-    filename: 'main.[hash].js'
+    filename: 'main.[contenthash].js',
+    clean: true,
   },
+	target: ['web', 'es5'],
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: ['babel-loader'/*, 'eslint-loader'*/]
+				use: 'babel-loader',
       },
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader']
+				use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-        use: [{ loader: 'url-loader', options: { limit: 50000 } }]
-      }
-    ]
+        type: 'asset/resource',
+      },
+    ],
   },
+  devtool: argv.mode === 'production' ? false : 'inline-source-map',
   devServer: {
     port: 3000,
-    proxy: {
-      '/api': 'http://localhost:8080'
-    }
+    proxy: { '/api': 'http://localhost:8080' },
+    hot: true,
   },
   plugins: [
-    new WebpackCleanupPlugin(),
-    // new BundleAnalyzerPlugin(),
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    new HtmlWebpackPlugin({ filename: path.resolve(__dirname, './dist')+'/index.html', template: './src/client/index.template.html', alwaysWriteToDisk: true }),
-    new HtmlWebpackHarddiskPlugin({ outputPath: path.resolve(__dirname, './dist') }),
-    new MiniCssExtractPlugin({ path: path.resolve(__dirname, './dist'), filename: 'style.[hash].css' }),
-    new OptimizeCSSAssets(),
-    new CopyWebpackPlugin([{ from: './src/client/favicon.ico' }])
-  ]
-}
+    new HtmlWebpackPlugin({
+      filename: path.resolve(__dirname, './dist')+'/index.html',
+      template: './src/client/index.template.html',
+      alwaysWriteToDisk: true,
+    }),
+    new HtmlWebpackHarddiskPlugin({
+      outputPath: path.resolve(__dirname, './dist'),
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'style.[contenthash].css',
+    }),
+    new CssMinimizerPlugin(),
+    new PurgeCssPlugin({
+      paths: glob.sync(`${path.join(__dirname, 'src')}/**/*`,  { nodir: true }),
+      defaultExtractor: content => content.match(/[\w-:/]+(?<!:)/g) || [],
+    }),
+    new CopyWebpackPlugin({
+      patterns: [{ from: './src/client/favicon.ico' }],
+    }),
+		// new ESLintPlugin({
+    //   eslintPath: require.resolve('eslint'), extensions: ['js', 'jsx'],
+    // }),
+  ],
+})

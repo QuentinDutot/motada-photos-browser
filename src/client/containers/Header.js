@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { I18n } from 'react-i18nify'
-import FlagIcon from 'react-flag-kit/lib/CDNFlagIcon'
+import { translate } from 'react-i18nify'
+import { FlagIcon } from 'react-flag-kit'
 import Description from '../components/Description'
 import Search from '../components/Search'
 import Translate from '../components/Translate'
@@ -26,11 +26,11 @@ const Header = () => {
         {/* Over the search area */}
         <div className="flex items-center md:justify-between justify-center mb-8">
           <p className="text-2xl lg:text-3xl leading-none font-extrabold text-gray-900 tracking-tight md:text-left text-center mb-0">
-            {count !== 0 ? I18n.t('header.title', { count: `${Math.round(count/1000)}k` }) : I18n.t('header.default_title')}
+            {count !== 0 ? translate('header.title', { count: `${Math.round(count/1000)}k` }) : translate('header.default_title')}
           </p>
           <div className="md:flex hidden flex-wrap items-center">
             <FlagIcon
-              code={I18n.t('flag')}
+              code={translate('flag')}
               size={40}
               className="cursor-pointer mr-4 p-1"
               onClick={() => setDialog(true)}

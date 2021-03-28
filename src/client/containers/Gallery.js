@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { I18n } from 'react-i18nify'
+import { translate } from 'react-i18nify'
 import { connect } from 'react-redux'
 import { updateNotification, isLoading, cleanImages, addImage } from '../reducer'
 import Image from '../components/Image'
@@ -41,12 +41,12 @@ const Gallery = ({
         if (response.data[type] && response.data[type].length > 0) {
           saveImages(search, response.data[type])
         } else {
-          updateNotification(I18n.t('errors.no_results'))
+          updateNotification(translate('errors.no_results'))
         }
       })
       .catch((error) => {
         // console.log(error)
-        updateNotification(I18n.t('errors.unknow'))
+        updateNotification(translate('errors.unknow'))
       })
       .then(() => isLoading(false))
   }

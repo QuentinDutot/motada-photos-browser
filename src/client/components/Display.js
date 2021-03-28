@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { I18n } from 'react-i18nify'
+import { translate } from 'react-i18nify'
 import { connect } from 'react-redux'
 import { makeSearch, updateDisplay } from '../reducer'
 import FileSaver from 'file-saver'
@@ -62,7 +62,7 @@ const Display = ({
                 className="flex-none flex items-center justify-center rounded border border-gray-300 hover:bg-gray-50 mr-4 px-2 py-1"
                 onClick={() => saveImage(display.url)}
               >
-                <p className="text-gray-900 mr-3">{I18n.t('tooltips.download')}</p>
+                <p className="text-gray-900 mr-3">{translate('tooltips.download')}</p>
                 <i className="fa fa-download text-gray-900" aria-hidden="true" />
               </button>
               <button
@@ -70,7 +70,7 @@ const Display = ({
                 className="flex-none flex items-center justify-center rounded border border-gray-300 hover:bg-gray-50 px-2 py-1"
                 onClick={() => updateDisplay({})}
               >
-                <p className="text-gray-900 mr-3">{I18n.t('tooltips.close')}</p>
+                <p className="text-gray-900 mr-3">{translate('tooltips.close')}</p>
                 <i className="fa fa-times text-gray-900" aria-hidden="true" />
               </button>
             </div>
@@ -101,8 +101,8 @@ const Display = ({
             onClick={event => event.stopPropagation()}
           >
             <p className="m-0">
-              <span>{`${I18n.t('tooltips.keywords')}: `}</span>
-              {Array.from(new Set(display.tags)).map(tag =>
+              <span>{`${translate('tooltips.keywords')}: `}</span>
+              {display.tags.map(tag =>
                 <button
                   key={tag}
                   className="h-9 bg-blue-100 hover:bg-blue-300 text-blue-900 hover:text-white rounded ml-4 px-2 py-1"

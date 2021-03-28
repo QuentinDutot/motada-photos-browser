@@ -4,8 +4,8 @@
   font-weight: 400;
   src:
     local('Inter UI'),
-    url(../assets/fonts/Inter-UI-Regular.woff2) format('woff2'),
-    url(../assets/fonts/Inter-UI-Regular.woff) format('woff');
+    url(../fonts/Inter-UI-Regular.woff2) format('woff2'),
+    url(../fonts/Inter-UI-Regular.woff) format('woff');
 }
 
 html {
